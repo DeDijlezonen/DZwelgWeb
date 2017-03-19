@@ -23,7 +23,9 @@ const routes: Routes = [
     { path: 'evenementen', component: EvenementenComponent },
     { path: '', redirectTo: '/evenementen', pathMatch: 'full' },
   ] },
-  { path: '**', component: PaginaNietGevondenComponent }
+  { path: '**', component: TemplateComponent, children: [
+    { path: '', component: PaginaNietGevondenComponent }
+  ] }
 ];
 
 @NgModule({

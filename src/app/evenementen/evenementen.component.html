@@ -1,9 +1,12 @@
-<p>
-  evenementen works!
-</p>
+<h1>Evenementen</h1>
 
-<ul>
-  <li *ngFor="let evenement of evenementen | async">
-    {{ evenement.titel }}
-  </li>
-</ul>
+<div class="card-columns">
+  <div *ngFor="let evenement of evenementen | async" class="card">
+    <div class="card-block">
+      <h4 class="card-title">{{ evenement.titel }}</h4>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <button class="btn btn-secondary"><span class="fa fa-pencil"></span>&nbsp;Bewerken</button>
+      <button class="btn btn-danger"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+    </div>
+  </div> 
+</div>
