@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 @Component({
   selector: 'dzwelg-evenementen',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EvenementenComponent implements OnInit {
 
-  constructor() { }
+  evenementen: FirebaseListObservable<any[]>;
+
+  constructor(private af: AngularFire) { }
 
   ngOnInit() {
+    this.evenementen = this.af.database.list('evenementen');
   }
 
 }

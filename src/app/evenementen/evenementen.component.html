@@ -1,3 +1,9 @@
 <p>
   evenementen works!
 </p>
+
+<ul>
+  <li *ngFor="let evenement of evenementen | async">
+    {{ evenement.titel }}
+  </li>
+</ul>
