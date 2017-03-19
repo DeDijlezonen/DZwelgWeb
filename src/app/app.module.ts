@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { TemplateComponent } from './template/template.component';
 import { EvenementenComponent } from './evenementen/evenementen.component';
 import { PaginaNietGevondenComponent } from './pagina-niet-gevonden/pagina-niet-gevonden.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -35,6 +36,7 @@ const routes: Routes = [
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig, 'dzwelg-web'),
     RouterModule.forRoot(routes),
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

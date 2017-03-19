@@ -9,6 +9,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 export class EvenementenComponent implements OnInit {
 
   evenementen: FirebaseListObservable<any[]>;
+  currentRate: 8;
 
   constructor(private af: AngularFire) { }
 
