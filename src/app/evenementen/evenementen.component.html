@@ -5,6 +5,5 @@
 <ul>
   <li *ngFor="let evenement of evenementen | async">
     {{ evenement.titel }}
-    <ngb-rating [(rate)]="currentRate"></ngb-rating>
   </li>
 </ul>
