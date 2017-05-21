@@ -35,6 +35,7 @@ const routes: Routes = [
     AppComponent, TemplateComponent, EvenementenComponent, PaginaNietGevondenComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpModule,
@@ -42,7 +43,6 @@ const routes: Routes = [
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     RouterModule.forRoot(routes),
-    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
