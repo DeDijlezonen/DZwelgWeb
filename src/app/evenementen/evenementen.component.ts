@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { IAlert } from './../model/alert';
 
 @Component({
@@ -12,10 +12,10 @@ export class EvenementenComponent implements OnInit {
   evenementen: FirebaseListObservable<any[]>;
   alerts: IAlert[];
 
-  constructor(private af: AngularFire) { }
+  constructor(private afdb: AngularFireDatabase) { }
 
   ngOnInit() {
-    this.evenementen = this.af.database.list('evenementen');
+    this.evenementen = this.afdb.list('evenementen');
   }
 
   verwijder(id: string) {
