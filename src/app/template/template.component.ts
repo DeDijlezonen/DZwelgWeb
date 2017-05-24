@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthenticatieService } from './../services/authenticatie.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemplateComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authenticatieService: AuthenticatieService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    // if (!this.authenticatieService.isLoggedIn()) {
+    //   this.router.navigate(['login']);
+    // }
+
+    this.authenticatieService.isLoggedIn().subscribe((user) => {
+      if (!user) {
+        this.router.navigate(['login']);
+      }
+    });
+  }
+
+  uitloggen() {
+    this.authenticatieService.logout();
   }
 
 }
