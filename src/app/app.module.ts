@@ -29,9 +29,8 @@ const routes: Routes = [
     { path: '404', component: PaginaNietGevondenComponent }
   ] },
   { path: 'login', component: LoginComponent },
-  { path: '**', component: TemplateComponent, children: [
-    { path: '**', redirectTo: '/404', pathMatch: 'full' }
-  ] }
+  { path: '**', redirectTo: '/404' }
+
 ];
 
 @NgModule({
