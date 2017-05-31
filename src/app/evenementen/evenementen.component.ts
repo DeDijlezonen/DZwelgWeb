@@ -62,11 +62,6 @@ export class EvenementenComponent implements OnInit {
     this.evenement.titel = '';
   }
 
-  public sluitAlert(alert: IAlert) {
-    const index: number = this.alerts.indexOf(alert);
-    this.alerts.splice(index, 1);
-  }
-
   private verwijder(id: string) {
     this.evenementen.remove(id).then(
       succes => {

@@ -13,6 +13,7 @@ import { EvenementenComponent } from './evenementen/evenementen.component';
 import { PaginaNietGevondenComponent } from './pagina-niet-gevonden/pagina-niet-gevonden.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
+import { AlertComponent } from './alert/alert.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -35,7 +36,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, TemplateComponent, EvenementenComponent, PaginaNietGevondenComponent, LoginComponent
+    AppComponent, TemplateComponent, EvenementenComponent, PaginaNietGevondenComponent, LoginComponent, AlertComponent
   ],
   imports: [
     NgbModule.forRoot(),

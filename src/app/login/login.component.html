@@ -1,17 +1,34 @@
 <div class="container">
 
-  <form class="form-signin">
+  <dzwelg-alert [alerts]="alerts"></dzwelg-alert>
+
+  <!--<div *ngIf="loginForm.errors && (loginForm.dirty || loginForm.touched)">
+    <ngb-alert [type]="danger" [hidden]="!loginForm.emailInput.errors.required" [dismissible]="false">E-mailadres is verplicht!</ngb-alert>
+    <ngb-alert [type]="danger" [hidden]="!loginForm.emailInput.errors.email" [dismissible]="false">Ongeldig e-mailadres!</ngb-alert>
+    <ngb-alert [type]="danger" [hidden]="!loginForm.wachtwoordInput.errors.required" [dismissible]="false">Wachtwoord is verplicht!</ngb-alert>
+  </div>-->
+
+  <div *ngIf="emailInput.errors && (emailInput.dirty || emailInput.touched)">
+    <ngb-alert [type]="danger" [hidden]="!emailInput.errors.required" [dismissible]="false">E-mailadres is verplicht!</ngb-alert>
+    <ngb-alert [type]="danger" [hidden]="!emailInput.errors.email" [dismissible]="false">Ongeldig e-mailadres!</ngb-alert>
+  </div>
+
+  <div *ngIf="wachtwoordInput.errors && (wachtwoordInput.dirty || wachtwoordInput.touched)">
+    <ngb-alert [type]="danger" [hidden]="!wachtwoordInput.errors.required" [dismissible]="false">Wachtwoord is verplicht!</ngb-alert>
+  </div>
+  
+  <form class="form-signin" #loginForm="ngForm">
     <h2 class="form-signin-heading">Gelieve in te loggen</h2>
-    <label for="inputEmail" class="sr-only">Email adres</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email adres" required autofocus name="email" [(ngModel)]="email">
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required name="wachtwoord" [(ngModel)]="wachtwoord">
+    <label for="inputEmail" class="sr-only">E-mailadres</label>
+    <input type="email" id="inputEmail" class="form-control" placeholder="E-mailadres" required email autofocus name="email" [(ngModel)]="email" #emailInput="ngModel">
+    <label for="inputPassword" class="sr-only">Wachtwoord</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" required name="wachtwoord" [(ngModel)]="wachtwoord" #wachtwoordInput="ngModel">
     <!--<div class="checkbox">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>-->
-    <button class="btn btn-lg btn-primary btn-block" (click)="login()">Inloggen</button>
+    <button class="btn btn-lg btn-primary btn-block" (click)="login()" [disabled]="emailInput.invalid || wachtwoordInput.invalid">Inloggen</button>
   </form>
 
 </div> <!-- /container -->
