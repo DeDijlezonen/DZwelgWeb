@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Evenement } from './../model/evenement';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
@@ -16,11 +17,26 @@ export class EvenementenComponent implements OnInit {
   evenement: Evenement = new Evenement();
   verwijderModal: NgbModalRef;
   teVerwijderenEvenementId: string;
+  teBewerkenEvenementId: string;
 
-  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal) { }
+  bewerkForms = new Map();
+
+  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
+    // this.createBewerkForm();
+  }
 
   ngOnInit() {
     this.evenementen = this.afdb.list('evenementen');
+    this.evenementen.subscribe(snapshots => {
+      snapshots.forEach(snapshot => {
+        this.bewerkForms.set(
+          snapshot.id,
+          this.fb.group({
+            titel: [snapshot.titel, Validators.required]
+          })
+        );
+      });
+    });
   }
 
   public open(content, id: string) {
@@ -60,6 +76,15 @@ export class EvenementenComponent implements OnInit {
     }
 
     this.evenement.titel = '';
+  }
+
+  public evenementBewerken(model: Evenement, id: string) {
+    this.evenementen.update(id, { titel: model.titel });
+    this.teBewerkenEvenementId = '';
+    this.alert = {
+      type: 'success',
+      message: 'Het evenement werd succesvol bewerkt.'
+    }
   }
 
   private verwijder(id: string) {

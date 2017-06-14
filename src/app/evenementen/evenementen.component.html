@@ -9,7 +9,6 @@
         <form class="form-inline" (ngSubmit)="evenementAanmaken()">
           <input type="text" name="evenementTitel" [(ngModel)]="evenement.titel" class="form-control mb-2 mr-sm-2 mb-sm-0" id="evenement-naam"
             placeholder="Naam evenement">
-
           <button type="submit" class="btn btn-primary">
       Evenement aanmaken
     </button>
@@ -22,10 +21,19 @@
         <div class="card-columns">
           <div *ngFor="let evenement of evenementen | async" class="card">
             <div class="card-block">
-              <h4 class="card-title">{{ evenement.titel }}</h4>
+              <h4 *ngIf="evenement.id !== teBewerkenEvenementId" class="card-title">{{ evenement.titel }}</h4>
+              <form *ngIf="evenement.id === teBewerkenEvenementId" class="form-inline" [formGroup]="bewerkForms.get(evenement.id)" (ngSubmit)="evenementBewerken(bewerkForms.get(evenement.id).value, evenement.id)">
+                <input type="text" formControlName="titel" class="form-control mb-2 mr-sm-2 mb-sm-0" [value]="evenement.titel">
+                <button type="submit" class="btn btn-primary">
+                  <span class="fa fa-check"></span>
+                </button>
+                <button class="btn btn-secondary" (click)="teBewerkenEvenementId = ''">
+                  <span class="fa fa-remove"></span>
+                </button>
+              </form>
               <p class="card-text"><small class="text-muted">Aangemaakt op: {{ evenement.aangemaakt | date }}</small></p>
-              <button class="btn btn-secondary"><span class="fa fa-pencil"></span>&nbsp;Bewerken</button>
-              <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+              <button class="btn btn-secondary" (click)="teBewerkenEvenementId = evenement.id"><span class="fa fa-pencil"></span>&nbsp;Bewerken</button>
+                <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
             </div>
           </div>
         </div>
