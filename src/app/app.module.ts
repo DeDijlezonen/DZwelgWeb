@@ -14,6 +14,7 @@ import { PaginaNietGevondenComponent } from './pagina-niet-gevonden/pagina-niet-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { AlertComponent } from './alert/alert.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -47,6 +48,7 @@ const routes: Routes = [
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     RouterModule.forRoot(routes),
+    ReactiveFormsModule,
   ],
   providers: [AuthenticatieService],
   bootstrap: [AppComponent]

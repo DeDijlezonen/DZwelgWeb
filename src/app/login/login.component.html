@@ -1,34 +1,19 @@
 <div class="container">
 
-  <dzwelg-alert [alerts]="alerts"></dzwelg-alert>
-
-  <!--<div *ngIf="loginForm.errors && (loginForm.dirty || loginForm.touched)">
-    <ngb-alert [type]="danger" [hidden]="!loginForm.emailInput.errors.required" [dismissible]="false">E-mailadres is verplicht!</ngb-alert>
-    <ngb-alert [type]="danger" [hidden]="!loginForm.emailInput.errors.email" [dismissible]="false">Ongeldig e-mailadres!</ngb-alert>
-    <ngb-alert [type]="danger" [hidden]="!loginForm.wachtwoordInput.errors.required" [dismissible]="false">Wachtwoord is verplicht!</ngb-alert>
-  </div>-->
-
-  <div *ngIf="emailInput.errors && (emailInput.dirty || emailInput.touched)">
-    <ngb-alert [type]="danger" [hidden]="!emailInput.errors.required" [dismissible]="false">E-mailadres is verplicht!</ngb-alert>
-    <ngb-alert [type]="danger" [hidden]="!emailInput.errors.email" [dismissible]="false">Ongeldig e-mailadres!</ngb-alert>
-  </div>
-
-  <div *ngIf="wachtwoordInput.errors && (wachtwoordInput.dirty || wachtwoordInput.touched)">
-    <ngb-alert [type]="danger" [hidden]="!wachtwoordInput.errors.required" [dismissible]="false">Wachtwoord is verplicht!</ngb-alert>
-  </div>
+  <dzwelg-alert [alert]="alert"></dzwelg-alert>
   
-  <form class="form-signin" #loginForm="ngForm">
+  <form class="form-signin" [formGroup]="loginForm" novalidate (ngSubmit)="login(loginForm.value, loginForm.valid)">
     <h2 class="form-signin-heading">Gelieve in te loggen</h2>
     <label for="inputEmail" class="sr-only">E-mailadres</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="E-mailadres" required email autofocus name="email" [(ngModel)]="email" #emailInput="ngModel">
+    <input type="email" id="inputEmail" class="form-control" placeholder="E-mailadres" formControlName="email">
     <label for="inputPassword" class="sr-only">Wachtwoord</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" required name="wachtwoord" [(ngModel)]="wachtwoord" #wachtwoordInput="ngModel">
+    <input type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" formControlName="wachtwoord">
     <!--<div class="checkbox">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>-->
-    <button class="btn btn-lg btn-primary btn-block" (click)="login()" [disabled]="emailInput.invalid || wachtwoordInput.invalid">Inloggen</button>
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Inloggen</button>
   </form>
 
 </div> <!-- /container -->

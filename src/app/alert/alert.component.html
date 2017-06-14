@@ -1,5 +1,3 @@
 <div class="row-fluid">
-  <p *ngFor="let alert of alerts">
-    <ngb-alert [type]="alert.type" (close)="sluitAlert(alert)">{{ alert.message }}</ngb-alert>
-  </p>
+    <ngb-alert *ngIf="alert" [type]="alert.type" (close)="sluitAlert()">{{ alert.message }}</ngb-alert>
 </div>

@@ -1,8 +1,9 @@
+import { User } from './../model/user';
 import { IAlert } from './../model/alert';
 import { Router } from '@angular/router';
 import { AuthenticatieService } from './../services/authenticatie.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'dzwelg-login',
@@ -11,28 +12,39 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  alerts: IAlert[] = [];
+  alert: IAlert;
 
-  private email: string;
-  private wachtwoord: string;
+  loginForm: FormGroup;
+
+  // private email: string;
+  // private wachtwoord: string;
 
   constructor(
     public authenticatieService: AuthenticatieService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {
+    this.createForm();
   }
 
   ngOnInit() {
   }
 
-  login() {
-    this.authenticatieService.login(this.email, this.wachtwoord).then((data) => {
+  createForm() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      wachtwoord: ['', Validators.required]
+    });
+  }
+
+  login(model: User, isValid: boolean) {
+    this.authenticatieService.login(model.email, model.wachtwoord).then((data) => {
       this.router.navigate(['evenementen']);
     }).catch((error) => {
-      this.alerts.push({
+      this.alert = {
         type: 'danger',
         message: error.message
-      });
+      };
     });
   }
 

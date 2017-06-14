@@ -12,7 +12,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 export class EvenementenComponent implements OnInit {
 
   evenementen: FirebaseListObservable<Evenement[]>;
-  alerts: IAlert[] = [];
+  alert: IAlert;
   evenement: Evenement = new Evenement();
   verwijderModal: NgbModalRef;
   teVerwijderenEvenementId: string;
@@ -53,10 +53,10 @@ export class EvenementenComponent implements OnInit {
       this.evenementen.update(key, this.evenement);
 
     } else {
-      this.alerts.push({
+      this.alert = {
         type: 'danger',
         message: 'De titel van het evenement mag niet leeg zijn.'
-      });
+      };
     }
 
     this.evenement.titel = '';
@@ -65,16 +65,16 @@ export class EvenementenComponent implements OnInit {
   private verwijder(id: string) {
     this.evenementen.remove(id).then(
       succes => {
-        this.alerts.push({
+        this.alert = {
           type: 'success',
           message: 'Het evenement werd succesvol verwijderd.'
-        });
+        };
       },
       error => {
-        this.alerts.push({
+        this.alert = {
           type: 'danger',
           message: 'Het evenement kon niet worden verwijderd.'
-        });
+        };
       },
     );
 

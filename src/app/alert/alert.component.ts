@@ -1,5 +1,6 @@
 import { IAlert } from './../model/alert';
 import { Component, OnInit, Input } from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'dzwelg-alert',
@@ -8,16 +9,17 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class AlertComponent implements OnInit {
 
-  @Input() alerts: IAlert[];
+  @Input() alert: IAlert;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  public sluitAlert(alert: IAlert) {
-    const index: number = this.alerts.indexOf(alert);
-    this.alerts.splice(index, 1);
+  public sluitAlert() {
+    // const index: number = this.alerts.indexOf(alert);
+    // this.alerts.splice(index, 1),
+    this.alert = null;
   }
 
 }
