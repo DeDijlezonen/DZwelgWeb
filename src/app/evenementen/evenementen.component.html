@@ -24,10 +24,11 @@
               <h4 *ngIf="evenement.id !== teBewerkenEvenementId" class="card-title">{{ evenement.titel }}</h4>
               <form *ngIf="evenement.id === teBewerkenEvenementId" class="form-inline" [formGroup]="bewerkForms.get(evenement.id)" (ngSubmit)="evenementBewerken(bewerkForms.get(evenement.id).value, evenement.id)">
                 <input type="text" formControlName="titel" class="form-control mb-2 mr-sm-2 mb-sm-0" [value]="evenement.titel">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-success">
                   <span class="fa fa-check"></span>
                 </button>
-                <button class="btn btn-secondary" (click)="teBewerkenEvenementId = ''">
+                &nbsp;
+                <button class="btn btn-default" (click)="teBewerkenEvenementId = ''">
                   <span class="fa fa-remove"></span>
                 </button>
               </form>
@@ -42,7 +43,7 @@
       <!-- "Verwijder" confirmatie dialoog -->
       <ng-template #content let-c="close" let-d="dismiss">
         <div class="modal-header">
-          <h4 class="modal-title">Modal title</h4>
+          <h4 class="modal-title">{{ (teVerwijderenEvenement | async)?.titel }} verwijderen?</h4>
           <button type="button" class="close" aria-label="Close" (click)="sluit()">
       <span aria-hidden="true">&times;</span>
     </button>

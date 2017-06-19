@@ -1,3 +1,5 @@
+import { Lid } from './../model/lid';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LedenComponent implements OnInit {
 
-  constructor() { }
+  leden: FirebaseListObservable<Lid[]>;
+
+  constructor(private afdb: AngularFireDatabase) { }
 
   ngOnInit() {
+    this.leden = this.afdb.list('leden');
   }
 
 }

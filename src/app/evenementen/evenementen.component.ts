@@ -1,7 +1,7 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Evenement } from './../model/evenement';
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { IAlert } from './../model/alert';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,12 +17,12 @@ export class EvenementenComponent implements OnInit {
   evenement: Evenement = new Evenement();
   verwijderModal: NgbModalRef;
   teVerwijderenEvenementId: string;
+  teVerwijderenEvenement: FirebaseObjectObservable<Evenement>;
   teBewerkenEvenementId: string;
 
   bewerkForms = new Map();
 
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
-    // this.createBewerkForm();
   }
 
   ngOnInit() {
@@ -41,6 +41,7 @@ export class EvenementenComponent implements OnInit {
 
   public open(content, id: string) {
     this.teVerwijderenEvenementId = id;
+    this.teVerwijderenEvenement = this.afdb.object('/evenementen/' + this.teVerwijderenEvenementId);
     this.verwijderModal = this.modalService.open(content);
   }
 
