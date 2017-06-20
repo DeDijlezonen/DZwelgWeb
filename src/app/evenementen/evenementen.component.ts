@@ -47,6 +47,7 @@ export class EvenementenComponent implements OnInit {
 
   public sluit() {
     this.teVerwijderenEvenementId = '';
+    this.teVerwijderenEvenement = null;
     this.verwijderModal.close();
   }
 

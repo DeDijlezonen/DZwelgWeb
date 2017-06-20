@@ -6,7 +6,7 @@
       <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
       <div class="row-fluid">
-        <button class="btn btn-primary"><span class="fa fa-plus"></span>&nbsp;Nieuw lid aanmaken</button>
+        <button class="btn btn-primary" (click)="openLidAanmakenModal(contentLidAanmakenModal)"><span class="fa fa-plus"></span>&nbsp;Nieuw lid aanmaken</button>
       </div>
 
       <br/>
@@ -29,9 +29,8 @@
               <td>
                 <button class="btn btn-secondary">
                   <span class="fa fa-pencil"></span>
-                </button>
-                &nbsp;
-                <button class="btn btn-danger">
+                </button> &nbsp;
+                <button class="btn btn-danger" (click)="openLidVerwijderenModel(contentVerwijderLidModal, lid.id)">
                   <span class="fa fa-trash"></span>
                 </button>
               </td>
@@ -40,20 +39,50 @@
         </table>
       </div>
 
-      <!-- "Verwijder" confirmatie dialoog -->
-      <ng-template #content let-c="close" let-d="dismiss">
+      <!-- "Lid aanmaken" dialoog -->
+      <ng-template #contentLidAanmakenModal let-c="close" let-d="dismiss">
         <div class="modal-header">
-          <h4 class="modal-title">Modal title</h4>
-          <button type="button" class="close" aria-label="Close" (click)="sluit()">
+          <h4 class="modal-title">Nieuw lid aanmaken</h4>
+          <button type="button" class="close" aria-label="Close" (click)="sluitLidAanmakenModal()">
       <span aria-hidden="true">&times;</span>
     </button>
         </div>
         <div class="modal-body">
-          <p>Zeker dat je dit evenement wilt verwijderen?</p>
+
+          <form class="form" [formGroup]="lidAanmakenFormGroup" (ngSubmit)="lidAanmaken(lidAanmakenFormGroup.value)">
+            <label for="voornaam_input">Voornaam</label>
+            <input type="text" formControlName="voornaam" class="form-control" id="voornaam_input">
+            <label for="achternaam_input">Achternaam</label>
+            <input type="text" formControlName="achternaam" class="form-control" id="achternaam_input">
+            <label for="saldo_input">Saldo</label>
+            <div class="input-group">
+              <span class="input-group-addon">€</span>
+              <input type="number" formControlName="saldo" class="form-control" id="saldo_input">
+            </div>
+            <br/>
+            <div class="pull-right">
+              <button class="btn btn-success">Aanmaken</button>
+              <button class="btn btn-secondary" (click)="sluitLidAanmakenModal()">Annuleren</button>
+            </div>
+          </form>
+
+        </div>
+      </ng-template>
+
+      <!-- "Verwijder" confirmatie dialoog -->
+      <ng-template #contentVerwijderLidModal let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title">{{ (teVerwijderenLid | async)?.voornaam + ' ' + (teVerwijderenLid | async)?.achternaam }} verwijderen?</h4>
+          <button type="button" class="close" aria-label="Close" (click)="sluitVerwijderLidModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+        </div>
+        <div class="modal-body">
+          <p>Zeker dat je dit lid wilt verwijderen?</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" (click)="verwijderEnSluit(teVerwijderenEvenementId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
-          <button class="btn btn-secondary" (click)="sluit()">Annuleren</button>
+          <button class="btn btn-danger" (click)="verwijderLidEnSluit(teVerwijderenLidId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+          <button class="btn btn-secondary" (click)="sluitVerwijderLidModal()">Annuleren</button>
         </div>
       </ng-template>
 
