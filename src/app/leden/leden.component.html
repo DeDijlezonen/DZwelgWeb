@@ -49,16 +49,13 @@
         </div>
         <div class="modal-body">
 
+          <dzwelg-alert [alert]="alertLidAanmaken"></dzwelg-alert>
+
           <form class="form" [formGroup]="lidAanmakenFormGroup" (ngSubmit)="lidAanmaken(lidAanmakenFormGroup.value)">
             <label for="voornaam_input">Voornaam</label>
             <input type="text" formControlName="voornaam" class="form-control" id="voornaam_input">
             <label for="achternaam_input">Achternaam</label>
             <input type="text" formControlName="achternaam" class="form-control" id="achternaam_input">
-            <label for="saldo_input">Saldo</label>
-            <div class="input-group">
-              <span class="input-group-addon">€</span>
-              <input type="number" formControlName="saldo" class="form-control" id="saldo_input">
-            </div>
             <br/>
             <div class="pull-right">
               <button class="btn btn-success">Aanmaken</button>

@@ -1,9 +1,17 @@
+import { element } from 'protractor';
 import { IAlert } from './../model/alert';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Lid } from './../model/lid';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+
+const positiefValidator = (control: AbstractControl) => {
+  return control.value >= 0 ? null : {
+    positiefValidator: true,
+  };
+};
 
 @Component({
   selector: 'dzwelg-leden',
@@ -19,6 +27,7 @@ export class LedenComponent implements OnInit {
   teVerwijderenLid: FirebaseObjectObservable<Lid>;
   verwijderLidModal: NgbModalRef;
   alert: IAlert;
+  alertLidAanmaken: IAlert;
 
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
 
@@ -31,7 +40,6 @@ export class LedenComponent implements OnInit {
     this.lidAanmakenFormGroup = this.fb.group({
       voornaam: ['', Validators.required],
       achternaam: ['', Validators.required],
-      saldo: [0, Validators.required]
     });
   }
 
@@ -40,18 +48,44 @@ export class LedenComponent implements OnInit {
   }
 
   sluitLidAanmakenModal() {
+    this.alertLidAanmaken = null;
     this.lidAanmakenModal.close();
     this.lidAanmakenFormGroup.reset();
   }
 
   lidAanmaken(model: Lid) {
-    this.leden.push({
-      voornaam: model.voornaam,
-      achternaam: model.achternaam,
-      saldo: model.saldo,
-    });
-    this.sluitLidAanmakenModal();
-    this.lidAanmakenFormGroup.reset();
+    if (this.lidAanmakenFormGroup.invalid) {
+      let foutBoodschap = '';
+
+      const controls = this.lidAanmakenFormGroup.controls;
+      _.keys(controls).forEach((control_key) => {
+        const errors = controls[control_key].errors;
+        if (errors) {
+          foutBoodschap += control_key + ': ';
+          _.keys(errors).forEach((error_key: string, index) => {
+            foutBoodschap += (error_key.toString() + (_.lastIndexOf(errors) === index ? '' : '; '));
+          });
+        }
+      });
+
+      this.alertLidAanmaken = {
+        type: 'danger',
+        message: foutBoodschap,
+      };
+    } else {
+      const fbLid = this.leden.push({
+        voornaam: model.voornaam,
+        achternaam: model.achternaam,
+        saldo: 0,
+      });
+
+      const key = fbLid.key;
+      model.id = key;
+      this.leden.update(key, model);
+
+      this.sluitLidAanmakenModal();
+      this.lidAanmakenFormGroup.reset();
+    }
   }
 
   openLidVerwijderenModel(content, id: string) {
