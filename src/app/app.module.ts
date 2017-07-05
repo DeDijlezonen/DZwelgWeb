@@ -16,6 +16,7 @@ import { LoginComponent } from './login/login.component';
 import { AlertComponent } from './alert/alert.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LedenComponent } from './leden/leden.component';
+import { ConsumptieComponent } from './consumptie/consumptie.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -29,17 +30,24 @@ const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
     { path: 'evenementen', component: EvenementenComponent },
     { path: 'leden', component: LedenComponent },
+    { path: 'consumpties', component: ConsumptieComponent },
     { path: '', redirectTo: '/evenementen', pathMatch: 'full' },
     { path: '404', component: PaginaNietGevondenComponent }
   ] },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '/404' }
-
+  { path: '**', redirectTo: '/404' },
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, TemplateComponent, EvenementenComponent, PaginaNietGevondenComponent, LoginComponent, AlertComponent, LedenComponent
+    AppComponent,
+    TemplateComponent,
+    EvenementenComponent,
+    PaginaNietGevondenComponent,
+    LoginComponent,
+    AlertComponent,
+    LedenComponent,
+    ConsumptieComponent,
   ],
   imports: [
     NgbModule.forRoot(),

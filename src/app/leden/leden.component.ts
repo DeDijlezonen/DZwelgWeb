@@ -1,3 +1,4 @@
+import { FormHelper } from './../utils/functions';
 import { element } from 'protractor';
 import { IAlert } from './../model/alert';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -7,11 +8,11 @@ import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable }
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
-const positiefValidator = (control: AbstractControl) => {
-  return control.value >= 0 ? null : {
-    positiefValidator: true,
-  };
-};
+// const positiefValidator = (control: AbstractControl) => {
+//   return control.value >= 0 ? null : {
+//     positiefValidator: true,
+//   };
+// };
 
 @Component({
   selector: 'dzwelg-leden',
@@ -55,18 +56,18 @@ export class LedenComponent implements OnInit {
 
   lidAanmaken(model: Lid) {
     if (this.lidAanmakenFormGroup.invalid) {
-      let foutBoodschap = '';
+      const foutBoodschap = FormHelper.getFormErrorMessage(this.lidAanmakenFormGroup);
 
-      const controls = this.lidAanmakenFormGroup.controls;
-      _.keys(controls).forEach((control_key) => {
-        const errors = controls[control_key].errors;
-        if (errors) {
-          foutBoodschap += control_key + ': ';
-          _.keys(errors).forEach((error_key: string, index) => {
-            foutBoodschap += (error_key.toString() + (_.lastIndexOf(errors) === index ? '' : '; '));
-          });
-        }
-      });
+      // const controls = this.lidAanmakenFormGroup.controls;
+      // _.keys(controls).forEach((control_key) => {
+      //   const errors = controls[control_key].errors;
+      //   if (errors) {
+      //     foutBoodschap += control_key + ': ';
+      //     _.keys(errors).forEach((error_key: string, index) => {
+      //       foutBoodschap += (error_key.toString() + (_.lastIndexOf(errors) === index ? '' : '; '));
+      //     });
+      //   }
+      // });
 
       this.alertLidAanmaken = {
         type: 'danger',
