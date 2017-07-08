@@ -17,6 +17,7 @@ import { AlertComponent } from './alert/alert.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LedenComponent } from './leden/leden.component';
 import { ConsumptieComponent } from './consumptie/consumptie.component';
+import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -31,6 +32,7 @@ const routes: Routes = [
     { path: 'evenementen', component: EvenementenComponent },
     { path: 'leden', component: LedenComponent },
     { path: 'consumpties', component: ConsumptieComponent },
+    { path: 'stock', component: StockBeheerComponent },
     { path: '', redirectTo: '/evenementen', pathMatch: 'full' },
     { path: '404', component: PaginaNietGevondenComponent }
   ] },
@@ -48,6 +50,7 @@ const routes: Routes = [
     AlertComponent,
     LedenComponent,
     ConsumptieComponent,
+    StockBeheerComponent,
   ],
   imports: [
     NgbModule.forRoot(),

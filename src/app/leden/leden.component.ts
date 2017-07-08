@@ -117,7 +117,7 @@ export class LedenComponent implements OnInit {
       error => {
         this.alert = {
           type: 'danger',
-          message: 'Het lid kon niet worden verwijderd.'
+          message: 'Het lid kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
         };
       },
     );

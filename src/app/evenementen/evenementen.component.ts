@@ -100,7 +100,7 @@ export class EvenementenComponent implements OnInit {
       error => {
         this.alert = {
           type: 'danger',
-          message: 'Het evenement kon niet worden verwijderd.'
+          message: 'Het evenements kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
         };
       },
     );

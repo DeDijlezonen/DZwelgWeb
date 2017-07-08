@@ -29,19 +29,14 @@
             <tr>
               <td>Naam</td>
               <td>Prijs</td>
-              <td>Hoeveelheid</td>
               <td>Acties</td>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let consumptie of consumpties | async">
               <td>{{ consumptie.naam }}</td>
-              <td>{{ consumptie.prijs }}</td>
-              <td>{{ consumptie.aantalInStock }}</td>
+              <td>{{ consumptie.prijs | currency:'EUR':true }}</td>
               <td>
-                <button class="btn btn-secondary">
-                  <span class="fa fa-pencil"></span>
-                </button> &nbsp;
                 <button class="btn btn-danger" (click)="openConsumptieVerwijderenModel(contentVerwijderConsumptieModal, consumptie.id)">
                   <span class="fa fa-trash"></span>
                 </button>
@@ -50,33 +45,6 @@
           </tbody>
         </table>
       </div>
-
-      <!-- "Lid aanmaken" dialoog -->
-      <!--<ng-template #contentLidAanmakenModal let-c="close" let-d="dismiss">
-        <div class="modal-header">
-          <h4 class="modal-title">Nieuw lid aanmaken</h4>
-          <button type="button" class="close" aria-label="Close" (click)="sluitLidAanmakenModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-        </div>
-        <div class="modal-body">
-
-          <dzwelg-alert [alert]="alertLidAanmaken"></dzwelg-alert>
-
-          <form class="form" [formGroup]="lidAanmakenFormGroup" (ngSubmit)="lidAanmaken(lidAanmakenFormGroup.value)">
-            <label for="voornaam_input">Voornaam</label>
-            <input type="text" formControlName="voornaam" class="form-control" id="voornaam_input">
-            <label for="achternaam_input">Achternaam</label>
-            <input type="text" formControlName="achternaam" class="form-control" id="achternaam_input">
-            <br/>
-            <div class="pull-right">
-              <button class="btn btn-success">Aanmaken</button>
-              <button class="btn btn-secondary" (click)="sluitLidAanmakenModal()">Annuleren</button>
-            </div>
-          </form>
-
-        </div>
-      </ng-template>-->
 
       <!-- "Verwijder" confirmatie dialoog -->
       <ng-template #contentVerwijderConsumptieModal let-c="close" let-d="dismiss">
@@ -87,7 +55,7 @@
     </button>
         </div>
         <div class="modal-body">
-          <p>Zeker dat je deze consumptie wilt verwijderen?</p>
+          <p>Zeker dat je deze consumptie wilt verwijderen? Deze actie zal ook bijhorende stocklijnen verwijderen.</p>
         </div>
         <div class="modal-footer">
           <button class="btn btn-danger" (click)="verwijderConsumptieEnSluit(teVerwijderenConsumptie)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
