@@ -1,9 +1,9 @@
 <div class="container">
 
   <dzwelg-alert [alert]="alert"></dzwelg-alert>
-  
+
   <form class="form-signin" [formGroup]="loginForm" novalidate (ngSubmit)="login(loginForm.value, loginForm.valid)">
-    <h2 class="form-signin-heading">Gelieve in te loggen</h2>
+    <h2 class="form-signin-heading">Gelieve aan te melden</h2>
     <label for="inputEmail" class="sr-only">E-mailadres</label>
     <input type="email" id="inputEmail" class="form-control" placeholder="E-mailadres" formControlName="email">
     <label for="inputPassword" class="sr-only">Wachtwoord</label>
@@ -13,7 +13,7 @@
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>-->
-    <button type="submit" class="btn btn-lg btn-primary btn-block">Inloggen</button>
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Aanmelden</button>
   </form>
 
 </div> <!-- /container -->
