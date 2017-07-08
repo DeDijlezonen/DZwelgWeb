@@ -3,8 +3,14 @@ import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} f
 import {StockLijn} from "../model/stocklijn";
 import {IAlert} from "../model/alert";
 import {Consumptie} from "../model/Consumptie";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormHelper} from "../utils/functions";
+import {DzwelgValidators} from "../utils/validators";
 
 interface StockViewModel {
+  id: string;
+  consumptieId: string;
   consumptieNaam: string;
   aantalInStock: number;
 }
@@ -16,20 +22,29 @@ interface StockViewModel {
 })
 export class StockBeheerComponent implements OnInit {
 
+  stockFLO: FirebaseListObservable<StockLijn[]>;
   stocklijnen: StockViewModel[] = [];
   alert: IAlert;
+  stockAantalModal: NgbModalRef;
+  stockAantalAanpassenForm: FormGroup;
+  teBewerkenStockViewModel: StockViewModel;
 
-  constructor(private afdb: AngularFireDatabase) { }
+  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.stockFLO = this.afdb.list('stock');
     this.getStockViewModels();
+    this.createStockAantalAanpassenForm();
   }
 
   getStockViewModels() {
-    this.afdb.list('stock').subscribe((stock: StockLijn[]) => {
+    this.stockFLO.subscribe((stock: StockLijn[]) => {
+      this.stocklijnen = [];
       stock.forEach((stockLijn: StockLijn) => {
         this.getConsumptie(stockLijn.consumptieId).subscribe((consumptie: Consumptie) => {
           this.stocklijnen.push({
+            id: stockLijn.id,
+            consumptieId: stockLijn.consumptieId,
             consumptieNaam: consumptie.naam,
             aantalInStock: stockLijn.aantalInStock,
           });
@@ -40,6 +55,45 @@ export class StockBeheerComponent implements OnInit {
 
   getConsumptie(consumptieId: string) {
     return this.afdb.object('/consumpties/' + consumptieId);
+  }
+
+  createStockAantalAanpassenForm() {
+    this.stockAantalAanpassenForm = this.fb.group({
+      aantalInStock: [0, [Validators.required, DzwelgValidators.positiefValidator]],
+    });
+  }
+
+  openStockAanpassenModal(content, stockViewModel: StockViewModel) {
+    this.teBewerkenStockViewModel = stockViewModel;
+    this.stockAantalModal = this.modalService.open(content);
+  }
+
+  stockAantalAanpassen(model) {
+    if (this.stockAantalAanpassenForm.valid) {
+      const stocklijn: StockLijn = {
+        id: this.teBewerkenStockViewModel.id,
+        consumptieId: this.teBewerkenStockViewModel.consumptieId,
+        aantalInStock: this.teBewerkenStockViewModel.aantalInStock + model.aantalInStock,
+      };
+      this.stockFLO.update(this.teBewerkenStockViewModel.id, stocklijn);
+      this.stockAantalAanpassenForm.reset();
+      this.stockAantalAanpassenForm.controls['aantalInStock'].setValue(0);
+      this.sluitModal();
+    } else {
+      const foutBoodschap = FormHelper.getFormErrorMessage(this.stockAantalAanpassenForm);
+      this.alert = {
+        type: 'danger',
+        message: foutBoodschap,
+      };
+    }
+  }
+
+  sluitModal() {
+    this.alert = null;
+    this.teBewerkenStockViewModel = null;
+    this.stockAantalModal.close();
+    this.stockAantalAanpassenForm.reset();
+    this.stockAantalAanpassenForm.controls['aantalInStock'].setValue(0);
   }
 
 }

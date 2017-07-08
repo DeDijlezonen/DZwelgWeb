@@ -58,17 +58,6 @@ export class LedenComponent implements OnInit {
     if (this.lidAanmakenFormGroup.invalid) {
       const foutBoodschap = FormHelper.getFormErrorMessage(this.lidAanmakenFormGroup);
 
-      // const controls = this.lidAanmakenFormGroup.controls;
-      // _.keys(controls).forEach((control_key) => {
-      //   const errors = controls[control_key].errors;
-      //   if (errors) {
-      //     foutBoodschap += control_key + ': ';
-      //     _.keys(errors).forEach((error_key: string, index) => {
-      //       foutBoodschap += (error_key.toString() + (_.lastIndexOf(errors) === index ? '' : '; '));
-      //     });
-      //   }
-      // });
-
       this.alertLidAanmaken = {
         type: 'danger',
         message: foutBoodschap,
