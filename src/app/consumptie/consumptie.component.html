@@ -34,9 +34,18 @@
           </thead>
           <tbody>
             <tr *ngFor="let consumptie of consumpties | async">
-              <td>{{ consumptie.naam }}</td>
-              <td>{{ consumptie.prijs | currency:'EUR':true }}</td>
               <td>
+                <div *ngIf="consumptie.id === teBewerkenConsumptieId"><input #teBewerkenConsumptieNaamInput class="form-control" type="text" [value]="consumptie.naam" [(ngModel)]="teBewerkenConsumptie.naam" ></div>
+                <div *ngIf="consumptie.id !== teBewerkenConsumptieId">{{ consumptie.naam }}</div>
+              </td>
+              <td>
+                <div *ngIf="consumptie.id === teBewerkenConsumptieId"><input #teBewerkenConsumptiePrijsInput class="form-control" type="number" [value]="consumptie.prijs" [(ngModel)]="teBewerkenConsumptie.prijs" ></div>
+                <div *ngIf="consumptie.id !== teBewerkenConsumptieId">{{ consumptie.prijs | currency:'EUR':true }}</div>
+              </td>
+              <td>
+                  <button *ngIf="consumptie.id === teBewerkenConsumptieId" class="btn btn-success" (click)="concludeerBewerken()"><span class="fa fa-check"></span></button>
+                  <button *ngIf="consumptie.id === teBewerkenConsumptieId" class="btn btn-secondary" (click)="annulleerBewerken()"><span class="fa fa-remove"></span></button>
+                  <button *ngIf="consumptie.id !== teBewerkenConsumptieId" class="btn btn-secondary" (click)="bewerkConsumptie(consumptie)"><span class="fa fa-pencil"></span></button>
                 <button class="btn btn-danger" (click)="openConsumptieVerwijderenModel(contentVerwijderConsumptieModal, consumptie.id)">
                   <span class="fa fa-trash"></span>
                 </button>

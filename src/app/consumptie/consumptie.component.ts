@@ -1,14 +1,12 @@
 import { FormHelper } from './../utils/functions';
 import { DzwelgValidators } from './../utils/validators';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import { IAlert } from './../model/alert';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Consumptie } from './../model/Consumptie';
 import { FirebaseListObservable, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {StockLijn} from "../model/stocklijn";
-import {error} from "util";
 
 @Component({
   selector: 'dzwelg-consumptie',
@@ -23,6 +21,8 @@ export class ConsumptieComponent implements OnInit {
   teVerwijderenConsumptie: FirebaseObjectObservable<Consumptie>;
   verwijderConsumptieModal: NgbModalRef;
   consumptieAanmakenForm: FormGroup;
+  teBewerkenConsumptieId: string;
+  teBewerkenConsumptie: Consumptie;
 
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
 
@@ -100,6 +100,51 @@ export class ConsumptieComponent implements OnInit {
 
       this.stocklijnAanmaken(model);
     }
+  }
+
+  bewerkConsumptie(consumptie: Consumptie) {
+    this.teBewerkenConsumptieId = consumptie.id;
+    this.teBewerkenConsumptie = {
+      id: consumptie.id,
+      naam: consumptie.naam,
+      prijs: consumptie.prijs,
+      stocklijnId: consumptie.stocklijnId,
+    };
+  }
+
+  concludeerBewerken() {
+    let foutbooschap = '';
+    if (!this.teBewerkenConsumptie.naam) {
+      foutbooschap += '"Naam" is verplicht.\n';
+    }
+    if (!this.teBewerkenConsumptie.prijs) {
+      foutbooschap += '"Prijs" is verplicht.\n';
+    }
+    if (isNaN(this.teBewerkenConsumptie.prijs)) {
+      foutbooschap += '"Prijs" moet een nummerieke waarde hebben.\n';
+    } else {
+      if (this.teBewerkenConsumptie.prijs < 0) {
+        foutbooschap += 'De waarde van "prijs" moet hoger of gelijk zijn aan 0.\n';
+      }
+    }
+    if (foutbooschap) {
+      this.alert = {
+        type: 'danger',
+        message: foutbooschap
+      };
+    } else {
+      this.consumpties.update(this.teBewerkenConsumptie.id, this.teBewerkenConsumptie);
+      this.resetTeBewerken();
+    }
+  }
+
+  annulleerBewerken() {
+    this.resetTeBewerken();
+  }
+
+  private resetTeBewerken() {
+    this.teBewerkenConsumptieId = null;
+    this.teBewerkenConsumptie = null;
   }
 
   private stocklijnAanmaken(consumptie: Consumptie) {
