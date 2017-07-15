@@ -40,12 +40,6 @@ export class StockBeheerComponent implements OnInit {
     this.createStockAantalAanpassenForm();
   }
 
-  // getData() {
-  //   this.consumptiesFLO = this.afdb.list('consumpties');
-  //   this.stockFLO = this.afdb.list('stock');
-  //
-  // }
-
   getStockViewModels() {
     this.stockFLO.subscribe((stock: StockLijn[]) => {
       this.stocklijnen = [];

@@ -15,7 +15,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let stocklijn of stocklijnen">
+          <tr *ngFor="let stocklijn of stocklijnen | sorteer:'consumptieNaam'">
             <td>{{ stocklijn.consumptieNaam }}</td>
             <td>{{ stocklijn.aantalInStock }}</td>
             <td>

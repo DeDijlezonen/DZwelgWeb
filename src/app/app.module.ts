@@ -18,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LedenComponent } from './leden/leden.component';
 import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
+import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
@@ -51,6 +52,7 @@ const routes: Routes = [
     LedenComponent,
     ConsumptieComponent,
     StockBeheerComponent,
+    ArraySorteerPipe,
   ],
   imports: [
     NgbModule.forRoot(),
