@@ -9,7 +9,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import { TemplateComponent } from './template/template.component';
-import { EvenementenComponent } from './evenementen/evenementen.component';
+import { ActiviteitenComponent } from './activiteiten/activiteiten.component';
 import { PaginaNietGevondenComponent } from './pagina-niet-gevonden/pagina-niet-gevonden.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
@@ -30,11 +30,11 @@ export const firebaseConfig = {
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
-    { path: 'evenementen', component: EvenementenComponent },
+    { path: 'activiteiten', component: ActiviteitenComponent },
     { path: 'leden', component: LedenComponent },
     { path: 'consumpties', component: ConsumptieComponent },
     { path: 'stock', component: StockBeheerComponent },
-    { path: '', redirectTo: '/evenementen', pathMatch: 'full' },
+    { path: '', redirectTo: '/activiteiten', pathMatch: 'full' },
     { path: '404', component: PaginaNietGevondenComponent }
   ] },
   { path: 'login', component: LoginComponent },
@@ -45,7 +45,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     TemplateComponent,
-    EvenementenComponent,
+    ActiviteitenComponent,
     PaginaNietGevondenComponent,
     LoginComponent,
     AlertComponent,

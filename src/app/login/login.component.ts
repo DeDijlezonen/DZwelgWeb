@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   login(model: User, isValid: boolean) {
     this.authenticatieService.login(model.email, model.wachtwoord).then((data) => {
-      this.router.navigate(['evenementen']);
+      this.router.navigate(['activiteiten']);
     }).catch((error) => {
       this.alert = {
         type: 'danger',

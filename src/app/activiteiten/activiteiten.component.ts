@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Evenement } from './../model/evenement';
+import { Activiteit } from '../model/activiteit';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { IAlert } from './../model/alert';
@@ -7,18 +7,18 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'dzwelg-evenementen',
-  templateUrl: './evenementen.component.html',
-  styleUrls: ['./evenementen.component.css']
+  templateUrl: './activiteiten.component.html',
+  styleUrls: ['./activiteiten.component.css']
 })
-export class EvenementenComponent implements OnInit {
+export class ActiviteitenComponent implements OnInit {
 
-  evenementen: FirebaseListObservable<Evenement[]>;
+  activiteiten: FirebaseListObservable<Activiteit[]>;
   alert: IAlert;
-  evenement: Evenement = new Evenement();
+  activiteit: Activiteit = new Activiteit();
   verwijderModal: NgbModalRef;
-  teVerwijderenEvenementId: string;
-  teVerwijderenEvenement: FirebaseObjectObservable<Evenement>;
-  teBewerkenEvenementId: string;
+  teVerwijderenActiviteitId: string;
+  teVerwijderenActiviteit: FirebaseObjectObservable<Activiteit>;
+  teBewerkenActiviteitId: string;
 
   bewerkForms = new Map();
 
@@ -26,8 +26,8 @@ export class EvenementenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.evenementen = this.afdb.list('evenementen');
-    this.evenementen.subscribe(snapshots => {
+    this.activiteiten = this.afdb.list('activiteiten');
+    this.activiteiten.subscribe(snapshots => {
       snapshots.forEach(snapshot => {
         this.bewerkForms.set(
           snapshot.id,
@@ -40,14 +40,14 @@ export class EvenementenComponent implements OnInit {
   }
 
   public open(content, id: string) {
-    this.teVerwijderenEvenementId = id;
-    this.teVerwijderenEvenement = this.afdb.object('/evenementen/' + this.teVerwijderenEvenementId);
+    this.teVerwijderenActiviteitId = id;
+    this.teVerwijderenActiviteit = this.afdb.object('/activiteiten/' + this.teVerwijderenActiviteitId);
     this.verwijderModal = this.modalService.open(content);
   }
 
   public sluit() {
-    this.teVerwijderenEvenementId = '';
-    this.teVerwijderenEvenement = null;
+    this.teVerwijderenActiviteitId = '';
+    this.teVerwijderenActiviteit = null;
     this.verwijderModal.close();
   }
 
@@ -59,42 +59,42 @@ export class EvenementenComponent implements OnInit {
 
   public evenementAanmaken() {
 
-    if (this.evenement.titel.trim()) {
-      this.evenement.aangemaakt = Date.now();
+    if (this.activiteit.titel.trim()) {
+      this.activiteit.aangemaakt = Date.now();
 
-      const fbEvent = this.evenementen.push(
-        this.evenement
+      const fbEvent = this.activiteiten.push(
+        this.activiteit
       );
 
       const key = fbEvent.key;
-      this.evenement.id = key;
-      this.evenementen.update(key, this.evenement);
+      this.activiteit.id = key;
+      this.activiteiten.update(key, this.activiteit);
 
     } else {
       this.alert = {
         type: 'danger',
-        message: 'De titel van het evenement mag niet leeg zijn.'
+        message: 'De titel van het activiteit mag niet leeg zijn.'
       };
     }
 
-    this.evenement.titel = '';
+    this.activiteit.titel = '';
   }
 
-  public evenementBewerken(model: Evenement, id: string) {
-    this.evenementen.update(id, { titel: model.titel });
-    this.teBewerkenEvenementId = '';
+  public evenementBewerken(model: Activiteit, id: string) {
+    this.activiteiten.update(id, { titel: model.titel });
+    this.teBewerkenActiviteitId = '';
     this.alert = {
       type: 'success',
-      message: 'Het evenement werd succesvol bewerkt.'
+      message: 'Het activiteit werd succesvol bewerkt.'
     }
   }
 
   private verwijder(id: string) {
-    this.evenementen.remove(id).then(
+    this.activiteiten.remove(id).then(
       succes => {
         this.alert = {
           type: 'success',
-          message: 'Het evenement werd succesvol verwijderd.'
+          message: 'Het activiteit werd succesvol verwijderd.'
         };
       },
       error => {
