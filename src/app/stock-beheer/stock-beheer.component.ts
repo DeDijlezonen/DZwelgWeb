@@ -30,6 +30,8 @@ export class StockBeheerComponent implements OnInit {
   stockAantalModal: NgbModalRef;
   stockAantalAanpassenForm: FormGroup;
   teBewerkenStockViewModel: StockViewModel;
+  teBewerkenStockLijnId: string;
+  teBewerkenStockLijn: StockViewModel;
 
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
   }
@@ -99,6 +101,45 @@ export class StockBeheerComponent implements OnInit {
     this.stockAantalModal.close();
     this.stockAantalAanpassenForm.reset();
     this.stockAantalAanpassenForm.controls['aantalInStock'].setValue(0);
+  }
+
+  bewerkStocklijn(stocklijn: StockViewModel) {
+    this.teBewerkenStockLijnId = stocklijn.id;
+    this.teBewerkenStockLijn = {
+      id: stocklijn.id,
+      consumptieNaam: stocklijn.consumptieNaam,
+      aantalInStock: stocklijn.aantalInStock,
+      consumptieId: stocklijn.consumptieId,
+    };
+  }
+
+  concludeerBewerken() {
+    let foutboodschap = '';
+    if (!this.teBewerkenStockLijn.aantalInStock) {
+      foutboodschap += '"Hoeveelheid" is verplicht.\n';
+    }
+    if (this.teBewerkenStockLijn.aantalInStock < 0) {
+      foutboodschap += '"Hoeveelheid" mag niet kleiner zijn dan 0.\n';
+    }
+    if (foutboodschap) {
+      this.alert = {
+        type: 'danger',
+        message: foutboodschap
+      };
+    } else {
+      const stocklijn: StockLijn = {
+        id: this.teBewerkenStockLijn.id,
+        consumptieId: this.teBewerkenStockLijn.consumptieId,
+        aantalInStock: this.teBewerkenStockLijn.aantalInStock,
+      };
+      this.stockFLO.update(this.teBewerkenStockLijn.id, stocklijn);
+      this.annulleerBewerken();
+    }
+  }
+
+  annulleerBewerken() {
+    this.teBewerkenStockLijnId = null;
+    this.teBewerkenStockLijn = null;
   }
 
 }

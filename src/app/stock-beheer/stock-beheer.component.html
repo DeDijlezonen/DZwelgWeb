@@ -17,9 +17,15 @@
           <tbody>
           <tr *ngFor="let stocklijn of stocklijnen | sorteer:'consumptieNaam'">
             <td>{{ stocklijn.consumptieNaam }}</td>
-            <td>{{ stocklijn.aantalInStock }}</td>
             <td>
-              <button class="btn btn-primary" (click)="openStockAanpassenModal(contentStockAantalAanpassenModal, stocklijn)">
+              <div *ngIf="stocklijn.id === teBewerkenStockLijnId"><input class="form-control" type="number" [value]="stocklijn.aantalInStock" [(ngModel)]="teBewerkenStockLijn.aantalInStock" ></div>
+              <div *ngIf="stocklijn.id !== teBewerkenStockLijnId">{{ stocklijn.aantalInStock }}</div>
+            </td>
+            <td>
+              <button *ngIf="stocklijn.id === teBewerkenStockLijnId" class="btn btn-success" (click)="concludeerBewerken()"><span class="fa fa-check"></span></button>
+              <button *ngIf="stocklijn.id === teBewerkenStockLijnId" class="btn btn-secondary" (click)="annulleerBewerken()"><span class="fa fa-remove"></span></button>
+              <button *ngIf="stocklijn.id !== teBewerkenStockLijnId" class="btn btn-secondary" (click)="bewerkStocklijn(stocklijn)"><span class="fa fa-pencil"></span></button>
+              <button *ngIf="stocklijn.id !== teBewerkenStockLijnId" class="btn btn-primary" (click)="openStockAanpassenModal(contentStockAantalAanpassenModal, stocklijn)">
                 <span class="fa fa-plus"></span>
               </button>
             </td>
