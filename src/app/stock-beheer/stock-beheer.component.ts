@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from "angularfire2/database";
 import {StockLijn} from "../model/stocklijn";
 import {IAlert} from "../model/alert";
@@ -7,6 +7,7 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {FormHelper} from "../utils/functions";
 import {DzwelgValidators} from "../utils/validators";
+import 'rxjs/add/operator/take';
 
 interface StockViewModel {
   id: string;
@@ -29,7 +30,8 @@ export class StockBeheerComponent implements OnInit {
   stockAantalAanpassenForm: FormGroup;
   teBewerkenStockViewModel: StockViewModel;
 
-  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
+  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.stockFLO = this.afdb.list('stock');

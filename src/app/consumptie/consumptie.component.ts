@@ -27,7 +27,12 @@ export class ConsumptieComponent implements OnInit {
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.consumpties = this.afdb.list('consumpties');
+    this.consumpties = this.afdb.list('consumpties',  {
+        query: {
+          orderByChild: 'naam',
+        }
+      }
+    );
     this.createConsumptieAanmakenForm();
   }
 
