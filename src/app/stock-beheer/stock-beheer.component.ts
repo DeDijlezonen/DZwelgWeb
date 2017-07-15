@@ -24,6 +24,7 @@ interface StockViewModel {
 export class StockBeheerComponent implements OnInit {
 
   stockFLO: FirebaseListObservable<StockLijn[]>;
+  consumptiesFLO: FirebaseListObservable<Consumptie[]>
   stocklijnen: StockViewModel[] = [];
   alert: IAlert;
   stockAantalModal: NgbModalRef;
@@ -39,17 +40,25 @@ export class StockBeheerComponent implements OnInit {
     this.createStockAantalAanpassenForm();
   }
 
+  // getData() {
+  //   this.consumptiesFLO = this.afdb.list('consumpties');
+  //   this.stockFLO = this.afdb.list('stock');
+  //
+  // }
+
   getStockViewModels() {
     this.stockFLO.subscribe((stock: StockLijn[]) => {
       this.stocklijnen = [];
-      stock.forEach((stockLijn: StockLijn) => {
-        this.getConsumptie(stockLijn.consumptieId).subscribe((consumptie: Consumptie) => {
-          this.stocklijnen.push({
-            id: stockLijn.id,
-            consumptieId: stockLijn.consumptieId,
-            consumptieNaam: consumptie.naam,
-            aantalInStock: stockLijn.aantalInStock,
-          });
+      stock.forEach((stocklijn: StockLijn) => {
+        this.getConsumptie(stocklijn.consumptieId).subscribe((consumptie: Consumptie) => {
+          if (stocklijn.id) {
+            this.stocklijnen.push({
+              id: stocklijn.id,
+              consumptieId: stocklijn.consumptieId,
+              consumptieNaam: consumptie.naam,
+              aantalInStock: stocklijn.aantalInStock,
+            });
+          }
         });
       });
     });
