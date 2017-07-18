@@ -6,3 +6,11 @@
 export const environment = {
   production: false
 };
+
+export const firebaseConfig = {
+  apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
+  authDomain: 'dzwelg-dev.firebaseapp.com',
+  databaseURL: 'https://dzwelg-dev.firebaseio.com',
+  storageBucket: 'dzwelg-dev.appspot.com',
+  messagingSenderId: '258825135187'
+};
