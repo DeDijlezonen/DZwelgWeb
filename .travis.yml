@@ -15,9 +15,6 @@ before_script:
 script:
   - ng build --prod
 
-after_success:
-  - firebase deploy --token $FIREBASE_TOKEN
-
 notifications:
   email:
     on_failure: change
