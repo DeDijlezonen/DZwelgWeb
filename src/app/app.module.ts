@@ -19,14 +19,7 @@ import { LedenComponent } from './leden/leden.component';
 import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
-
-export const firebaseConfig = {
-  apiKey: 'AIzaSyCntxaPSHYLkVIEyZEkUwMKlU6frX2ZLlQ',
-  authDomain: 'dzwelg-dev.firebaseapp.com',
-  databaseURL: 'https://dzwelg-dev.firebaseio.com',
-  storageBucket: 'dzwelg-dev.appspot.com',
-  messagingSenderId: '258825135187'
-};
+import {firebaseConfig} from "../environments/environment";
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
