@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "dzwelg-dev"
+    "default": "dzwelg-dev",
+    "production": "dzwelg-b1f15"
   }
 }
