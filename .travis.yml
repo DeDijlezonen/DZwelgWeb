@@ -19,6 +19,7 @@ script:
 
 #bij productie, production environment van Firebase kiezen (= DZwelg), anders wordt default gebruikt (= DZwelg-dev)
 after_success:
+  - if [ "$TRAVIS_BRANCH" = "dev" ]; then firebase use default --token $FIREBASE_TOKEN; fi
   - if [ "$TRAVIS_BRANCH" = "prod" ]; then firebase use production --token $FIREBASE_TOKEN; fi
   - firebase deploy --token $FIREBASE_TOKEN
 
