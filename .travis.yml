@@ -6,14 +6,21 @@ node_js:
 
 branches:
   only:
-    - master
+    - dev
+    - prod
 
 before_script:
   - npm install -g firebase-tools
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod
+  - if [ "$TRAVIS_BRANCH" = "dev" ]; then ng build --target=production --environment=dev; fi
+  - if [ "$TRAVIS_BRANCH" = "prod" ]; then ng build --prod; fi
+
+#bij productie, production environment van Firebase kiezen (= DZwelg), anders wordt default gebruikt (= DZwelg-dev)
+after_success:
+  - if [ "$TRAVIS_BRANCH" = "prod" ]; then firebase use production --token $FIREBASE_TOKEN; fi
+  - firebase deploy --token $FIREBASE_TOKEN
 
 notifications:
   email:
