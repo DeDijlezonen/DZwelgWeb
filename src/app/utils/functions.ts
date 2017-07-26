@@ -4,6 +4,12 @@ import * as _ from 'lodash';
 export class FormHelper {
 
   static validationMessages = {
+    'naam': {
+      'required': 'Gelieve een naam op te geven.'
+    },
+    'prijs': {
+      'positiefValidator': 'Prijs mag niet negatief zijn.'
+    },
     'voornaam': {
       'required': 'Voornaam is verplicht.',
     },
@@ -13,7 +19,10 @@ export class FormHelper {
     'email': {
       'required': 'E-mail is verplicht.',
       'email': 'Ongeldig e-mailadres.'
-    }
+    },
+    'aantalInStock': {
+      'positiefValidator': 'Aantal mag niet negatief zijn.'
+    },
   };
 
   static getFormErrorMessage(formGroup: FormGroup) {
