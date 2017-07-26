@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="row">
+    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+      <h1>Producties & evenementen aanmaken</h1>
+
+      <dzwelg-alert [alert]="alert"></dzwelg-alert>
+
+      <div class="form-inline">
+        <label for="type-activiteit-select-id" class="mb-2 mr-sm-2 mb-sm-0">Type activiteit</label>
+        <select id="type-activiteit-select-id" class="form-control mb-2 mr-sm-2 mb-sm-0"
+                [(ngModel)]="typeAanTeMakenActiviteit" name="typeAanTeMakenActiviteit">
+          <option *ngFor="let type of activiteitTypes" [selected]="type" [ngValue]="type">{{ type.displayUpper }}
+          </option>
+        </select>
+      </div>
+
+      <br/>
+
+      <form [formGroup]="productieAanmakenForm" (submit)="productieAanmaken(productieAanmakenForm.value)"
+            *ngIf="typeAanTeMakenActiviteit.value === 'prodcutie'">
+        <div class="form-group">
+          <label for="productie-titel-input-id">Naam {{ typeAanTeMakenActiviteit.displayLower }}</label>
+          <input class="form-control" formControlName="titel" type="text" id="productie-titel-input-id">
+        </div>
+        <button type="submit" class="btn btn-primary">{{ typeAanTeMakenActiviteit.displayUpper }} aanmaken</button>
+      </form>
+
+      <form [formGroup]="evenementAanmakenForm" (submit)="evenementAanmaken(evenementAanmakenForm.value)"
+            *ngIf="typeAanTeMakenActiviteit.value === 'evenement'">
+        <div class="form-group">
+          <label for="evenement-titel-input-id">Naam {{ typeAanTeMakenActiviteit.displayLower }}</label>
+          <input class="form-control" formControlName="titel" type="text" id="evenement-titel-input-id">
+        </div>
+        <div class="form-group">
+          <label for="evenement-tegoed-input-id">Tegoed</label>
+          <div class="input-group">
+            <span class="input-group-addon">&euro;</span>
+            <input class="form-control" formControlName="tegoed" type="number" id="evenement-tegoed-input-id">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Van</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="datumVan" ngbDatepicker #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+            <div class="input-group-addon" (click)="d.toggle()" >
+              <span class="fa fa-calendar"></span>
+            </div>
+          </div>
+          <br/>
+          <ngb-timepicker [(ngModel)]="tijdVan"></ngb-timepicker>
+        </div>
+        <div class="form-group">
+          <label for="tot-input-id">Tot</label>
+          <input id="tot-input-id" class="form-control" >
+        </div>
+        <button type="submit" class="btn btn-primary">{{ typeAanTeMakenActiviteit.displayUpper }} aanmaken</button>
+      </form>
+
+    </main>
+  </div>
+</div>

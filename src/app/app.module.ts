@@ -20,10 +20,12 @@ import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
 import {firebaseConfig} from "../environments/environment";
+import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
     { path: 'activiteiten', component: ActiviteitenComponent },
+    { path: 'activiteiten/aanmaken', component: ActiviteitAanmakenComponent },
     { path: 'leden', component: LedenComponent },
     { path: 'consumpties', component: ConsumptieComponent },
     { path: 'stock', component: StockBeheerComponent },
@@ -46,6 +48,7 @@ const routes: Routes = [
     ConsumptieComponent,
     StockBeheerComponent,
     ArraySorteerPipe,
+    ActiviteitAanmakenComponent,
   ],
   imports: [
     NgbModule.forRoot(),
