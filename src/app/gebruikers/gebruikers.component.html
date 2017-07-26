@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="row">
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-      <h1>Leden</h1>
+      <h1>Gebruikers</h1>
 
       <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
       <div class="row-fluid">
-        <button class="btn btn-primary" (click)="openLidAanmakenModal(contentLidAanmakenModal)"><span class="fa fa-plus"></span>&nbsp;Nieuw lid aanmaken</button>
+        <button class="btn btn-primary" (click)="openLidAanmakenModal(contentLidAanmakenModal)"><span class="fa fa-plus"></span>&nbsp;Nieuwe gebruiker aanmaken</button>
       </div>
 
       <br/>
@@ -16,7 +16,7 @@
           <thead>
             <tr>
               <td>Voornaam</td>
-              <td>Naam</td>
+              <td>Achternaam</td>
               <td>Saldo</td>
               <td>Acties</td>
             </tr>
@@ -42,7 +42,7 @@
       <!-- "Lid aanmaken" dialoog -->
       <ng-template #contentLidAanmakenModal let-c="close" let-d="dismiss">
         <div class="modal-header">
-          <h4 class="modal-title">Nieuw lid aanmaken</h4>
+          <h4 class="modal-title">Nieuwe gebruiker aanmaken</h4>
           <button type="button" class="close" aria-label="Close" (click)="sluitLidAanmakenModal()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -75,7 +75,7 @@
     </button>
         </div>
         <div class="modal-body">
-          <p>Zeker dat je dit lid wilt verwijderen?</p>
+          <p>Zeker dat je deze gebruiker wilt verwijderen?</p>
         </div>
         <div class="modal-footer">
           <button class="btn btn-danger" (click)="verwijderLidEnSluit(teVerwijderenLidId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
