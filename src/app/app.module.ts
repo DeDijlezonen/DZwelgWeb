@@ -15,7 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { AlertComponent } from './alert/alert.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LedenComponent } from './leden/leden.component';
+import { GebruikersComponent } from './gebruikers/gebruikers.component';
 import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
@@ -24,7 +24,7 @@ import {firebaseConfig} from "../environments/environment";
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
     { path: 'activiteiten', component: ActiviteitenComponent },
-    { path: 'leden', component: LedenComponent },
+    { path: 'gebruikers', component: GebruikersComponent },
     { path: 'consumpties', component: ConsumptieComponent },
     { path: 'stock', component: StockBeheerComponent },
     { path: '', redirectTo: '/activiteiten', pathMatch: 'full' },
@@ -42,7 +42,7 @@ const routes: Routes = [
     PaginaNietGevondenComponent,
     LoginComponent,
     AlertComponent,
-    LedenComponent,
+    GebruikersComponent,
     ConsumptieComponent,
     StockBeheerComponent,
     ArraySorteerPipe,

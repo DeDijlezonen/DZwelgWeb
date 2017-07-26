@@ -1,9 +1,9 @@
-import { FormHelper } from './../utils/functions';
+import { FormHelper } from '../utils/functions';
 import { element } from 'protractor';
-import { IAlert } from './../model/alert';
+import { IAlert } from '../model/alert';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Lid } from './../model/lid';
+import { Lid } from '../model/lid';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
@@ -16,10 +16,10 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'dzwelg-leden',
-  templateUrl: './leden.component.html',
-  styleUrls: ['./leden.component.css']
+  templateUrl: './gebruikers.component.html',
+  styleUrls: ['./gebruikers.component.css']
 })
-export class LedenComponent implements OnInit {
+export class GebruikersComponent implements OnInit {
 
   leden: FirebaseListObservable<Lid[]>;
   lidAanmakenModal: NgbModalRef;
