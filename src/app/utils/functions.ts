@@ -11,8 +11,8 @@ export class FormHelper {
       'required': 'Achternaam is verplicht.',
     },
     'email': {
-      'required': 'E-mail is required.',
-      'email': 'Help, mijn e-mail is geen e-mail!'
+      'required': 'E-mail is verplicht.',
+      'email': 'Ongeldig e-mailadres.'
     }
   };
 
