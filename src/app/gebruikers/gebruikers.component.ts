@@ -3,7 +3,7 @@ import { element } from 'protractor';
 import { IAlert } from '../model/alert';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Lid } from '../model/lid';
+import { Gebruiker } from '../model/gebruiker';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
@@ -21,49 +21,49 @@ import * as _ from 'lodash';
 })
 export class GebruikersComponent implements OnInit {
 
-  leden: FirebaseListObservable<Lid[]>;
-  lidAanmakenModal: NgbModalRef;
-  lidAanmakenFormGroup: FormGroup;
-  teVerwijderenLidId: string;
-  teVerwijderenLid: FirebaseObjectObservable<Lid>;
-  verwijderLidModal: NgbModalRef;
+  gebruikers: FirebaseListObservable<Gebruiker[]>;
+  gebruikerAanmakenModal: NgbModalRef;
+  gebruikerAanmakenFormGroup: FormGroup;
+  teVerwijderenGebruikerId: string;
+  teVerwijderenGebruiker: FirebaseObjectObservable<Gebruiker>;
+  verwijderGebruikerModal: NgbModalRef;
   alert: IAlert;
-  alertLidAanmaken: IAlert;
+  alertGebruikerAanmaken: IAlert;
 
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.leden = this.afdb.list('leden');
-    this.createLidAanmakenForm();
+    this.gebruikers = this.afdb.list('gebruikers');
+    this.createGebruikerAanmakenForm();
   }
 
-  createLidAanmakenForm() {
-    this.lidAanmakenFormGroup = this.fb.group({
+  createGebruikerAanmakenForm() {
+    this.gebruikerAanmakenFormGroup = this.fb.group({
       voornaam: ['', Validators.required],
       achternaam: ['', Validators.required],
     });
   }
 
-  openLidAanmakenModal(content) {
-    this.lidAanmakenModal = this.modalService.open(content);
+  openGebruikerAanmakenModal(content) {
+    this.gebruikerAanmakenModal = this.modalService.open(content);
   }
 
-  sluitLidAanmakenModal() {
-    this.alertLidAanmaken = null;
-    this.lidAanmakenModal.close();
-    this.lidAanmakenFormGroup.reset();
+  sluitGebruikerAanmakenModal() {
+    this.alertGebruikerAanmaken = null;
+    this.gebruikerAanmakenModal.close();
+    this.gebruikerAanmakenFormGroup.reset();
   }
 
-  lidAanmaken(model: Lid) {
-    if (this.lidAanmakenFormGroup.invalid) {
-      const foutBoodschap = FormHelper.getFormErrorMessage(this.lidAanmakenFormGroup);
+  gebruikerAanmaken(model: Gebruiker) {
+    if (this.gebruikerAanmakenFormGroup.invalid) {
+      const foutBoodschap = FormHelper.getFormErrorMessage(this.gebruikerAanmakenFormGroup);
 
-      this.alertLidAanmaken = {
+      this.alertGebruikerAanmaken = {
         type: 'danger',
         message: foutBoodschap,
       };
     } else {
-      const fbLid = this.leden.push({
+      const fbLid = this.gebruikers.push({
         voornaam: model.voornaam,
         achternaam: model.achternaam,
         saldo: 0,
@@ -71,42 +71,42 @@ export class GebruikersComponent implements OnInit {
 
       const key = fbLid.key;
       model.id = key;
-      this.leden.update(key, model);
+      this.gebruikers.update(key, model);
 
-      this.sluitLidAanmakenModal();
-      this.lidAanmakenFormGroup.reset();
+      this.sluitGebruikerAanmakenModal();
+      this.gebruikerAanmakenFormGroup.reset();
     }
   }
 
-  openLidVerwijderenModel(content, id: string) {
-    this.teVerwijderenLidId = id;
-    this.teVerwijderenLid = this.afdb.object('/leden/' + id);
-    this.verwijderLidModal = this.modalService.open(content);
+  openGebruikerVerwijderenModel(content, id: string) {
+    this.teVerwijderenGebruikerId = id;
+    this.teVerwijderenGebruiker = this.afdb.object('/gebruikers/' + id);
+    this.verwijderGebruikerModal = this.modalService.open(content);
   }
 
-  sluitVerwijderLidModal() {
-    this.teVerwijderenLidId = '';
-    this.teVerwijderenLid = null;
-    this.verwijderLidModal.close();
+  sluitVerwijderGebruikerModal() {
+    this.teVerwijderenGebruikerId = '';
+    this.teVerwijderenGebruiker = null;
+    this.verwijderGebruikerModal.close();
   }
 
-  verwijderLidEnSluit(id: string) {
-    this.lidVerwijderen(id);
-    this.sluitVerwijderLidModal();
+  verwijderGebruikerEnSluit(id: string) {
+    this.gebruikerVerwijderen(id);
+    this.sluitVerwijderGebruikerModal();
   }
 
-  lidVerwijderen(id: string) {
-    this.leden.remove(id).then(
+  gebruikerVerwijderen(id: string) {
+    this.gebruikers.remove(id).then(
       succes => {
         this.alert = {
           type: 'success',
-          message: 'Het lid werd succesvol verwijderd.'
+          message: 'De gebruiker werd succesvol verwijderd.'
         };
       },
       error => {
         this.alert = {
           type: 'danger',
-          message: 'Het lid kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
+          message: 'De gebruiker kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
         };
       },
     );

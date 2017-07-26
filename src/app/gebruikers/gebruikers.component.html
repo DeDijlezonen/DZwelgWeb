@@ -6,7 +6,7 @@
       <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
       <div class="row-fluid">
-        <button class="btn btn-primary" (click)="openLidAanmakenModal(contentLidAanmakenModal)"><span class="fa fa-plus"></span>&nbsp;Nieuwe gebruiker aanmaken</button>
+        <button class="btn btn-primary" (click)="openGebruikerAanmakenModal(contentGebruikerAanmakenModal)"><span class="fa fa-plus"></span>&nbsp;Nieuwe gebruiker aanmaken</button>
       </div>
 
       <br/>
@@ -22,15 +22,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let lid of leden | async">
-              <td>{{ lid.voornaam }}</td>
-              <td>{{ lid.achternaam }}</td>
-              <td>{{ lid.saldo | currency:'EUR':true }}</td>
+            <tr *ngFor="let gebruiker of gebruikers | async">
+              <td>{{ gebruiker.voornaam }}</td>
+              <td>{{ gebruiker.achternaam }}</td>
+              <td>{{ gebruiker.saldo | currency:'EUR':true }}</td>
               <td>
                 <button class="btn btn-secondary">
                   <span class="fa fa-pencil"></span>
                 </button> &nbsp;
-                <button class="btn btn-danger" (click)="openLidVerwijderenModel(contentVerwijderLidModal, lid.id)">
+                <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.id)">
                   <span class="fa fa-trash"></span>
                 </button>
               </td>
@@ -39,19 +39,19 @@
         </table>
       </div>
 
-      <!-- "Lid aanmaken" dialoog -->
-      <ng-template #contentLidAanmakenModal let-c="close" let-d="dismiss">
+      <!-- "Gebruiker aanmaken" dialoog -->
+      <ng-template #contentGebruikerAanmakenModal let-c="close" let-d="dismiss">
         <div class="modal-header">
           <h4 class="modal-title">Nieuwe gebruiker aanmaken</h4>
-          <button type="button" class="close" aria-label="Close" (click)="sluitLidAanmakenModal()">
+          <button type="button" class="close" aria-label="Close" (click)="sluitGebruikerAanmakenModal()">
       <span aria-hidden="true">&times;</span>
     </button>
         </div>
         <div class="modal-body">
 
-          <dzwelg-alert [alert]="alertLidAanmaken"></dzwelg-alert>
+          <dzwelg-alert [alert]="alertGebruikerAanmaken"></dzwelg-alert>
 
-          <form class="form" [formGroup]="lidAanmakenFormGroup" (ngSubmit)="lidAanmaken(lidAanmakenFormGroup.value)">
+          <form class="form" [formGroup]="gebruikerAanmakenFormGroup" (ngSubmit)="gebruikerAanmaken(gebruikerAanmakenFormGroup.value)">
             <label for="voornaam_input">Voornaam</label>
             <input type="text" formControlName="voornaam" class="form-control" id="voornaam_input">
             <label for="achternaam_input">Achternaam</label>
@@ -59,7 +59,7 @@
             <br/>
             <div class="pull-right">
               <button class="btn btn-success">Aanmaken</button>
-              <button class="btn btn-secondary" (click)="sluitLidAanmakenModal()">Annuleren</button>
+              <button class="btn btn-secondary" (click)="sluitGebruikerAanmakenModal()">Annuleren</button>
             </div>
           </form>
 
@@ -67,10 +67,11 @@
       </ng-template>
 
       <!-- "Verwijder" confirmatie dialoog -->
-      <ng-template #contentVerwijderLidModal let-c="close" let-d="dismiss">
+      <ng-template #contentVerwijderGebruikerModal let-c="close" let-d="dismiss">
         <div class="modal-header">
-          <h4 class="modal-title">{{ (teVerwijderenLid | async)?.voornaam + ' ' + (teVerwijderenLid | async)?.achternaam }} verwijderen?</h4>
-          <button type="button" class="close" aria-label="Close" (click)="sluitVerwijderLidModal()">
+          <h4 class="modal-title">{{ (teVerwijderenGebruiker | async)?.voornaam + ' ' + (teVerwijderenGebruiker |
+            async)?.achternaam }} verwijderen?</h4>
+          <button type="button" class="close" aria-label="Close" (click)="sluitVerwijderGebruikerModal()">
       <span aria-hidden="true">&times;</span>
     </button>
         </div>
@@ -78,8 +79,8 @@
           <p>Zeker dat je deze gebruiker wilt verwijderen?</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" (click)="verwijderLidEnSluit(teVerwijderenLidId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
-          <button class="btn btn-secondary" (click)="sluitVerwijderLidModal()">Annuleren</button>
+          <button class="btn btn-danger" (click)="verwijderGebruikerEnSluit(teVerwijderenGebruikerId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+          <button class="btn btn-secondary" (click)="sluitVerwijderGebruikerModal()">Annuleren</button>
         </div>
       </ng-template>
 
