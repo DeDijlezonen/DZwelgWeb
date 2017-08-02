@@ -1,3 +1,7 @@
 <div class="row-fluid">
-    <ngb-alert *ngIf="alert" [type]="alert.type" (close)="sluitAlert()">{{ alert.message }}</ngb-alert>
+    <ngb-alert *ngIf="alert" [type]="alert.type" (close)="sluitAlert()">
+      <span *ngFor="let lijn of alert.message.split('_')">
+        {{lijn}} <br/>
+      </span>
+    </ngb-alert>
 </div>
