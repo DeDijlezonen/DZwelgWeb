@@ -42,8 +42,8 @@
         <div class="form-group form-inline">
           <div class="input-group mb-2 mr-sm-2 mb-sm-0">
             <input id="van-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumVan" [(ngModel)]="datumVan" ngbDatepicker
-                   #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
-            <div class="input-group-addon" (click)="d.toggle()">
+                   #d1="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+            <div class="input-group-addon" (click)="d1.toggle()">
               <span class="fa fa-calendar"></span>
             </div>
           </div>
@@ -54,8 +54,8 @@
         <div class="form-group form-inline">
           <div class="input-group mb-2 mr-sm-2 mb-sm-0">
             <input id="tot-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumTot" [(ngModel)]="datumTot" ngbDatepicker
-                   #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
-            <div class="input-group-addon" (click)="d.toggle()">
+                   #d2="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+            <div class="input-group-addon" (click)="d2.toggle()">
               <span class="fa fa-calendar"></span>
             </div>
           </div>

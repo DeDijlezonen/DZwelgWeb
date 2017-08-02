@@ -7,66 +7,6 @@
 
       <a routerLink="aanmaken">Productie of evenement aanmaken</a>
 
-      <!--<div class="row-fluid">-->
-        <!--<form #activiteitForm="ngForm" class="form-inline" (ngSubmit)="activiteitAanmaken()">-->
-          <!--&lt;!&ndash;<input type="text" name="evenementTitel" [(ngModel)]="activiteit.titel"&ndash;&gt;-->
-          <!--&lt;!&ndash;class="form-control mb-2 mr-sm-2 mb-sm-0" id="evenement-naam" [placeholder]="'Naam ' + typeAanTeMakenActiviteit.displayLower">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="">&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;<label class="btn btn-secondary active">&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;<input type="radio" [(ngModel)]="typeAanTeMakenActiviteit" name="typeAanTeMakenActiviteit" autocomplete="off" [value]="" > Productie&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;</label>&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;<label class="btn btn-secondary">&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;<input type="radio" [(ngModel)]="typeAanTeMakenActiviteit" name="typeAanTeMakenActiviteit" autocomplete="off" [value]="" > Evenement&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;</label>&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;<label *ngFor="let type of activiteitTypes" class="">&ndash;&gt;-->
-          <!--&lt;!&ndash;<input type="radio" [(ngModel)]="typeAanTeMakenActiviteit" name="typeAanTeMakenActiviteit"&ndash;&gt;-->
-          <!--&lt;!&ndash;autocomplete="off" [value]="type"> {{type.displayUpper}}&ndash;&gt;-->
-          <!--&lt;!&ndash;</label>&ndash;&gt;-->
-
-          <!--&lt;!&ndash;<select&ndash;&gt;-->
-
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-          <!--<label for="activiteit-type-select-id">Type</label>-->
-          <!--<select id="activiteit-type-select-id" class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="typeAanTeMakenActiviteit" name="typeAanTeMakenActiviteit">-->
-            <!--<option *ngFor="let type of activiteitTypes" [selected]="type" [ngValue]="type">{{ type.displayUpper }}-->
-            <!--</option>-->
-          <!--</select>-->
-
-          <!--<input type="text" name="evenementTitel" [(ngModel)]="activiteit.titel"-->
-                 <!--class="form-control mb-2 mr-sm-2 mb-sm-0" id="activiteit-naam-id"-->
-                 <!--[placeholder]="'Naam ' + typeAanTeMakenActiviteit.displayLower">-->
-
-          <!--<div *ngIf="typeAanTeMakenActiviteit.value === 'evenement'">-->
-            <!--<div class="input-group">-->
-              <!--<label for="evenement-tegoed-id">Tegoed</label>-->
-              <!--<span class="input-group-addon">&euro;</span>-->
-              <!--<input id="evenement-tegoed-id" type="number" [(ngModel)]="activiteit.tegoed" class="form-control mb-2 mr-sm-2 mb-sm-0">-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<button type="submit" class="btn btn-primary">-->
-            <!--{{typeAanTeMakenActiviteit.displayUpper + ' aanmaken'}}-->
-          <!--</button>-->
-        <!--</form>-->
-
-
-
-        <!--<form class="form-inline" [formGroup]="activiteitAanmakenForm" (ngSubmit)="activiteitAanmaken(activiteitAanmakenForm.value)">-->
-          <!--<input type="text" formControlName="naam" class="form-control" id="naam_input" placeholder="naam consumptie"> &nbsp;&nbsp;-->
-          <!--<div class="input-group">-->
-            <!--<span class="input-group-addon">&euro;</span>-->
-            <!--<input type="number" formControlName="prijs" class="form-control" id="prijs_input">-->
-          <!--</div>-->
-          <!--&nbsp;&nbsp;-->
-          <!--<div>-->
-            <!--<button class="btn btn-primary">Aanmaken</button>-->
-          <!--</div>-->
-        <!--</form>-->
-
-
-      <!--</div>-->
-
       <br/>
       <br/>
 
@@ -89,7 +29,7 @@
                 </button>
               </form>
               <p class="card-text">
-                <small class="text-muted">Aangemaakt op: {{ evenement.starttijd | date }}</small>
+                <small class="text-muted">Aangemaakt op: {{ getDateFromSeconds(evenement.starttijd) | date }}</small>
               </p>
               <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = evenement.id"><span
                 class="fa fa-pencil"></span>&nbsp;Bewerken

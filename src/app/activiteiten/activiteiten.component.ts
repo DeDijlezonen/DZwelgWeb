@@ -4,6 +4,7 @@ import {Component, OnInit} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {IAlert} from './../model/alert';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {DateHelper} from "../utils/functions";
 
 interface ActiviteitType {
   value: string;
@@ -77,6 +78,10 @@ export class ActiviteitenComponent implements OnInit {
       type: 'success',
       message: 'De activiteit werd succesvol bewerkt.'
     };
+  }
+
+  public getDateFromSeconds(seconds: number) {
+    return DateHelper.getDateFromSeconds(seconds);
   }
 
   private verwijder(id: string) {

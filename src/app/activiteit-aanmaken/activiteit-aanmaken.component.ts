@@ -4,7 +4,7 @@ import {DzwelgValidators} from "../utils/validators";
 import {Activiteit} from "../model/activiteit";
 import {Router} from "@angular/router";
 import {IAlert} from "../model/alert";
-import {AngularFireDatabase, AngularFireDatabaseModule, FirebaseListObservable} from "angularfire2/database";
+import {AngularFireDatabase, FirebaseListObservable} from "angularfire2/database";
 import {FormHelper} from "../utils/functions";
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import * as moment from 'moment';
@@ -75,9 +75,15 @@ export class ActiviteitAanmakenComponent implements OnInit {
         message: foutBoodschap,
       };
     } else {
+
+      const momentDatumVan = this.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
+      const momentDatumTot = this.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
+
       const fbActiviteit = this.activiteiten.push({
         titel: model.titel,
         tegoed: model.tegoed,
+        starttijd: momentDatumVan.unix(),
+        eindtijd: momentDatumTot.unix(),
       });
 
       const key = fbActiviteit.key;
@@ -141,9 +147,13 @@ export class ActiviteitAanmakenComponent implements OnInit {
     };
   }
 
+  private ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
+    return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
+  }
+
   private isValideTijdspanne(): boolean {
-    const momentDatumVan = moment([this.datumVan.year, this.datumVan.month - 1, this.datumVan.day, this.tijdVan.hour, this.tijdVan.second]);
-    const momentDatumTot = moment([this.datumTot.year, this.datumTot.month - 1, this.datumTot.day, this.tijdTot.hour, this.tijdTot.second]);
+    const momentDatumVan = this.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
+    const momentDatumTot = this.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
     if (momentDatumVan.isAfter(momentDatumTot)) {
       return false;
     }
