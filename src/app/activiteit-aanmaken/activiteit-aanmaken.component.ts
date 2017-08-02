@@ -119,14 +119,26 @@ export class ActiviteitAanmakenComponent implements OnInit {
 
     this.datumVan = {
       day: stamp.date(),
-      month: stamp.month(),
+      month: stamp.month() + 1,
       year: stamp.year(),
+    };
+
+    this.tijdVan = {
+      hour: stamp.hour(),
+      minute: stamp.minute(),
+      second: stamp.second(),
     };
 
     this.datumTot = {
       day: stamp.date(),
-      month: stamp.month(),
+      month: stamp.month() + 1,
       year: stamp.year(),
-    }
+    };
+
+    this.tijdTot = {
+      hour: moment().add(2, 'hours').hour(),
+      minute: stamp.minute(),
+      second: stamp.second(),
+    };
   }
 }

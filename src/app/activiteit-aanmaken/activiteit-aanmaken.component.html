@@ -38,20 +38,28 @@
             <input class="form-control" formControlName="tegoed" type="number" id="evenement-tegoed-input-id">
           </div>
         </div>
-        <div class="form-group">
-          <label>Van</label>
-          <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" [(ngModel)]="datumVan" ngbDatepicker #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
-            <div class="input-group-addon" (click)="d.toggle()" >
+        <label for="van-input-id">Van</label>
+        <div class="form-group form-inline">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <input id="van-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumVan" [(ngModel)]="datumVan" ngbDatepicker
+                   #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+            <div class="input-group-addon" (click)="d.toggle()">
               <span class="fa fa-calendar"></span>
             </div>
           </div>
-          <br/>
-          <ngb-timepicker [(ngModel)]="tijdVan"></ngb-timepicker>
+          <ngb-timepicker [(ngModel)]="tijdVan" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
         </div>
-        <div class="form-group">
-          <label for="tot-input-id">Tot</label>
-          <input id="tot-input-id" class="form-control" >
+
+        <label for="tot-input-id">Tot</label>
+        <div class="form-group form-inline">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <input id="tot-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumTot" [(ngModel)]="datumTot" ngbDatepicker
+                   #d="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+            <div class="input-group-addon" (click)="d.toggle()">
+              <span class="fa fa-calendar"></span>
+            </div>
+          </div>
+          <ngb-timepicker [(ngModel)]="tijdTot" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
         </div>
         <button type="submit" class="btn btn-primary">{{ typeAanTeMakenActiviteit.displayUpper }} aanmaken</button>
       </form>

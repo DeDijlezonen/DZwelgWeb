@@ -1,4 +1,4 @@
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {Activiteit} from '../model/activiteit';
 import {Component, OnInit} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
@@ -20,7 +20,6 @@ export class ActiviteitenComponent implements OnInit {
 
   activiteiten: FirebaseListObservable<Activiteit[]>;
   alert: IAlert;
-  activiteit: Activiteit = new Activiteit();
   verwijderModal: NgbModalRef;
   teVerwijderenActiviteitId: string;
   teVerwijderenActiviteit: FirebaseObjectObservable<Activiteit>;
@@ -71,46 +70,13 @@ export class ActiviteitenComponent implements OnInit {
     this.sluit();
   }
 
-
-  public activiteitAanmaken() {
-
-    if (this.activiteit.titel.trim()) {
-      this.activiteit.starttijd = Date.now();
-
-      // switch (this.typeAanTeMakenActiviteit.value) {
-      //   case 'productie':
-      //     this.productieAanmaken();
-      //     break;
-      //   case 'evenement':
-      //     this.evenementAanmaken();
-      //     break;
-      // }
-
-      const fbEvent = this.activiteiten.push(
-        this.activiteit
-      );
-
-      const key = fbEvent.key;
-      this.activiteit.id = key;
-      this.activiteiten.update(key, this.activiteit);
-
-    } else {
-      this.alert = {
-        type: 'danger',
-        message: 'De titel van de activiteit mag niet leeg zijn.'
-      };
-    }
-
-    this.activiteit.titel = '';
-  }
-
   public evenementBewerken(model: Activiteit, id: string) {
     this.activiteiten.update(id, {titel: model.titel});
     this.teBewerkenActiviteitId = '';
     this.alert = {
       type: 'success',
       message: 'De activiteit werd succesvol bewerkt.'
-    }
+    };
   }
 
   private verwijder(id: string) {

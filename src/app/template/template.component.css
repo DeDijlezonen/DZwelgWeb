@@ -69,3 +69,7 @@ footer {
 .tiny {
 	font-size: small;
 }
+
+.content {
+  margin-bottom: 75px;
+}
