@@ -27,11 +27,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
   evenementAanmakenForm: FormGroup;
   productieAanmakenForm: FormGroup;
 
-  datumVan: NgbDateStruct = {
-    day: moment().date(),
-    month: moment().month(),
-    year: moment().year(),
-  };
+  datumVan: NgbDateStruct;
   tijdVan: NgbTimeStruct;
   datumTot: NgbDateStruct;
   tijdTot: NgbTimeStruct;
@@ -55,8 +51,6 @@ export class ActiviteitAanmakenComponent implements OnInit {
   private createEvenementAanmakenForm() {
     this.evenementAanmakenForm = this.fb.group({
       titel: ['', Validators.required],
-      starttijd: [Date.now(), Validators.required],
-      eindtijd: [Date.now(), Validators.required],
       tegoed: [0, [Validators.required, DzwelgValidators.positiefValidator]],
     });
   }
@@ -68,8 +62,13 @@ export class ActiviteitAanmakenComponent implements OnInit {
   }
 
   public evenementAanmaken(model: Activiteit) {
-    if (this.evenementAanmakenForm.invalid) {
-      const foutBoodschap = FormHelper.getFormErrorMessage(this.evenementAanmakenForm);
+    const isValidTijdspanne: boolean = this.isValideTijdspanne();
+    if (this.evenementAanmakenForm.invalid || !isValidTijdspanne) {
+      let foutBoodschap = FormHelper.getFormErrorMessage(this.evenementAanmakenForm);
+
+      if (!isValidTijdspanne) {
+        foutBoodschap += '_Gelieve een correcte tijdspanne in te geven.';
+      }
 
       this.alert = {
         type: 'danger',
@@ -140,5 +139,14 @@ export class ActiviteitAanmakenComponent implements OnInit {
       minute: stamp.minute(),
       second: stamp.second(),
     };
+  }
+
+  private isValideTijdspanne(): boolean {
+    const momentDatumVan = moment([this.datumVan.year, this.datumVan.month - 1, this.datumVan.day, this.tijdVan.hour, this.tijdVan.second]);
+    const momentDatumTot = moment([this.datumTot.year, this.datumTot.month - 1, this.datumTot.day, this.tijdTot.hour, this.tijdTot.second]);
+    if (momentDatumVan.isAfter(momentDatumTot)) {
+      return false;
+    }
+    return true;
   }
 }
