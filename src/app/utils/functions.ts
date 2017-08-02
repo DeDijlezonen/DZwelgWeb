@@ -45,4 +45,12 @@ export class FormHelper {
 
 }
 
+export class DateHelper {
+  static getDateFromSeconds(seconds: number) {
+    const t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(seconds);
+    return t;
+  }
+}
+
 

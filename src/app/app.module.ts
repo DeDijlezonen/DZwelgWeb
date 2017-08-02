@@ -15,16 +15,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { AlertComponent } from './alert/alert.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { GebruikersComponent } from './gebruikers/gebruikers.component';
 import { ConsumptieComponent } from './consumptie/consumptie.component';
+import { GebruikersComponent } from './gebruikers/gebruikers.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
 import {firebaseConfig} from "../environments/environment";
+import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
     { path: 'activiteiten', component: ActiviteitenComponent },
     { path: 'gebruikers', component: GebruikersComponent },
+    { path: 'activiteiten/aanmaken', component: ActiviteitAanmakenComponent },
     { path: 'consumpties', component: ConsumptieComponent },
     { path: 'stock', component: StockBeheerComponent },
     { path: '', redirectTo: '/activiteiten', pathMatch: 'full' },
@@ -46,6 +48,7 @@ const routes: Routes = [
     ConsumptieComponent,
     StockBeheerComponent,
     ArraySorteerPipe,
+    ActiviteitAanmakenComponent,
   ],
   imports: [
     NgbModule.forRoot(),

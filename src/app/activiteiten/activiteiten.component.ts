@@ -1,9 +1,16 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Activiteit } from '../model/activiteit';
-import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
-import { IAlert } from './../model/alert';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Activiteit} from '../model/activiteit';
+import {Component, OnInit} from '@angular/core';
+import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
+import {IAlert} from './../model/alert';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {DateHelper} from "../utils/functions";
+
+interface ActiviteitType {
+  value: string;
+  displayUpper: string;
+  displayLower: string;
+}
 
 @Component({
   selector: 'dzwelg-evenementen',
@@ -14,7 +21,6 @@ export class ActiviteitenComponent implements OnInit {
 
   activiteiten: FirebaseListObservable<Activiteit[]>;
   alert: IAlert;
-  activiteit: Activiteit = new Activiteit();
   verwijderModal: NgbModalRef;
   teVerwijderenActiviteitId: string;
   teVerwijderenActiviteit: FirebaseObjectObservable<Activiteit>;
@@ -22,10 +28,19 @@ export class ActiviteitenComponent implements OnInit {
 
   bewerkForms = new Map();
 
+  typeAanTeMakenActiviteit: ActiviteitType;
+  activiteitTypes: ActiviteitType[] = [
+    {value: 'prodcutie', displayUpper: 'Productie', displayLower: 'productie'},
+    {value: 'evenement', displayUpper: 'Evenement', displayLower: 'evenement'}
+  ];
+
   constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
+    // this.typeAanTeMakenActiviteit = this.activiteitTypes.find(type => type.value === 'productie');
+    // this.typeAanTeMakenActiviteit = { value: 'prodcutie', displayUpper: 'Productie', displayLower: 'productie' };
   }
 
   ngOnInit() {
+    this.typeAanTeMakenActiviteit = this.activiteitTypes[0];
     this.activiteiten = this.afdb.list('activiteiten');
     this.activiteiten.subscribe(snapshots => {
       snapshots.forEach(snapshot => {
@@ -56,37 +71,17 @@ export class ActiviteitenComponent implements OnInit {
     this.sluit();
   }
 
-
-  public evenementAanmaken() {
-
-    if (this.activiteit.titel.trim()) {
-      this.activiteit.aangemaakt = Date.now();
-
-      const fbEvent = this.activiteiten.push(
-        this.activiteit
-      );
-
-      const key = fbEvent.key;
-      this.activiteit.id = key;
-      this.activiteiten.update(key, this.activiteit);
-
-    } else {
-      this.alert = {
-        type: 'danger',
-        message: 'De titel van het activiteit mag niet leeg zijn.'
-      };
-    }
-
-    this.activiteit.titel = '';
-  }
-
   public evenementBewerken(model: Activiteit, id: string) {
-    this.activiteiten.update(id, { titel: model.titel });
+    this.activiteiten.update(id, {titel: model.titel});
     this.teBewerkenActiviteitId = '';
     this.alert = {
       type: 'success',
-      message: 'Het activiteit werd succesvol bewerkt.'
-    }
+      message: 'De activiteit werd succesvol bewerkt.'
+    };
+  }
+
+  public getDateFromSeconds(seconds: number) {
+    return DateHelper.getDateFromSeconds(seconds);
   }
 
   private verwijder(id: string) {
@@ -94,13 +89,13 @@ export class ActiviteitenComponent implements OnInit {
       succes => {
         this.alert = {
           type: 'success',
-          message: 'Het activiteit werd succesvol verwijderd.'
+          message: 'De activiteit werd succesvol verwijderd.'
         };
       },
       error => {
         this.alert = {
           type: 'danger',
-          message: 'Het evenements kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
+          message: 'De activiteit kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
         };
       },
     );

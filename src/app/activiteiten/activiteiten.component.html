@@ -5,16 +5,9 @@
 
       <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
-      <div class="row-fluid">
-        <form class="form-inline" (ngSubmit)="evenementAanmaken()">
-          <input type="text" name="evenementTitel" [(ngModel)]="activiteit.titel" class="form-control mb-2 mr-sm-2 mb-sm-0" id="evenement-naam"
-                 placeholder="Naam evenement">
-          <button type="submit" class="btn btn-primary">
-      Evenement aanmaken
-    </button>
-        </form>
-      </div>
+      <a routerLink="aanmaken">Productie of evenement aanmaken</a>
 
+      <br/>
       <br/>
 
       <div class="row-fluid">
@@ -22,8 +15,11 @@
           <div *ngFor="let evenement of activiteiten | async" class="card">
             <div class="card-block">
               <h4 *ngIf="evenement.id !== teBewerkenActiviteitId" class="card-title">{{ evenement.titel }}</h4>
-              <form *ngIf="evenement.id === teBewerkenActiviteitId" class="form-inline" [formGroup]="bewerkForms.get(evenement.id)" (ngSubmit)="evenementBewerken(bewerkForms.get(evenement.id).value, evenement.id)">
-                <input type="text" formControlName="titel" class="form-control mb-2 mr-sm-2 mb-sm-0" [value]="evenement.titel">
+              <form *ngIf="evenement.id === teBewerkenActiviteitId" class="form-inline"
+                    [formGroup]="bewerkForms.get(evenement.id)"
+                    (ngSubmit)="evenementBewerken(bewerkForms.get(evenement.id).value, evenement.id)">
+                <input type="text" formControlName="titel" class="form-control mb-2 mr-sm-2 mb-sm-0"
+                       [value]="evenement.titel">
                 <button type="submit" class="btn btn-success">
                   <span class="fa fa-check"></span>
                 </button>
@@ -32,9 +28,14 @@
                   <span class="fa fa-remove"></span>
                 </button>
               </form>
-              <p class="card-text"><small class="text-muted">Aangemaakt op: {{ evenement.aangemaakt | date }}</small></p>
-              <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = evenement.id"><span class="fa fa-pencil"></span>&nbsp;Bewerken</button>
-                <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+              <p class="card-text">
+                <small class="text-muted">Aangemaakt op: {{ getDateFromSeconds(evenement.starttijd) | date }}</small>
+              </p>
+              <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = evenement.id"><span
+                class="fa fa-pencil"></span>&nbsp;Bewerken
+              </button>
+              <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen
+              </button>
             </div>
           </div>
         </div>
@@ -45,14 +46,16 @@
         <div class="modal-header">
           <h4 class="modal-title">{{ (teVerwijderenActiviteit | async)?.titel }} verwijderen?</h4>
           <button type="button" class="close" aria-label="Close" (click)="sluit()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <p>Zeker dat je dit evenement wilt verwijderen?</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" (click)="verwijderEnSluit(teVerwijderenActiviteitId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+          <button class="btn btn-danger" (click)="verwijderEnSluit(teVerwijderenActiviteitId)"><span
+            class="fa fa-trash"></span>&nbsp;Verwijderen
+          </button>
           <button class="btn btn-secondary" (click)="sluit()">Annuleren</button>
         </div>
       </ng-template>

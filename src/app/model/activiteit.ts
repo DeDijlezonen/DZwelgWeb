@@ -1,11 +1,20 @@
 export class Activiteit {
     titel: string;
-    aangemaakt: number;
     id: string;
-    datum: number;
+
+    starttijd: number;
+    eindtijd: number;
     tegoed: number;
 
     constructor() {
         this.titel = '';
+        this.tegoed = 0;
+    }
+
+    isEvenement(): boolean {
+      if (this.eindtijd && this.tegoed) {
+        return true;
+      }
+      return false;
     }
 }
