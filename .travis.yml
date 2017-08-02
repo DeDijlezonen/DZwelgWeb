@@ -14,8 +14,8 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-  - if [ "$TRAVIS_BRANCH" = "dev" ]; then ng build --target=production --environment=dev; fi
-  - if [ "$TRAVIS_BRANCH" = "prod" ]; then ng build --prod; fi
+  - if [ "$TRAVIS_BRANCH" = "dev" ]; then ng build --environment=dev; fi
+  - if [ "$TRAVIS_BRANCH" = "prod" ]; then ng build --environment=prod; fi
 
 #bij productie, production environment van Firebase kiezen (= DZwelg), anders wordt default gebruikt (= DZwelg-dev)
 after_success:

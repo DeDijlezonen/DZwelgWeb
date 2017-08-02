@@ -1,4 +1,4 @@
-export interface Lid {
+export interface Gebruiker {
     id: string;
     voornaam: string;
     achternaam: string;
