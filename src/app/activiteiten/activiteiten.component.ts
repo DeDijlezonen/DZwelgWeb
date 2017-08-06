@@ -81,9 +81,13 @@ export class ActiviteitenComponent implements OnInit {
     };
   }
 
-  public naarActiviteitBewerken(id: string): void {
+  public naarActiviteitBewerken(activiteit: Activiteit): void {
     this.teBewerkenActiviteitId = '';
-    this.router.navigate(['/activiteiten/bewerken', id]);
+    if (activiteit.isEvenement()) {
+      this.router.navigate(['/activiteiten/bewerken', activiteit.id]);
+    } else {
+
+    }
   }
 
   public getDateFromSeconds(seconds: number) {

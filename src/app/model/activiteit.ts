@@ -12,7 +12,7 @@ export class Activiteit {
     }
 
     isEvenement(): boolean {
-      if (this.eindtijd && this.tegoed) {
+      if (this.hasOwnProperty('eindtijd') && this.hasOwnProperty('tegoed')) {
         return true;
       }
       return false;
