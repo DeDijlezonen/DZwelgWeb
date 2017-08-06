@@ -22,7 +22,6 @@ import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe'
 import {firebaseConfig} from "../environments/environment";
 import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
 import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
-import { SorteerReedsIngeschrevenenPipe } from './pipes/sorteer-reeds-ingeschrevenen.pipe';
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
@@ -53,7 +52,6 @@ const routes: Routes = [
     ArraySorteerPipe,
     ActiviteitAanmakenComponent,
     EvenementenBewerkenComponent,
-    SorteerReedsIngeschrevenenPipe,
   ],
   imports: [
     NgbModule.forRoot(),
