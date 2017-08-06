@@ -4,6 +4,7 @@ import {Gebruiker} from "../model/gebruiker";
 import {ActivatedRoute} from "@angular/router";
 
 interface InschrijvingViewModel {
+  id: string;
   voornaam: string;
   achternaam: string;
   betaald: boolean;
@@ -38,6 +39,12 @@ export class EvenementenBewerkenComponent implements OnInit {
     }
   }
 
+  public schrijfUit(id: string) {
+    if (this.id) {
+      this.ingeschrevenenFLO.remove(id);
+    }
+  }
+
   private mapIngeschrevenen(): void {
     this.ingeschrevenenFLO = this.afdb.list('/activiteiten/' + this.id + '/ingeschrevenen');
     this.ingeschrevenenFLO.subscribe(ingeschrevenen => {
@@ -46,6 +53,7 @@ export class EvenementenBewerkenComponent implements OnInit {
         const gebruikerSubscription = this.getGebruiker(ingeschrevene.$key).subscribe(
           (gebruiker) => {
             this.inschrijvingen.push({
+              id: ingeschrevene.$key,
               voornaam: gebruiker.voornaam,
               achternaam: gebruiker.achternaam,
               betaald: ingeschrevene.$value,

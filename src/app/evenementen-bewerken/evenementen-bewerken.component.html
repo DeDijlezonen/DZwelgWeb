@@ -18,7 +18,7 @@
       <div class="row">
 
         <div class="col-6">
-          <table class="col-lg-6 table">
+          <table class="col-lg-6 table table-sm">
             <tr>
               <th>Gebruiker</th>
               <th>Inschrijven</th>
@@ -26,14 +26,14 @@
             <tr *ngFor="let gebruiker of gebruikers | async">
               <td>{{ gebruiker.voornaam + ' ' + gebruiker.achternaam }}</td>
               <td>
-                <button class="btn btn-primary" (click)="schrijfIn(gebruiker.id)"><span class="fa fa-plus"></span></button>
+                <button class="btn btn-sm btn-primary" (click)="schrijfIn(gebruiker.id)"><span class="fa fa-plus"></span></button>
               </td>
             </tr>
           </table>
         </div>
 
         <div class="col-6">
-          <table class="col-lg-6 table">
+          <table class="col-lg-6 table table-sm">
             <tr>
               <th>Gebruiker</th>
               <th>Uitschrijven</th>
@@ -42,7 +42,7 @@
             <tr *ngFor="let inschrijving of inschrijvingen">
               <td>{{ inschrijving.voornaam + ' ' + inschrijving.achternaam }}</td>
               <td>
-                <button class="btn btn-danger"><span class="fa fa-remove"></span></button>
+                <button class="btn btn-sm btn-danger" (click)="schrijfUit(inschrijving.id)"><span class="fa fa-remove"></span></button>
               </td>
               <td>
                 <input type="checkbox" [value]="inschrijving.betaald">
