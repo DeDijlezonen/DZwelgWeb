@@ -15,6 +15,45 @@
         Inschrijvingen formulier
       </p>
 
+      <div class="row">
+
+        <div class="col-6">
+          <table class="col-lg-6 table">
+            <tr>
+              <th>Gebruiker</th>
+              <th>Inschrijven</th>
+            </tr>
+            <tr *ngFor="let gebruiker of gebruikers | async">
+              <td>{{ gebruiker.voornaam + ' ' + gebruiker.achternaam }}</td>
+              <td>
+                <button class="btn btn-primary"><span class="fa fa-plus"></span></button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-6">
+          <table class="col-lg-6 table">
+            <tr>
+              <th>Gebruiker</th>
+              <th>Uitschrijven</th>
+              <th>Betaald?</th>
+            </tr>
+            <tr *ngFor="let inschrijving of inschrijvingen">
+              <td>{{ inschrijving.voornaam + ' ' + inschrijving.achternaam }}</td>
+              <td>
+                <button class="btn btn-danger"><span class="fa fa-remove"></span></button>
+              </td>
+              <td>
+                <input type="checkbox" [value]="inschrijving.betaald">
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+
+
     </main>
   </div>
 </div>

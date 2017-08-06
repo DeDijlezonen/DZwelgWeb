@@ -90,7 +90,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
       model.id = key;
       this.activiteiten.update(key, model);
 
-      this.router.navigate(['/bewerken', key]);
+      this.router.navigate(['/activiteiten/bewerken', key]);
     }
   }
 
