@@ -3,7 +3,7 @@ import {AngularFireDatabase, FirebaseListObservable} from "angularfire2/database
 import {Gebruiker} from "../model/gebruiker";
 import {ActivatedRoute} from "@angular/router";
 
-interface InschrijvingViewModel {
+export interface InschrijvingViewModel {
   id: string;
   voornaam: string;
   achternaam: string;

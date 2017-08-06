@@ -23,7 +23,7 @@
               <th>Gebruiker</th>
               <th>Inschrijven</th>
             </tr>
-            <tr *ngFor="let gebruiker of gebruikers | async">
+            <tr *ngFor="let gebruiker of gebruikers | async | filterInschrijvingen:inschrijvingen">
               <td>{{ gebruiker.voornaam + ' ' + gebruiker.achternaam }}</td>
               <td>
                 <button class="btn btn-sm btn-primary" (click)="schrijfIn(gebruiker.id)"><span class="fa fa-plus"></span></button>
