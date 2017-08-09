@@ -12,7 +12,6 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './gebruikers.component.html',
   styleUrls: ['./gebruikers.component.css']
 })
-
 export class GebruikersComponent implements OnInit {
 
   gebruikers: FirebaseListObservable<Gebruiker[]>;

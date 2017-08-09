@@ -40,5 +40,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Private keys voor Firebase service accounts
-/src/assets/json/dzwelg-dev-firebase-adminsdk-twu6z-5c19432620.json
+functions
