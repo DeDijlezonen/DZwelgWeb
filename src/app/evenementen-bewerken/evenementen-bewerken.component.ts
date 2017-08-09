@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFireDatabase, FirebaseListObservable} from "angularfire2/database";
-import {Gebruiker} from "../model/gebruiker";
-import {ActivatedRoute} from "@angular/router";
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
+import {Gebruiker} from '../model/gebruiker';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DzwelgValidators} from '../utils/validators';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 export interface InschrijvingViewModel {
   id: string;
@@ -22,7 +26,14 @@ export class EvenementenBewerkenComponent implements OnInit {
   ingeschrevenenFLO: FirebaseListObservable<any[]>;
   inschrijvingen: InschrijvingViewModel[] = [];
 
-  constructor(private afdb: AngularFireDatabase, private route: ActivatedRoute) {
+  evenementBewerkenForm: FormGroup;
+
+  datumVan: NgbDateStruct;
+  tijdVan: NgbTimeStruct;
+  datumTot: NgbDateStruct;
+  tijdTot: NgbTimeStruct;
+
+  constructor(private afdb: AngularFireDatabase, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -30,6 +41,47 @@ export class EvenementenBewerkenComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.mapIngeschrevenen();
+      this.createForm();
+    });
+  }
+
+  private getEvenement() {
+    if (this.id) {
+      return this.afdb.object('/activiteiten/' + this.id);
+    }
+  }
+
+  public createForm() {
+    this.getEvenement().subscribe(evenement => {
+      this.evenementBewerkenForm = this.fb.group({
+        titel: [evenement.titel, Validators.required],
+        tegoed: [evenement.tegoed, [Validators.required, DzwelgValidators.positiefValidator]]
+      });
+
+      const momentVan = moment.unix(evenement.starttijd);
+      const momentTot = moment.unix(evenement.eindtijd);
+
+      this.datumVan = {
+        day: momentVan.day(),
+        month: momentVan.month(),
+        year: momentVan.year(),
+      };
+      this.datumTot = {
+        day: momentTot.day(),
+        month: momentTot.month(),
+        year: momentTot.year()
+      };
+      this.tijdVan = {
+        second: momentVan.second(),
+        minute: momentVan.minute(),
+        hour: momentVan.hour()
+      };
+      this.tijdTot = {
+        second: momentTot.second(),
+        minute: momentTot.minute(),
+        hour: momentTot.hour()
+      };
+
     });
   }
 
@@ -43,6 +95,10 @@ export class EvenementenBewerkenComponent implements OnInit {
     if (this.id) {
       this.ingeschrevenenFLO.remove(id);
     }
+  }
+
+  public slaBetaaldFlagOp(heeftBetaald: boolean, id: string) {
+    this.afdb.object('/activiteiten/' + this.id + '/ingeschrevenen').update({[id]: heeftBetaald});
   }
 
   private mapIngeschrevenen(): void {
@@ -60,10 +116,11 @@ export class EvenementenBewerkenComponent implements OnInit {
             });
             gebruikerSubscription.unsubscribe();
           },
-          (error) => {},
+          (error) => {
+          },
           () => {
           }
-          );
+        );
       });
     });
   }

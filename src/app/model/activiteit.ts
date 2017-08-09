@@ -11,7 +11,7 @@ export class Activiteit {
         this.tegoed = 0;
     }
 
-    isEvenement(): boolean {
+    public isEvenement(): boolean {
       if (this.hasOwnProperty('eindtijd') && this.hasOwnProperty('tegoed')) {
         return true;
       }

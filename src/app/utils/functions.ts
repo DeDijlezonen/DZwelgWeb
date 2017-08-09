@@ -1,5 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
+import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
+import moment = require("moment");
 
 export class FormHelper {
 
@@ -50,6 +52,10 @@ export class DateHelper {
     const t = new Date(1970, 0, 1); // Epoch
     t.setSeconds(seconds);
     return t;
+  }
+
+  static ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
+    return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
   }
 }
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {DzwelgValidators} from "../utils/validators";
-import {Activiteit} from "../model/activiteit";
-import {Router} from "@angular/router";
-import {IAlert} from "../model/alert";
-import {AngularFireDatabase, FirebaseListObservable} from "angularfire2/database";
-import {FormHelper} from "../utils/functions";
-import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DzwelgValidators} from '../utils/validators';
+import {Activiteit} from '../model/activiteit';
+import {Router} from '@angular/router';
+import {IAlert} from '../model/alert';
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
+import {DateHelper, FormHelper} from '../utils/functions';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 
 interface ActiviteitType {
@@ -76,8 +76,8 @@ export class ActiviteitAanmakenComponent implements OnInit {
       };
     } else {
 
-      const momentDatumVan = this.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
-      const momentDatumTot = this.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
+      const momentDatumVan = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
+      const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
 
       const fbActiviteit = this.activiteiten.push({
         titel: model.titel,
@@ -147,13 +147,13 @@ export class ActiviteitAanmakenComponent implements OnInit {
     };
   }
 
-  private ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
-    return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
-  }
+  // private ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
+  //   return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
+  // }
 
   private isValideTijdspanne(): boolean {
-    const momentDatumVan = this.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
-    const momentDatumTot = this.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
+    const momentDatumVan = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
+    const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
     if (momentDatumVan.isAfter(momentDatumTot)) {
       return false;
     }
