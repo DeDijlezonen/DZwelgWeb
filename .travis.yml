@@ -17,13 +17,14 @@ before_script:
 script:
   - if [ "$TRAVIS_BRANCH" == "dev" ]; then ng build --environment=dev; fi
   - if [ "$TRAVIS_BRANCH" == "prod" ]; then ng build --environment=prod; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ng build; fi
 
 #bij productie, production environment van Firebase kiezen (= DZwelg), anders wordt default gebruikt (= DZwelg-dev)
 #indien op master branch, wordt er geen deploy gedaan
 after_success:
   - if [ "$TRAVIS_BRANCH" == "dev" ]; then firebase use default --token $FIREBASE_TOKEN; fi
   - if [ "$TRAVIS_BRANCH" == "prod" ]; then firebase use production --token $FIREBASE_TOKEN; fi
-  - if [ "$TRAVIS_BRANCH" != "master" ]; then firebase deploy --token $FIREBASE_TOKEN
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then firebase deploy --token $FIREBASE_TOKEN; fi
 
 notifications:
   email:
