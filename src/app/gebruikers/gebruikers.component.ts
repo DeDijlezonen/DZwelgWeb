@@ -1,11 +1,14 @@
 import {FormHelper} from '../utils/functions';
 import {IAlert} from '../model/alert';
-import {FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
+import {Http} from "@angular/http";
+import {HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'dzwelg-leden',
@@ -24,7 +27,7 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
 
-  constructor(private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(public haateeteepee: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -117,5 +120,29 @@ export class GebruikersComponent implements OnInit {
         };
       },
     );
+  }
+
+  gebruikerTest() {
+    let that = this;
+    this.afAuth.auth.currentUser.getToken(true)
+      .then(function (token) {
+        //send token to backend
+        console.log(token);
+        const uid = "ROkTFN2Y9hQ2pqTApY3GJE8Avxo2";
+        const body = {"idToken": token};
+        that.haateeteepee.post(
+          'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',
+          null,
+          {
+            params: new HttpParams().set('idToken', token).set('uid', 'ROkTFN2Y9hQ2pqTApY3GJE8Avxo2')
+          })
+          .subscribe((data) => {
+            console.log("DATA RECEIVED");
+            console.log(data);
+          }, (fout) => {
+            console.log("FOUT");
+            console.log(fout.error.message);
+          });
+      })
   }
 }
