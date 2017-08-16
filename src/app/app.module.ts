@@ -23,6 +23,7 @@ import {firebaseConfig} from "../environments/environment";
 import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
 import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
 import { InschrijvingsFilterPipe } from './pipes/filter/filter.pipe';
+import { ProductieBewerkenComponent } from './productie-bewerken/productie-bewerken.component';
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
@@ -54,6 +55,7 @@ const routes: Routes = [
     ActiviteitAanmakenComponent,
     EvenementenBewerkenComponent,
     InschrijvingsFilterPipe,
+    ProductieBewerkenComponent,
   ],
   imports: [
     NgbModule.forRoot(),
