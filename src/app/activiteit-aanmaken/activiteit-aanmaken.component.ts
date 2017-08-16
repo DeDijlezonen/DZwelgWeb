@@ -62,7 +62,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
   }
 
   public evenementAanmaken(model: Activiteit) {
-    const isValidTijdspanne: boolean = this.isValideTijdspanne();
+    const isValidTijdspanne: boolean = DateHelper.isValideTijdspanne(this.datumVan, this.tijdVan, this.datumTot, this.tijdTot);
     if (this.evenementAanmakenForm.invalid || !isValidTijdspanne) {
       let foutBoodschap = FormHelper.getFormErrorMessage(this.evenementAanmakenForm);
 
@@ -150,13 +150,4 @@ export class ActiviteitAanmakenComponent implements OnInit {
   // private ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
   //   return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
   // }
-
-  private isValideTijdspanne(): boolean {
-    const momentDatumVan = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
-    const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
-    if (momentDatumVan.isAfter(momentDatumTot)) {
-      return false;
-    }
-    return true;
-  }
 }

@@ -6,6 +6,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DzwelgValidators} from '../utils/validators';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import {Activiteit} from '../model/activiteit';
+import {DateHelper, FormHelper} from '../utils/functions';
+import {IAlert} from '../model/alert';
 
 export interface InschrijvingViewModel {
   id: string;
@@ -25,7 +28,7 @@ export class EvenementenBewerkenComponent implements OnInit {
   gebruikers: FirebaseListObservable<Gebruiker[]>;
   ingeschrevenenFLO: FirebaseListObservable<any[]>;
   inschrijvingen: InschrijvingViewModel[] = [];
-
+  alert: IAlert;
   evenementBewerkenForm: FormGroup;
 
   datumVan: NgbDateStruct;
@@ -62,13 +65,13 @@ export class EvenementenBewerkenComponent implements OnInit {
       const momentTot = moment.unix(evenement.eindtijd);
 
       this.datumVan = {
-        day: momentVan.day(),
-        month: momentVan.month(),
+        day: momentVan.date(),
+        month: momentVan.month() + 1,
         year: momentVan.year(),
       };
       this.datumTot = {
-        day: momentTot.day(),
-        month: momentTot.month(),
+        day: momentTot.date(),
+        month: momentTot.month() + 1,
         year: momentTot.year()
       };
       this.tijdVan = {
@@ -99,6 +102,37 @@ export class EvenementenBewerkenComponent implements OnInit {
 
   public slaBetaaldFlagOp(heeftBetaald: boolean, id: string) {
     this.afdb.object('/activiteiten/' + this.id + '/ingeschrevenen').update({[id]: heeftBetaald});
+  }
+
+  public evenementBewerkenOpslaan(model: Activiteit) {
+    const isValidTijdspanne: boolean = DateHelper.isValideTijdspanne(this.datumVan, this.tijdVan, this.datumTot, this.tijdTot);
+    if (this.evenementBewerkenForm.invalid || !isValidTijdspanne) {
+      let foutBoodschap = FormHelper.getFormErrorMessage(this.evenementBewerkenForm);
+
+      if (!isValidTijdspanne) {
+        foutBoodschap += '_Gelieve een correcte tijdspanne in te geven.';
+      }
+
+      this.alert = {
+        type: 'danger',
+        message: foutBoodschap,
+      };
+    } else {
+
+      if (this.id) {
+        const momentDatumVan = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumVan, this.tijdVan);
+        const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
+
+        this.afdb.object('/activiteiten/' + this.id).update({
+            titel: model.titel,
+            tegoed: model.tegoed,
+            starttijd: momentDatumVan.unix(),
+            eindtijd: momentDatumTot.unix(),
+        });
+
+        this.router.navigate(['/activiteiten']);
+      }
+    }
   }
 
   private mapIngeschrevenen(): void {

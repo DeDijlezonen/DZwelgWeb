@@ -3,9 +3,11 @@
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
       <h1>Evenementen bewerken</h1>
 
+      <dzwelg-alert [alert]="alert"></dzwelg-alert>
+
       <h2>Algemeen</h2>
 
-      <form [formGroup]="evenementBewerkenForm" (submit)="evenementBewerken(evenementBewerkenForm.value)">
+      <form [formGroup]="evenementBewerkenForm" (submit)="evenementBewerkenOpslaan(evenementBewerkenForm.value)">
         <div class="form-group">
           <label for="evenement-bewerken-titel-id">Titel</label>
           <input id="evenement-bewerken-titel-id" class="form-control" type="text" formControlName="titel">
@@ -41,8 +43,10 @@
           </div>
           <ngb-timepicker [(ngModel)]="tijdTot" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
         </div>
-
+        <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
       </form>
+
+      <br/>
 
       <h2>Inschrijvingen</h2>
 
