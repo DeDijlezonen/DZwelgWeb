@@ -1,11 +1,13 @@
 import {FormHelper} from '../utils/functions';
 import {IAlert} from '../model/alert';
-import {FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
+import {HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'dzwelg-leden',
@@ -24,7 +26,7 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
 
-  constructor(private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(public httpClient: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -70,7 +72,12 @@ export class GebruikersComponent implements OnInit {
           // firebase uid van aangemaakte gebruiker op object setten
           model.id = gebruiker.uid;
           // gebruiker met fb uid naar database schrijven
-          this.gebruikers.update(gebruiker.uid, model);
+          this.gebruikers.update(gebruiker.uid, {
+            uid: model.id,
+            voornaam: model.voornaam,
+            achternaam: model.achternaam,
+            saldo: 0
+          });
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();
           this.disableAanmakenForm = false;
