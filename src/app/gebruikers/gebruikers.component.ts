@@ -125,37 +125,4 @@ export class GebruikersComponent implements OnInit {
       },
     );
   }
-
-  /**
-   * Verwijderd een gebruiker uit Firebase met behulp van de deleteUser Cloud Function
-   * Noot: de facto zal de gebruiker ook uit de database worden verwijderd, omdat het deleten van een Firebase-
-   * gebruiker automatisch de Cloud Function deleteUserFromDB doet uitvoeren
-   *
-   * @param {string} uid Het Firebase UID van de te verwijderen gebruiker
-   */
-  verwijderGebruiker(uid: string) {
-    let that = this;
-    //token van aangemelde gebruiker ophalen
-    this.afAuth.auth.currentUser.getToken(true)
-      .then(function (token) {
-        //send token to backend
-        that.httpClient.post(
-          'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',   // url van cloud function
-          null,                                                           // wordt niet gebruikt
-          {
-            params: new HttpParams().set('idToken', token).set('uid', uid)      // parameters voor de function (idToken en UID)
-          })
-          .subscribe((data) => {
-            console.log("GELUKT");
-            // hoewel er data wordt opgevangen en er een bericht wordt gestuurd vanuit de function,
-            // krijgt ik dit niet mee met de data hier... (evt checken op http 200, maar dat lijkt me redundant, omdat
-            // de volgende regels errors opvangt)
-            console.log(data);
-          }, (fout) => {
-            console.log("FOUT");
-            // foutbericht uit de callback halen
-            console.log(fout.error.message);
-          });
-      })
-  }
 }
