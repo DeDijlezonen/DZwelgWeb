@@ -30,7 +30,7 @@
                 <button class="btn btn-secondary">
                   <span class="fa fa-pencil"></span>
                 </button> &nbsp;
-                <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.id)">
+                <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.uid)">
                   <span class="fa fa-trash"></span>
                 </button>
               </td>
@@ -82,7 +82,7 @@
           <p>Zeker dat je deze gebruiker wilt verwijderen?</p>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" (click)="verwijderGebruikerEnSluit(teVerwijderenGebruikerId)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
+          <button class="btn btn-danger" (click)="verwijderGebruikerEnSluit(teVerwijderenGebruikerUid)"><span class="fa fa-trash"></span>&nbsp;Verwijderen</button>
           <button class="btn btn-secondary" (click)="sluitVerwijderGebruikerModal()">Annuleren</button>
         </div>
       </ng-template>
