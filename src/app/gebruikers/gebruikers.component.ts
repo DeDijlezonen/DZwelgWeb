@@ -6,8 +6,7 @@ import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
-import {Http} from "@angular/http";
-import {HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpParams} from "@angular/common/http";
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -27,7 +26,7 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
 
-  constructor(public haateeteepee: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(public httpClient: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -73,7 +72,12 @@ export class GebruikersComponent implements OnInit {
           // firebase uid van aangemaakte gebruiker op object setten
           model.id = gebruiker.uid;
           // gebruiker met fb uid naar database schrijven
-          this.gebruikers.update(gebruiker.uid, model);
+          this.gebruikers.update(gebruiker.uid, {
+            uid: model.id,
+            voornaam: model.voornaam,
+            achternaam: model.achternaam,
+            saldo: 0
+          });
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();
           this.disableAanmakenForm = false;
@@ -122,25 +126,34 @@ export class GebruikersComponent implements OnInit {
     );
   }
 
-  gebruikerTest() {
+  /**
+   * Verwijderd een gebruiker uit Firebase met behulp van de deleteUser Cloud Function
+   * Noot: de facto zal de gebruiker ook uit de database worden verwijderd, omdat het deleten van een Firebase-
+   * gebruiker automatisch de Cloud Function deleteUserFromDB doet uitvoeren
+   *
+   * @param {string} uid Het Firebase UID van de te verwijderen gebruiker
+   */
+  verwijderGebruiker(uid: string) {
     let that = this;
+    //token van aangemelde gebruiker ophalen
     this.afAuth.auth.currentUser.getToken(true)
       .then(function (token) {
         //send token to backend
-        console.log(token);
-        const uid = "ROkTFN2Y9hQ2pqTApY3GJE8Avxo2";
-        const body = {"idToken": token};
-        that.haateeteepee.post(
-          'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',
-          null,
+        that.httpClient.post(
+          'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',   // url van cloud function
+          null,                                                           // wordt niet gebruikt
           {
-            params: new HttpParams().set('idToken', token).set('uid', 'ROkTFN2Y9hQ2pqTApY3GJE8Avxo2')
+            params: new HttpParams().set('idToken', token).set('uid', uid)      // parameters voor de function (idToken en UID)
           })
           .subscribe((data) => {
-            console.log("DATA RECEIVED");
+            console.log("GELUKT");
+            // hoewel er data wordt opgevangen en er een bericht wordt gestuurd vanuit de function,
+            // krijgt ik dit niet mee met de data hier... (evt checken op http 200, maar dat lijkt me redundant, omdat
+            // de volgende regels errors opvangt)
             console.log(data);
           }, (fout) => {
             console.log("FOUT");
+            // foutbericht uit de callback halen
             console.log(fout.error.message);
           });
       })
