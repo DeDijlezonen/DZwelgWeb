@@ -6,8 +6,6 @@ import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
-import {HttpParams} from "@angular/common/http";
-import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'dzwelg-leden',
@@ -26,7 +24,8 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
 
-  constructor(public httpClient: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(private afdb: AngularFireDatabase, private afAuth: AngularFireAuth,
+              private modalService: NgbModal, private fb: FormBuilder) {
   }
 
   ngOnInit() {

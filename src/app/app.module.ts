@@ -19,12 +19,11 @@ import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { GebruikersComponent } from './gebruikers/gebruikers.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
-import {firebaseConfig} from "../environments/environment";
+import {firebaseConfig} from '../environments/environment';
 import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
 import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
 import { InschrijvingsFilterPipe } from './pipes/filter/filter.pipe';
 import { ProductieBewerkenComponent } from './productie-bewerken/productie-bewerken.component';
-import {HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
@@ -61,7 +60,6 @@ const routes: Routes = [
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
-    HttpClientModule,
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig, 'dzwelg-web'),
