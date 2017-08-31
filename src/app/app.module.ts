@@ -24,6 +24,7 @@ import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aa
 import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
 import { InschrijvingsFilterPipe } from './pipes/filter/filter.pipe';
 import { ProductieBewerkenComponent } from './productie-bewerken/productie-bewerken.component';
+import {HttpClientModule} from "@angular/common/http";
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
@@ -60,6 +61,7 @@ const routes: Routes = [
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig, 'dzwelg-web'),

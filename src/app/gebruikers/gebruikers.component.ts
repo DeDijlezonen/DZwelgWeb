@@ -1,18 +1,13 @@
-import { FormHelper } from '../utils/functions';
-import { element } from 'protractor';
-import { IAlert } from '../model/alert';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Gebruiker } from '../model/gebruiker';
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
-
-// const positiefValidator = (control: AbstractControl) => {
-//   return control.value >= 0 ? null : {
-//     positiefValidator: true,
-//   };
-// };
+import {FormHelper} from '../utils/functions';
+import {IAlert} from '../model/alert';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {Gebruiker} from '../model/gebruiker';
+import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {Component, OnInit} from '@angular/core';
+import {HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'dzwelg-leden',
@@ -29,8 +24,10 @@ export class GebruikersComponent implements OnInit {
   verwijderGebruikerModal: NgbModalRef;
   alert: IAlert;
   alertGebruikerAanmaken: IAlert;
+  disableAanmakenForm: boolean;
 
-  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) { }
+  constructor(public httpClient: HttpClient, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth, private modalService: NgbModal, private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.gebruikers = this.afdb.list('gebruikers');
@@ -41,6 +38,7 @@ export class GebruikersComponent implements OnInit {
     this.gebruikerAanmakenFormGroup = this.fb.group({
       voornaam: ['', Validators.required],
       achternaam: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -63,18 +61,34 @@ export class GebruikersComponent implements OnInit {
         message: foutBoodschap,
       };
     } else {
-      const fbLid = this.gebruikers.push({
-        voornaam: model.voornaam,
-        achternaam: model.achternaam,
-        saldo: 0,
-      });
+      this.disableAanmakenForm = true;
+      this.alertGebruikerAanmaken = {
+        type: 'info',
+        message: 'Bezig met aanmaken...'
+      };
 
-      const key = fbLid.key;
-      model.id = key;
-      this.gebruikers.update(key, model);
-
-      this.sluitGebruikerAanmakenModal();
-      this.gebruikerAanmakenFormGroup.reset();
+      this.afAuth.auth.createUserWithEmailAndPassword(model.email, 'default')
+        .then(gebruiker => {
+          // firebase uid van aangemaakte gebruiker op object setten
+          model.id = gebruiker.uid;
+          // gebruiker met fb uid naar database schrijven
+          this.gebruikers.update(gebruiker.uid, {
+            uid: model.id,
+            voornaam: model.voornaam,
+            achternaam: model.achternaam,
+            saldo: 0
+          });
+          this.sluitGebruikerAanmakenModal();
+          this.gebruikerAanmakenFormGroup.reset();
+          this.disableAanmakenForm = false;
+        })
+        .catch(error => {
+          this.alertGebruikerAanmaken = {
+            type: 'danger',
+            message: error.message,
+          };
+          this.disableAanmakenForm = false;
+        });
     }
   }
 
@@ -97,7 +111,7 @@ export class GebruikersComponent implements OnInit {
 
   gebruikerVerwijderen(id: string) {
     this.gebruikers.remove(id).then(
-      succes => {
+      () => {
         this.alert = {
           type: 'success',
           message: 'De gebruiker werd succesvol verwijderd.'
