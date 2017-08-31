@@ -83,11 +83,8 @@ export class ActiviteitenComponent implements OnInit {
 
   public naarActiviteitBewerken(activiteit): void {
     this.teBewerkenActiviteitId = '';
-    if (this.isEvenement(activiteit)) {
-      this.router.navigate(['/activiteiten/bewerken', activiteit.id]);
-    } else {
-      // naar productie bewerken pagina
-    }
+
+    this.router.navigate(['/activiteiten/bewerken', activiteit.id]);
   }
 
   public getDateFromSeconds(seconds: number) {
@@ -111,12 +108,5 @@ export class ActiviteitenComponent implements OnInit {
     );
 
     this.sluit();
-  }
-
-  private isEvenement(activiteit) {
-    if (activiteit.tegoed && activiteit.eindtijd) {
-      return true;
-    }
-    return false;
   }
 }

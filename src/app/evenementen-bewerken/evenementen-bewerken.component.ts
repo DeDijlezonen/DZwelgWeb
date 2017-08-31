@@ -7,7 +7,7 @@ import {DzwelgValidators} from '../utils/validators';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import {Activiteit} from '../model/activiteit';
-import {DateHelper, FormHelper} from '../utils/functions';
+import {ActiviteitHelper, DateHelper, FormHelper} from '../utils/functions';
 import {IAlert} from '../model/alert';
 
 export interface InschrijvingViewModel {
@@ -25,16 +25,19 @@ export interface InschrijvingViewModel {
 export class EvenementenBewerkenComponent implements OnInit {
 
   id: string;
+  alert: IAlert;
+  isEvenement = true;
+
   gebruikers: FirebaseListObservable<Gebruiker[]>;
   ingeschrevenenFLO: FirebaseListObservable<any[]>;
   inschrijvingen: InschrijvingViewModel[] = [];
-  alert: IAlert;
   evenementBewerkenForm: FormGroup;
-
   datumVan: NgbDateStruct;
   tijdVan: NgbTimeStruct;
   datumTot: NgbDateStruct;
   tijdTot: NgbTimeStruct;
+
+  productieBewerkenForm: FormGroup;
 
   constructor(private afdb: AngularFireDatabase, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
   }
@@ -56,35 +59,49 @@ export class EvenementenBewerkenComponent implements OnInit {
 
   public createForm() {
     this.getEvenement().subscribe(evenement => {
-      this.evenementBewerkenForm = this.fb.group({
-        titel: [evenement.titel, Validators.required],
-        tegoed: [evenement.tegoed, [Validators.required, DzwelgValidators.positiefValidator]]
-      });
+      this.isEvenement = ActiviteitHelper.isEvenement(evenement);
+      if (this.isEvenement) {
+        this.createEvenementBewerkenForm(evenement);
+      } else {
+        this.createProductieBewerkenForm(evenement);
+      }
+    });
+  }
 
-      const momentVan = moment.unix(evenement.starttijd);
-      const momentTot = moment.unix(evenement.eindtijd);
+  private createEvenementBewerkenForm(evenement: Activiteit) {
+    this.evenementBewerkenForm = this.fb.group({
+      titel: [evenement.titel, Validators.required],
+      tegoed: [evenement.tegoed, [Validators.required, DzwelgValidators.positiefValidator]]
+    });
 
-      this.datumVan = {
-        day: momentVan.date(),
-        month: momentVan.month() + 1,
-        year: momentVan.year(),
-      };
-      this.datumTot = {
-        day: momentTot.date(),
-        month: momentTot.month() + 1,
-        year: momentTot.year()
-      };
-      this.tijdVan = {
-        second: momentVan.second(),
-        minute: momentVan.minute(),
-        hour: momentVan.hour()
-      };
-      this.tijdTot = {
-        second: momentTot.second(),
-        minute: momentTot.minute(),
-        hour: momentTot.hour()
-      };
+    const momentVan = moment.unix(evenement.starttijd);
+    const momentTot = moment.unix(evenement.eindtijd);
 
+    this.datumVan = {
+      day: momentVan.date(),
+      month: momentVan.month() + 1,
+      year: momentVan.year(),
+    };
+    this.datumTot = {
+      day: momentTot.date(),
+      month: momentTot.month() + 1,
+      year: momentTot.year()
+    };
+    this.tijdVan = {
+      second: momentVan.second(),
+      minute: momentVan.minute(),
+      hour: momentVan.hour()
+    };
+    this.tijdTot = {
+      second: momentTot.second(),
+      minute: momentTot.minute(),
+      hour: momentTot.hour()
+    };
+  }
+
+  private createProductieBewerkenForm(productie: Activiteit) {
+    this.productieBewerkenForm = this.fb.group({
+      titel: [productie.titel, Validators.required],
     });
   }
 
@@ -124,10 +141,29 @@ export class EvenementenBewerkenComponent implements OnInit {
         const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(this.datumTot, this.tijdTot);
 
         this.afdb.object('/activiteiten/' + this.id).update({
-            titel: model.titel,
-            tegoed: model.tegoed,
-            starttijd: momentDatumVan.unix(),
-            eindtijd: momentDatumTot.unix(),
+          titel: model.titel,
+          tegoed: model.tegoed,
+          starttijd: momentDatumVan.unix(),
+          eindtijd: momentDatumTot.unix(),
+        });
+
+        this.router.navigate(['/activiteiten']);
+      }
+    }
+  }
+
+  public productieBewerkenOpslaan(model: Activiteit) {
+    if (this.productieBewerkenForm.invalid) {
+      const foutBoodschap = FormHelper.getFormErrorMessage(this.productieBewerkenForm);
+
+      this.alert = {
+        type: 'danger',
+        message: foutBoodschap,
+      };
+    } else {
+      if (this.id) {
+        this.afdb.object('/activiteiten/' + this.id).update({
+          titel: model.titel,
         });
 
         this.router.navigate(['/activiteiten']);

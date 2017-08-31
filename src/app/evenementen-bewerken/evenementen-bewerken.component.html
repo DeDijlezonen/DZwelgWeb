@@ -1,93 +1,113 @@
 <div class="container-fluid">
   <div class="row">
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-      <h1>Evenementen bewerken</h1>
+      <div *ngIf="isEvenement">
+        <h1>Evenementen bewerken</h1>
 
-      <dzwelg-alert [alert]="alert"></dzwelg-alert>
+        <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
-      <h2>Algemeen</h2>
+        <h2>Algemeen</h2>
 
-      <form [formGroup]="evenementBewerkenForm" (submit)="evenementBewerkenOpslaan(evenementBewerkenForm.value)">
-        <div class="form-group">
-          <label for="evenement-bewerken-titel-id">Titel</label>
-          <input id="evenement-bewerken-titel-id" class="form-control" type="text" formControlName="titel">
-        </div>
-        <div class="form-group">
-          <label for="evenement-bewerken-tegoed-id">Tegoed</label>
-          <div class="input-group">
-            <span class="input-group-addon">&euro;</span>
-            <input id="evenement-bewerken-tegoed-id" class="form-control" type="number" formControlName="tegoed">
+        <form [formGroup]="evenementBewerkenForm" (submit)="evenementBewerkenOpslaan(evenementBewerkenForm.value)">
+          <div class="form-group">
+            <label for="evenement-bewerken-titel-id">Titel</label>
+            <input id="evenement-bewerken-titel-id" class="form-control" type="text" formControlName="titel">
           </div>
-        </div>
-
-        <label for="van-input-id">Van</label>
-        <div class="form-group form-inline">
-          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-            <input id="van-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumVan" [(ngModel)]="datumVan" ngbDatepicker
-                   #d1="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
-            <div class="input-group-addon" (click)="d1.toggle()">
-              <span class="fa fa-calendar"></span>
+          <div class="form-group">
+            <label for="evenement-bewerken-tegoed-id">Tegoed</label>
+            <div class="input-group">
+              <span class="input-group-addon">&euro;</span>
+              <input id="evenement-bewerken-tegoed-id" class="form-control" type="number" formControlName="tegoed">
             </div>
           </div>
-          <ngb-timepicker [(ngModel)]="tijdVan" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
-        </div>
 
-        <label for="tot-input-id">Tot</label>
-        <div class="form-group form-inline">
-          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-            <input id="tot-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumTot" [(ngModel)]="datumTot" ngbDatepicker
-                   #d2="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
-            <div class="input-group-addon" (click)="d2.toggle()">
-              <span class="fa fa-calendar"></span>
+          <label for="van-input-id">Van</label>
+          <div class="form-group form-inline">
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+              <input id="van-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumVan"
+                     [(ngModel)]="datumVan" ngbDatepicker
+                     #d1="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+              <div class="input-group-addon" (click)="d1.toggle()">
+                <span class="fa fa-calendar"></span>
+              </div>
             </div>
+            <ngb-timepicker [(ngModel)]="tijdVan" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
           </div>
-          <ngb-timepicker [(ngModel)]="tijdTot" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+
+          <label for="tot-input-id">Tot</label>
+          <div class="form-group form-inline">
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+              <input id="tot-input-id" class="form-control" placeholder="yyyy-mm-dd" name="datumTot"
+                     [(ngModel)]="datumTot" ngbDatepicker
+                     #d2="ngbDatepicker" [ngModelOptions]="{standalone: true}" readonly>
+              <div class="input-group-addon" (click)="d2.toggle()">
+                <span class="fa fa-calendar"></span>
+              </div>
+            </div>
+            <ngb-timepicker [(ngModel)]="tijdTot" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+          </div>
+          <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
+        </form>
+
+        <br/>
+
+        <h2>Inschrijvingen</h2>
+
+        <div class="row">
+
+          <div class="col-6">
+            <table class="col-lg-6 table table-sm">
+              <tr>
+                <th>Gebruiker</th>
+                <th>Inschrijven</th>
+              </tr>
+              <tr *ngFor="let gebruiker of gebruikers | async | filterInschrijvingen:inschrijvingen">
+                <td>{{ gebruiker.voornaam + ' ' + gebruiker.achternaam }}</td>
+                <td>
+                  <button class="btn btn-sm btn-primary" (click)="schrijfIn(gebruiker.id)"><span
+                    class="fa fa-plus"></span></button>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="col-6">
+            <table class="col-lg-6 table table-sm">
+              <tr>
+                <th>Gebruiker</th>
+                <th>Uitschrijven</th>
+                <th>Betaald?</th>
+              </tr>
+              <tr *ngFor="let inschrijving of inschrijvingen">
+                <td>{{ inschrijving.voornaam + ' ' + inschrijving.achternaam }}</td>
+                <td>
+                  <button class="btn btn-sm btn-danger" (click)="schrijfUit(inschrijving.id)"><span
+                    class="fa fa-remove"></span></button>
+                </td>
+                <td>
+                  <input type="checkbox" (change)="slaBetaaldFlagOp(betaaldCheck.value, inschrijving.id)"
+                         #betaaldCheck="ngModel" [(ngModel)]="inschrijving.betaald">
+                </td>
+              </tr>
+            </table>
+          </div>
+
         </div>
-        <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
-      </form>
+      </div>
 
-      <br/>
+      <div *ngIf="!isEvenement">
+        <h1>Productie bewerken</h1>
 
-      <h2>Inschrijvingen</h2>
+        <dzwelg-alert [alert]="alert"></dzwelg-alert>
 
-      <div class="row">
+        <form [formGroup]="productieBewerkenForm" (submit)="productieBewerkenOpslaan(productieBewerkenForm.value)">
+          <div class="form-group">
+            <label for="productie-bewerken-titel-id">Titel</label>
+            <input id="productie-bewerken-titel-id" class="form-control" type="text" formControlName="titel">
+          </div>
 
-        <div class="col-6">
-          <table class="col-lg-6 table table-sm">
-            <tr>
-              <th>Gebruiker</th>
-              <th>Inschrijven</th>
-            </tr>
-            <tr *ngFor="let gebruiker of gebruikers | async | filterInschrijvingen:inschrijvingen">
-              <td>{{ gebruiker.voornaam + ' ' + gebruiker.achternaam }}</td>
-              <td>
-                <button class="btn btn-sm btn-primary" (click)="schrijfIn(gebruiker.id)"><span
-                  class="fa fa-plus"></span></button>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="col-6">
-          <table class="col-lg-6 table table-sm">
-            <tr>
-              <th>Gebruiker</th>
-              <th>Uitschrijven</th>
-              <th>Betaald?</th>
-            </tr>
-            <tr *ngFor="let inschrijving of inschrijvingen">
-              <td>{{ inschrijving.voornaam + ' ' + inschrijving.achternaam }}</td>
-              <td>
-                <button class="btn btn-sm btn-danger" (click)="schrijfUit(inschrijving.id)"><span
-                  class="fa fa-remove"></span></button>
-              </td>
-              <td>
-                <input type="checkbox" (change)="slaBetaaldFlagOp(betaaldCheck.value, inschrijving.id)"
-                       #betaaldCheck="ngModel" [(ngModel)]="inschrijving.betaald">
-              </td>
-            </tr>
-          </table>
-        </div>
+          <button type="submit" class="btn btn-primary">Wijzigingen opslaan</button>
+        </form>
 
       </div>
 

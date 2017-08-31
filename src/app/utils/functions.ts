@@ -54,6 +54,15 @@ export class FormHelper {
 
 }
 
+export class ActiviteitHelper {
+  static isEvenement(activiteit) {
+    if (activiteit.hasOwnProperty('eindtijd') && activiteit.hasOwnProperty('tegoed')) {
+      return true;
+    }
+    return false;
+  }
+}
+
 export class DateHelper {
   static getDateFromSeconds(seconds: number) {
     // const t = new Date(1970, 0, 1); // Epoch
