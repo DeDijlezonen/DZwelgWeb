@@ -31,7 +31,7 @@
               <p class="card-text">
                 <small class="text-muted">Aangemaakt op: {{ getDateFromSeconds(evenement.starttijd) | date }}</small>
               </p>
-              <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = evenement.id"><span
+              <button class="btn btn-secondary" (click)="naarActiviteitBewerken(evenement)"><span
                 class="fa fa-pencil"></span>&nbsp;Bewerken
               </button>
               <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen

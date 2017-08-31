@@ -1,5 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 export class FormHelper {
 
@@ -23,6 +25,13 @@ export class FormHelper {
     'aantalInStock': {
       'positiefValidator': 'Aantal mag niet negatief zijn.'
     },
+    'titel': {
+      'required': 'Titel is verplicht',
+    },
+    'tegoed': {
+      'required': 'Tegoed is verplicht',
+      'positiefValidator': 'Tegoed mag niet negatief zijn.',
+    }
   };
 
   static getFormErrorMessage(formGroup: FormGroup) {
@@ -45,11 +54,32 @@ export class FormHelper {
 
 }
 
+export class ActiviteitHelper {
+  static isEvenement(activiteit) {
+    if (activiteit.hasOwnProperty('eindtijd') && activiteit.hasOwnProperty('tegoed')) {
+      return true;
+    }
+    return false;
+  }
+}
+
 export class DateHelper {
   static getDateFromSeconds(seconds: number) {
-    const t = new Date(1970, 0, 1); // Epoch
-    t.setSeconds(seconds);
-    return t;
+    // const t = new Date(1970, 0, 1); // Epoch
+    // t.setSeconds(seconds);
+    // return t;
+    return moment.unix(seconds).toDate();
+  }
+
+  static ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
+    return moment([ngbDateStruct.year, ngbDateStruct.month - 1, ngbDateStruct.day, ngbTimeStruct.hour, ngbTimeStruct.second]);
+  }
+
+  static isValideTijdspanne(datumVan: NgbDateStruct, tijdVan: NgbTimeStruct, datumTot: NgbDateStruct, tijdTot: NgbTimeStruct): boolean {
+    const momentDatumVan = DateHelper.ngbDateEnTimeStructNaarMoment(datumVan, tijdVan);
+    const momentDatumTot = DateHelper.ngbDateEnTimeStructNaarMoment(datumTot, tijdTot);
+
+    return momentDatumVan.isBefore(momentDatumTot);
   }
 }
 

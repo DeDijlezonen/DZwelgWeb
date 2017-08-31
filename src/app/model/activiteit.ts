@@ -1,3 +1,5 @@
+import {ActiviteitHelper} from "../utils/functions";
+
 export class Activiteit {
     titel: string;
     id: string;
@@ -11,10 +13,7 @@ export class Activiteit {
         this.tegoed = 0;
     }
 
-    isEvenement(): boolean {
-      if (this.eindtijd && this.tegoed) {
-        return true;
-      }
-      return false;
+    public isEvenement(): boolean {
+      return ActiviteitHelper.isEvenement(this);
     }
 }

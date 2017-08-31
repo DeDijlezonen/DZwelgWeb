@@ -5,6 +5,7 @@ import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} f
 import {IAlert} from './../model/alert';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {DateHelper} from "../utils/functions";
+import {Router} from "@angular/router";
 
 interface ActiviteitType {
   value: string;
@@ -34,7 +35,7 @@ export class ActiviteitenComponent implements OnInit {
     {value: 'evenement', displayUpper: 'Evenement', displayLower: 'evenement'}
   ];
 
-  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(private afdb: AngularFireDatabase, private router: Router, private modalService: NgbModal, private fb: FormBuilder) {
     // this.typeAanTeMakenActiviteit = this.activiteitTypes.find(type => type.value === 'productie');
     // this.typeAanTeMakenActiviteit = { value: 'prodcutie', displayUpper: 'Productie', displayLower: 'productie' };
   }
@@ -78,6 +79,12 @@ export class ActiviteitenComponent implements OnInit {
       type: 'success',
       message: 'De activiteit werd succesvol bewerkt.'
     };
+  }
+
+  public naarActiviteitBewerken(activiteit): void {
+    this.teBewerkenActiviteitId = '';
+
+    this.router.navigate(['/activiteiten/bewerken', activiteit.id]);
   }
 
   public getDateFromSeconds(seconds: number) {
