@@ -27,10 +27,10 @@
               <td>{{ gebruiker.achternaam }}</td>
               <td>{{ gebruiker.saldo | currency:'EUR':true }}</td>
               <td>
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary" [disabled]="disableButtons">
                   <span class="fa fa-pencil"></span>
                 </button> &nbsp;
-                <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.uid)">
+                <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.uid)" [disabled]="disableButtons">
                   <span class="fa fa-trash"></span>
                 </button>
               </td>

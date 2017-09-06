@@ -25,6 +25,7 @@ export class GebruikersComponent implements OnInit {
   alert: IAlert;
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
+  disableButtons: boolean;
 
   constructor(private httpClient: Http, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth,
               private modalService: NgbModal, private fb: FormBuilder) {
@@ -113,6 +114,7 @@ export class GebruikersComponent implements OnInit {
    * @param {string} uid Het Firebase UID van de te verwijderen gebruiker
    */
   verwijderGebruiker(uid: string) {
+    this.disableButtons = true;
     this.alert = {
       type: 'info',
       message: 'Even nadenken...'
@@ -138,6 +140,7 @@ export class GebruikersComponent implements OnInit {
               type: 'info',
               message: 'Gebruiker zal worden verwijderd.\n(het kan een paar seconden tot een minuut duren eer de gebruiker effectief verwijderd is)'
             }
+            that.disableButtons = false;
           }, (fout) => {
             console.log("FOUT");
             // foutbericht uit de callback halen
@@ -146,6 +149,7 @@ export class GebruikersComponent implements OnInit {
               type: 'danger',
               message: 'De gebruiker kon niet worden verwijderd. (' + fout.error.message + ')'
             };
+            that.disableButtons = false;
           });
       })
   }
