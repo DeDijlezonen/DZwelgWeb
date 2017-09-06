@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
       <h1>Producties & evenementen</h1>
@@ -13,7 +13,7 @@
       <div class="row-fluid">
         <div class="card-columns">
           <div *ngFor="let evenement of activiteiten | async" class="card">
-            <div class="card-block">
+            <div class="card-body">
               <h4 *ngIf="evenement.id !== teBewerkenActiviteitId" class="card-title">{{ evenement.titel }}</h4>
               <form *ngIf="evenement.id === teBewerkenActiviteitId" class="form-inline"
                     [formGroup]="bewerkForms.get(evenement.id)"
@@ -24,14 +24,14 @@
                   <span class="fa fa-check"></span>
                 </button>
                 &nbsp;
-                <button class="btn btn-default" (click)="teBewerkenActiviteitId = ''">
+                <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = ''">
                   <span class="fa fa-remove"></span>
                 </button>
               </form>
               <p class="card-text">
                 <small class="text-muted">Aangemaakt op: {{ getDateFromSeconds(evenement.starttijd) | date }}</small>
               </p>
-              <button class="btn btn-secondary" (click)="teBewerkenActiviteitId = evenement.id"><span
+              <button class="btn btn-secondary" (click)="naarActiviteitBewerken(evenement)"><span
                 class="fa fa-pencil"></span>&nbsp;Bewerken
               </button>
               <button class="btn btn-danger" (click)="open(content, evenement.id)"><span class="fa fa-trash"></span>&nbsp;Verwijderen
