@@ -6,6 +6,8 @@ import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
+import {Http, RequestOptions} from "@angular/http";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'dzwelg-leden',
@@ -24,7 +26,7 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
 
-  constructor(private afdb: AngularFireDatabase, private afAuth: AngularFireAuth,
+  constructor(private httpClient: Http, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth,
               private modalService: NgbModal, private fb: FormBuilder) {
   }
 
@@ -111,16 +113,20 @@ export class GebruikersComponent implements OnInit {
    * @param {string} uid Het Firebase UID van de te verwijderen gebruiker
    */
   verwijderGebruiker(uid: string) {
+    this.alert = {
+      type: 'info',
+      message: 'Even nadenken...'
+    };
     let that = this;
     //token van aangemelde gebruiker ophalen
-    this.afAuth.auth.currentUser.getToken(true)
+    this.afAuth.auth.currentUser.getIdToken(true)
       .then(function (token) {
         //send token to backend
         that.httpClient.post(
           'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',   // url van cloud function
           null,                                                           // wordt niet gebruikt
           {
-            params: new HttpParams().set('idToken', token).set('uid', uid)      // parameters voor de function (idToken en UID)
+            params: { idToken: token, uid: uid }     // parameters voor de function (idToken en UID)
           })
           .subscribe((data) => {
             console.log("GELUKT");
@@ -130,7 +136,7 @@ export class GebruikersComponent implements OnInit {
             console.log(data);
             that.alert = {
               type: 'info',
-              message: 'Gebruiker zal worden verwijderd...\n(het tot een minuut duren eer de gebruiker effectief verwijderd is)'
+              message: 'Gebruiker zal worden verwijderd.\n(het kan een paar seconden tot een minuut duren eer de gebruiker effectief verwijderd is)'
             }
           }, (fout) => {
             console.log("FOUT");
