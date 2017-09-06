@@ -31,6 +31,9 @@ export class FormHelper {
     'tegoed': {
       'required': 'Tegoed is verplicht',
       'positiefValidator': 'Tegoed mag niet negatief zijn.',
+    },
+    'lid': {
+      'required': 'Rol is verplicht',
     }
   };
 
@@ -41,7 +44,7 @@ export class FormHelper {
         const errors = controls[control_key].errors;
         if (errors) {
           // foutBoodschap += control_key + ': ';
-          _.keys(errors).forEach((error_key: string, index) => {
+          _.keys(errors).forEach((error_key: string) => {
             // foutBoodschap += (error_key.toString() + (_.lastIndexOf(errors) === index ? '' : '; '));
             foutBoodschap += FormHelper.validationMessages[control_key][error_key] + '_';
           });
@@ -56,10 +59,7 @@ export class FormHelper {
 
 export class ActiviteitHelper {
   static isEvenement(activiteit) {
-    if (activiteit.hasOwnProperty('eindtijd') && activiteit.hasOwnProperty('tegoed')) {
-      return true;
-    }
-    return false;
+    return activiteit.hasOwnProperty('eindtijd') && activiteit.hasOwnProperty('tegoed');
   }
 }
 

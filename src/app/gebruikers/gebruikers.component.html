@@ -59,6 +59,31 @@
             <input formControlName="achternaam" class="form-control" id="achternaam_input" [disabled]="disableAanmakenForm">
             <label for="email_input">E-mailadres</label>
             <input type="email" formControlName="email" class="form-control" id="email_input" [disabled]="disableAanmakenForm">
+            <label>Rol</label>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" [value]="lid" checked>
+                Lid
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input formControlName="gebruikerrolKassaverantwoordelijke" class="form-check-input" type="checkbox" [value]="kassaverantwoordelijke">
+                Kassverantwoordelijke
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input formControlName="gebruikerrolAdministrator" class="form-check-input" type="checkbox" [value]="administrator">
+                Administrator
+              </label>
+            </div>
+            <!--<select id="rol_select" formControlName="gebruikerrol" class="form-control" [disabled]="disableAanmakenForm">-->
+              <!--<option>lid</option>-->
+              <!--<option>kassaverantwoordelijke</option>-->
+              <!--<option>administrator</option>-->
+            <!--</select>-->
+
             <br/>
             <div class="pull-right">
               <button class="btn btn-success" [disabled]="disableAanmakenForm">Aanmaken</button>
