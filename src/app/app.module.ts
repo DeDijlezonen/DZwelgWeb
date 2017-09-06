@@ -19,15 +19,18 @@ import { ConsumptieComponent } from './consumptie/consumptie.component';
 import { GebruikersComponent } from './gebruikers/gebruikers.component';
 import { StockBeheerComponent } from './stock-beheer/stock-beheer.component';
 import { ArraySorteerPipe } from './pipes/array-sorteer-pipe/array-sorteer.pipe';
-import {firebaseConfig} from "../environments/environment";
+import {firebaseConfig} from '../environments/environment';
 import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aanmaken.component';
-import {HttpClientModule} from "@angular/common/http";
+import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
+import { InschrijvingsFilterPipe } from './pipes/filter/filter.pipe';
+import { ProductieBewerkenComponent } from './productie-bewerken/productie-bewerken.component';
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
     { path: 'activiteiten', component: ActiviteitenComponent },
     { path: 'gebruikers', component: GebruikersComponent },
     { path: 'activiteiten/aanmaken', component: ActiviteitAanmakenComponent },
+    { path: 'activiteiten/bewerken/:id', component: EvenementenBewerkenComponent },
     { path: 'consumpties', component: ConsumptieComponent },
     { path: 'stock', component: StockBeheerComponent },
     { path: '', redirectTo: '/activiteiten', pathMatch: 'full' },
@@ -50,11 +53,13 @@ const routes: Routes = [
     StockBeheerComponent,
     ArraySorteerPipe,
     ActiviteitAanmakenComponent,
+    EvenementenBewerkenComponent,
+    InschrijvingsFilterPipe,
+    ProductieBewerkenComponent,
   ],
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
-    HttpClientModule,
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig, 'dzwelg-web'),
