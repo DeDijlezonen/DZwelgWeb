@@ -6,8 +6,7 @@ import {Gebruiker} from '../model/gebruiker';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Component, OnInit} from '@angular/core';
-import {Http, RequestOptions} from "@angular/http";
-import {HttpParams} from "@angular/common/http";
+import {Http} from '@angular/http';
 
 @Component({
   selector: 'dzwelg-leden',
@@ -40,7 +39,10 @@ export class GebruikersComponent implements OnInit {
     this.gebruikerAanmakenFormGroup = this.fb.group({
       voornaam: ['', Validators.required],
       achternaam: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      gebruikerrolLid: [true],
+      gebruikerrolKassaverantwoordelijke: [false],
+      gebruikerrolAdministrator: [false],
     });
   }
 
@@ -74,7 +76,21 @@ export class GebruikersComponent implements OnInit {
           // firebase uid van aangemaakte gebruiker op object setten
           model.uid = gebruiker.uid;
           // gebruiker met fb uid naar database schrijven
-          this.gebruikers.update(gebruiker.uid, model);
+          this.gebruikers.update(gebruiker.uid, {
+            uid: model.uid,
+            voornaam: model.voornaam,
+            achternaam: model.achternaam,
+            saldo: 0,
+          });
+          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({lid: true});
+          }
+          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({kassaverantwoordelijke: true});
+          }
+          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolAdministrator'].value === true) {
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({administrator: true});
+          }
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();
           this.disableAanmakenForm = false;
@@ -119,11 +135,11 @@ export class GebruikersComponent implements OnInit {
       type: 'info',
       message: 'Even nadenken...'
     };
-    let that = this;
-    //token van aangemelde gebruiker ophalen
+    const that = this;
+    // token van aangemelde gebruiker ophalen
     this.afAuth.auth.currentUser.getIdToken(true)
       .then(function (token) {
-        //send token to backend
+        // send token to backend
         that.httpClient.post(
           'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',   // url van cloud function
           null,                                                           // wordt niet gebruikt
@@ -131,18 +147,19 @@ export class GebruikersComponent implements OnInit {
             params: { idToken: token, uid: uid }     // parameters voor de function (idToken en UID)
           })
           .subscribe((data) => {
-            console.log("GELUKT");
+            console.log('GELUKT');
             // hoewel er data wordt opgevangen en er een bericht wordt gestuurd vanuit de function,
             // krijgt ik dit niet mee met de data hier... (evt checken op http 200, maar dat lijkt me redundant, omdat
             // de volgende regels errors opvangt)
             console.log(data);
             that.alert = {
               type: 'info',
-              message: 'Gebruiker zal worden verwijderd.\n(het kan een paar seconden tot een minuut duren eer de gebruiker effectief verwijderd is)'
-            }
+              message: 'Gebruiker zal worden verwijderd.\n' +
+              '(het kan een paar seconden tot een minuut duren eer de gebruiker effectief verwijderd is)'
+            };
             that.disableButtons = false;
           }, (fout) => {
-            console.log("FOUT");
+            console.log('FOUT');
             // foutbericht uit de callback halen
             console.log(fout.error.message);
             that.alert = {
@@ -151,6 +168,6 @@ export class GebruikersComponent implements OnInit {
             };
             that.disableButtons = false;
           });
-      })
+      });
   }
 }
