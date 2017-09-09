@@ -65,10 +65,7 @@ export class ActiviteitHelper {
 
 export class DateHelper {
   static getDateFromSeconds(seconds: number) {
-    // const t = new Date(1970, 0, 1); // Epoch
-    // t.setSeconds(seconds);
-    // return t;
-    return moment.unix(seconds).toDate();
+    return new Date(seconds);
   }
 
   static ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
