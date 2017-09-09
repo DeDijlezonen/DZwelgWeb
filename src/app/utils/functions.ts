@@ -80,4 +80,10 @@ export class DateHelper {
   }
 }
 
+export class Rollen {
+  static Lid : string = "Lid";
+  static Kassaverantwoordelijke : string = "Kassaverantwoordelijke";
+  static Beheerder : string = "Beheerder";
+}
+
 
