@@ -62,27 +62,22 @@
             <label>Rol</label>
             <div class="form-check">
               <label class="form-check-label">
-                <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" [value]="lid" checked>
+                <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" checked>
                 Lid <small>(enkel toegang tot eigen saldo)</small>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input formControlName="gebruikerrolKassaverantwoordelijke" class="form-check-input" type="checkbox" [value]="kassaverantwoordelijke">
+                <input formControlName="gebruikerrolKassaverantwoordelijke" class="form-check-input" type="checkbox" >
                 Kassaverantwoordelijke <small>(toegang tot consumptie-, stockbeheer en de kassa app)</small>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input formControlName="gebruikerrolBeheerder" class="form-check-input" type="checkbox" [value]="beheerder">
+                <input formControlName="gebruikerrolBeheerder" class="form-check-input" type="checkbox" >
                 Beheerder <small>(toegang tot alle beheerdersfuncties en de kassa app)</small>
               </label>
             </div>
-            <!--<select id="rol_select" formControlName="gebruikerrol" class="form-control" [disabled]="disableAanmakenForm">-->
-              <!--<option>lid</option>-->
-              <!--<option>kassaverantwoordelijke</option>-->
-              <!--<option>administrator</option>-->
-            <!--</select>-->
 
             <br/>
             <div class="pull-right">
