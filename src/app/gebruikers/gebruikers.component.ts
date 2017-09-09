@@ -42,7 +42,7 @@ export class GebruikersComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       gebruikerrolLid: [true],
       gebruikerrolKassaverantwoordelijke: [false],
-      gebruikerrolAdministrator: [false],
+      gebruikerrolBeheerder: [false],
     });
   }
 
@@ -88,8 +88,8 @@ export class GebruikersComponent implements OnInit {
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
             this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({kassaverantwoordelijke: true});
           }
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolAdministrator'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({administrator: true});
+          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({beheerder: true});
           }
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();
