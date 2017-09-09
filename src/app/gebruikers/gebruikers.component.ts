@@ -83,13 +83,13 @@ export class GebruikersComponent implements OnInit {
             saldo: 0,
           });
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Lid).update(true);
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Lid).set(true);
           }
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen+' + Rollen.Kassaverantwoordelijke).update(true);
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Kassaverantwoordelijke).set(true);
           }
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Beheerder).update(true);
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Beheerder).set(true);
           }
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();

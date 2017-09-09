@@ -81,9 +81,9 @@ export class DateHelper {
 }
 
 export class Rollen {
-  static Lid : string = "Lid";
-  static Kassaverantwoordelijke : string = "Kassaverantwoordelijke";
-  static Beheerder : string = "Beheerder";
+  static Lid : string = "lid";
+  static Kassaverantwoordelijke : string = "kassaverantwoordelijke";
+  static Beheerder : string = "beheerder";
 }
 
 
