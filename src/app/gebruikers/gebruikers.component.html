@@ -63,19 +63,19 @@
             <div class="form-check">
               <label class="form-check-label">
                 <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" [value]="lid" checked>
-                Lid (enkel toegang tot eigen saldo)
+                Lid <small>(enkel toegang tot eigen saldo)</small>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
                 <input formControlName="gebruikerrolKassaverantwoordelijke" class="form-check-input" type="checkbox" [value]="kassaverantwoordelijke">
-                Kassverantwoordelijke (toegang tot consumptie- en stockbeheer en de kassa app)
+                Kassaverantwoordelijke <small>(toegang tot consumptie-, stockbeheer en de kassa app)</small>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
                 <input formControlName="gebruikerrolBeheerder" class="form-check-input" type="checkbox" [value]="beheerder">
-                Beheerder (toegang tot alle functies en de kassa app)
+                Beheerder <small>(toegang tot alle beheerdersfuncties en de kassa app)</small>
               </label>
             </div>
             <!--<select id="rol_select" formControlName="gebruikerrol" class="form-control" [disabled]="disableAanmakenForm">-->
