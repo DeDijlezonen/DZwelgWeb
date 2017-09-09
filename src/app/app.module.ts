@@ -24,10 +24,11 @@ import { ActiviteitAanmakenComponent } from './activiteit-aanmaken/activiteit-aa
 import { EvenementenBewerkenComponent } from './evenementen-bewerken/evenementen-bewerken.component';
 import { InschrijvingsFilterPipe } from './pipes/filter/filter.pipe';
 import { ProductieBewerkenComponent } from './productie-bewerken/productie-bewerken.component';
+import {AdminGuard} from "./auth/admin.guard";
 
 const routes: Routes = [
   { path: '', component: TemplateComponent, children: [
-    { path: 'activiteiten', component: ActiviteitenComponent },
+    { path: 'activiteiten', component: ActiviteitenComponent, canActivate: [AdminGuard] },
     { path: 'gebruikers', component: GebruikersComponent },
     { path: 'activiteiten/aanmaken', component: ActiviteitAanmakenComponent },
     { path: 'activiteiten/bewerken/:id', component: EvenementenBewerkenComponent },
@@ -68,7 +69,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
   ],
-  providers: [AuthenticatieService],
+  providers: [AuthenticatieService, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
