@@ -1,4 +1,4 @@
-import {FormHelper} from '../utils/functions';
+import {FormHelper, Rollen} from '../utils/functions';
 import {IAlert} from '../model/alert';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
@@ -42,7 +42,7 @@ export class GebruikersComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       gebruikerrolLid: [true],
       gebruikerrolKassaverantwoordelijke: [false],
-      gebruikerrolAdministrator: [false],
+      gebruikerrolBeheerder: [false],
     });
   }
 
@@ -83,13 +83,13 @@ export class GebruikersComponent implements OnInit {
             saldo: 0,
           });
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({lid: true});
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Lid).set(true);
           }
           if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({kassaverantwoordelijke: true});
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Kassaverantwoordelijke).set(true);
           }
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolAdministrator'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen').update({administrator: true});
+          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
+            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rollen.Beheerder).set(true);
           }
           this.sluitGebruikerAanmakenModal();
           this.gebruikerAanmakenFormGroup.reset();
