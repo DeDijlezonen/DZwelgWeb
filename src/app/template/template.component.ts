@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
-import { AuthenticatieService } from '../services/authenticatie.service';
+import { AuthenticatieService } from './../services/authenticatie.service';
 import { Component, OnInit } from '@angular/core';
+import { version } from './version';
 
 @Component({
   selector: 'dzwelg-template',
@@ -12,30 +13,14 @@ export class TemplateComponent implements OnInit {
 
   constructor(
     private authenticatieService: AuthenticatieService,
-    private router: Router) {
-  }
-
-  // function resultaat () {
-  //   var temp = JSON.parse(this.responseText).version;
-  //   this.currentVersion = temp.version;
-  // }
-
-
+    private router: Router
+  ) { this.currentVersion = version}
 
   ngOnInit() {
     // if (!this.authenticatieService.isLoggedIn()) {
     //   this.router.navigate(['login']);
     // }
-
-    // versie opvragen vanuit package.json
-    let request = new XMLHttpRequest();
-    request.onload = (result) => {
-      let packageJSON = JSON.parse(result.srcElement['responseText']);
-      this.currentVersion = packageJSON.version;
-    };
-    request.open("get", "./package.json", true);
-    request.send();
-
+	
     this.authenticatieService.isLoggedIn().subscribe((user) => {
       if (!user) {
         this.router.navigate(['login']);

@@ -1,6 +1,6 @@
 {
   "name": "dzwelg-web",
-  "version": "4.4.5",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
