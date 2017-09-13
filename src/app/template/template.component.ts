@@ -27,12 +27,6 @@ export class TemplateComponent implements OnInit {
     //   this.router.navigate(['login']);
     // }
 
-    this.authenticatieService.isLoggedIn().subscribe((user) => {
-      if (!user) {
-        this.router.navigate(['login']);
-      }
-    });
-
     // versie opvragen vanuit package.json
     let request = new XMLHttpRequest();
     request.onload = (result) => {
@@ -41,6 +35,12 @@ export class TemplateComponent implements OnInit {
     };
     request.open("get", "./package.json", true);
     request.send();
+
+    this.authenticatieService.isLoggedIn().subscribe((user) => {
+      if (!user) {
+        this.router.navigate(['login']);
+      }
+    });
   }
 
   uitloggen() {
