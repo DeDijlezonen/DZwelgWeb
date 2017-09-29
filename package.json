@@ -32,6 +32,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "moment": "^2.18.1",
+    "ngx-permissions": "^2.1.0",
     "popper.js": "^1.12.5",
     "promise-polyfill": "^6.0.2",
     "rxjs": "^5.1.0",
