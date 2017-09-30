@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="row">
+    <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+      <h1>Saldo</h1>
+
+      <dzwelg-alert [alert]="alert"></dzwelg-alert>
+
+      <h2 *ngIf="!loading">{{ saldo | currency:'EUR':true }}</h2>
+
+    </main>
+  </div>
+</div>

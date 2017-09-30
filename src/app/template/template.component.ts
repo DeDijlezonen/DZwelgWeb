@@ -1,7 +1,7 @@
-import { Router } from '@angular/router';
-import { AuthenticatieService } from './../services/authenticatie.service';
-import { Component, OnInit } from '@angular/core';
-import { version } from './version';
+import {Router} from '@angular/router';
+import {AuthenticatieService} from './../services/authenticatie.service';
+import {Component, OnInit} from '@angular/core';
+import {version} from './version';
 import {NgxPermissionsService, NgxRolesService} from 'ngx-permissions';
 import {Rollen} from '../utils/functions';
 
@@ -12,12 +12,16 @@ import {Rollen} from '../utils/functions';
 })
 export class TemplateComponent implements OnInit {
   currentVersion: string;
+  lidLiteral = Rollen.Lid;
+  beheerderLiteral = Rollen.Beheerder;
+  stockBeheerderLiteral = Rollen.Stockbeheerder;
 
-  constructor(
-    private authenticatieService: AuthenticatieService,
-    private router: Router,
-    private rolesService: NgxRolesService,
-  ) { this.currentVersion = version; }
+
+  constructor(private authenticatieService: AuthenticatieService,
+              private router: Router,
+              private rolesService: NgxRolesService) {
+    this.currentVersion = version;
+  }
 
   ngOnInit() {
     // if (!this.authenticatieService.isLoggedIn()) {
@@ -29,20 +33,20 @@ export class TemplateComponent implements OnInit {
       }
     });
 
-    const beheerder = Rollen.Beheerder;
-    const stockbeheerder = Rollen.Stockbeheerder;
-    const lid = Rollen.Lid;
-
     this.authenticatieService.isLoggedIn().subscribe((user) => {
-      this.rolesService.addRoles({
-        beheerder: () => {
-          return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Beheerder);
-        },
-        stockbeheerder: () => {
-          return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Stockbeheerder);
-        },
-        lid: () => {return true; }
-      });
+      if (user) {
+        this.rolesService.addRoles({
+          [Rollen.Beheerder]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Beheerder);
+          },
+          [Rollen.Stockbeheerder]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Stockbeheerder);
+          },
+          [Rollen.Lid]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Lid);
+          }
+        });
+      }
     });
   }
 

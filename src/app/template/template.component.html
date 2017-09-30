@@ -1,21 +1,25 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="#">DZwelg</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="/activiteiten">DZwelg</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/activiteiten">Activiteiten</a>
+        <a class="nav-link" routerLink="/activiteiten" *ngxPermissionsOnly="[beheerderLiteral]">Activiteiten</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/gebruikers">Gebruikers</a>
+        <a class="nav-link" routerLink="/gebruikers" *ngxPermissionsOnly="[beheerderLiteral]">Gebruikers</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/consumpties">Consumpties</a>
+        <a class="nav-link" routerLink="/consumpties" *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Consumpties</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/stock">Stockbeheer</a>
+        <a class="nav-link" routerLink="/stock" *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Stockbeheer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/saldo" *ngxPermissionsOnly="[beheerderLiteral, lidLiteral]">Saldo</a>
       </li>
     </ul>
     <ul class="navbar-nav">
@@ -26,9 +30,9 @@
   </div>
 </nav>
 
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
 
 <footer>
   <p class="tiny">Versie: {{currentVersion}}</p>

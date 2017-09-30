@@ -27,6 +27,7 @@ import {ProductieBewerkenComponent} from './productie-bewerken/productie-bewerke
 import {NgxPermissionsGuard, NgxPermissionsModule} from 'ngx-permissions';
 import {Rollen} from './utils/functions';
 import { PaginaNietToegelatenComponent } from './pagina-niet-toegelaten/pagina-niet-toegelaten.component';
+import { SaldoComponent } from './saldo/saldo.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,12 @@ const routes: Routes = [
         redirectTo: '/401'
       }
     }},
+    {path: 'saldo', component: SaldoComponent, canActivate: [NgxPermissionsGuard], data: {
+      permissions: {
+        only: [Rollen.Lid],
+        redirectTo: '/401',
+      }
+    }},
     {path: '', redirectTo: '/activiteiten', pathMatch: 'full'},
     {path: '404', component: PaginaNietGevondenComponent},
     {path: '401', component: PaginaNietToegelatenComponent},
@@ -93,6 +100,7 @@ const routes: Routes = [
     InschrijvingsFilterPipe,
     ProductieBewerkenComponent,
     PaginaNietToegelatenComponent,
+    SaldoComponent,
   ],
   imports: [
     NgbModule.forRoot(),
