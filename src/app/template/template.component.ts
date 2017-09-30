@@ -2,7 +2,7 @@ import {Router} from '@angular/router';
 import {AuthenticatieService} from './../services/authenticatie.service';
 import {Component, OnInit} from '@angular/core';
 import {version} from './version';
-import {NgxPermissionsService, NgxRolesService} from 'ngx-permissions';
+import {NgxRolesService} from 'ngx-permissions';
 import {Rollen} from '../utils/functions';
 
 @Component({
@@ -24,9 +24,6 @@ export class TemplateComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (!this.authenticatieService.isLoggedIn()) {
-    //   this.router.navigate(['login']);
-    // }
     this.authenticatieService.isLoggedIn().subscribe((user) => {
       if (!user) {
         this.router.navigate(['login']);
