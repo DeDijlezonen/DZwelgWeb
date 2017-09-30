@@ -32,3 +32,7 @@ footer {
   margin-bottom: 75px;
 }
 
+.active-link {
+  color: #000000 !important;
+  background-color: #999999;
+}

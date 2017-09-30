@@ -74,7 +74,7 @@ const routes: Routes = [
         redirectTo: '/401',
       }
     }},
-    {path: '', redirectTo: '/activiteiten', pathMatch: 'full'},
+    {path: '', redirectTo: '/saldo', pathMatch: 'full'},
     {path: '404', component: PaginaNietGevondenComponent},
     {path: '401', component: PaginaNietToegelatenComponent},
   ]
