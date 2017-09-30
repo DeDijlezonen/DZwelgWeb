@@ -5,7 +5,7 @@ import {AuthenticatieService} from './../services/authenticatie.service';
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AngularFireDatabase} from 'angularfire2/database';
-import {Rollen} from '../utils/functions';
+import {Rol} from '../utils/functions';
 
 @Component({
   selector: 'dzwelg-login',
@@ -38,13 +38,13 @@ export class LoginComponent implements OnInit {
   login(model: User, isValid: boolean) {
     this.authenticatieService.login(model.email, model.wachtwoord).then((data) => {
       this.afdb.object('gebruikers/' + data.uid).subscribe(gebruiker => {
-        if (gebruiker.rollen[Rollen.Beheerder]) {
+        if (gebruiker.rollen[Rol.Beheerder]) {
           this.router.navigate(['activiteiten']);
-        } else if (gebruiker.rollen[Rollen.Stockbeheerder]) {
+        } else if (gebruiker.rollen[Rol.Stockbeheerder]) {
           this.router.navigate(['consumpties']);
-        } else if (gebruiker.rollen[Rollen.Lid]) {
+        } else if (gebruiker.rollen[Rol.Lid]) {
           this.router.navigate(['saldo']);
-        } else if (gebruiker.rollen[Rollen.Kassaverantwoordelijke]) {
+        } else if (gebruiker.rollen[Rol.Kassaverantwoordelijke]) {
           this.alert = {
             type: 'danger',
             message: 'Enkel leden hebben toegang tot dit platform',

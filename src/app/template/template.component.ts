@@ -3,7 +3,7 @@ import {AuthenticatieService} from './../services/authenticatie.service';
 import {Component, OnInit} from '@angular/core';
 import {version} from './version';
 import {NgxRolesService} from 'ngx-permissions';
-import {Rollen} from '../utils/functions';
+import {Rol} from '../utils/functions';
 
 @Component({
   selector: 'dzwelg-template',
@@ -12,9 +12,9 @@ import {Rollen} from '../utils/functions';
 })
 export class TemplateComponent implements OnInit {
   currentVersion: string;
-  lidLiteral = Rollen.Lid;
-  beheerderLiteral = Rollen.Beheerder;
-  stockBeheerderLiteral = Rollen.Stockbeheerder;
+  lidLiteral = Rol.Lid;
+  beheerderLiteral = Rol.Beheerder;
+  stockBeheerderLiteral = Rol.Stockbeheerder;
 
 
   constructor(private authenticatieService: AuthenticatieService,
@@ -33,14 +33,14 @@ export class TemplateComponent implements OnInit {
     this.authenticatieService.isLoggedIn().subscribe((user) => {
       if (user) {
         this.rolesService.addRoles({
-          [Rollen.Beheerder]: () => {
-            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Beheerder);
+          [Rol.Beheerder]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rol.Beheerder);
           },
-          [Rollen.Stockbeheerder]: () => {
-            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Stockbeheerder);
+          [Rol.Stockbeheerder]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rol.Stockbeheerder);
           },
-          [Rollen.Lid]: () => {
-            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rollen.Lid);
+          [Rol.Lid]: () => {
+            return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rol.Lid);
           }
         });
       }

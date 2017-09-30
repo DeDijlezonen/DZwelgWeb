@@ -4,8 +4,8 @@ import {Component, OnInit} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 import {IAlert} from './../model/alert';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {DateHelper} from "../utils/functions";
-import {Router} from "@angular/router";
+import {DateHelper} from '../utils/functions';
+import {Router} from '@angular/router';
 
 interface ActiviteitType {
   value: string;
@@ -87,8 +87,8 @@ export class ActiviteitenComponent implements OnInit {
     this.router.navigate(['/activiteiten/bewerken', activiteit.id]);
   }
 
-  public getDateFromSeconds(seconds: number) {
-    return DateHelper.getDateFromSeconds(seconds);
+  public getDateFromMiliSeconds(seconds: number) {
+    return DateHelper.getDateFromMiliSeconds(seconds);
   }
 
   private verwijder(id: string) {

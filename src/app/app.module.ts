@@ -25,7 +25,7 @@ import {EvenementenBewerkenComponent} from './evenementen-bewerken/evenementen-b
 import {InschrijvingsFilterPipe} from './pipes/filter/filter.pipe';
 import {ProductieBewerkenComponent} from './productie-bewerken/productie-bewerken.component';
 import {NgxPermissionsGuard, NgxPermissionsModule} from 'ngx-permissions';
-import {Rollen} from './utils/functions';
+import {Rol} from './utils/functions';
 import { PaginaNietToegelatenComponent } from './pagina-niet-toegelaten/pagina-niet-toegelaten.component';
 import { SaldoComponent } from './saldo/saldo.component';
 
@@ -34,43 +34,43 @@ const routes: Routes = [
     path: '', component: TemplateComponent, children: [
     {path: 'activiteiten', component: ActiviteitenComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder],
+        only: [Rol.Beheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'gebruikers', component: GebruikersComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder],
+        only: [Rol.Beheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'activiteiten/aanmaken', component: ActiviteitAanmakenComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder],
+        only: [Rol.Beheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'activiteiten/bewerken/:id', component: EvenementenBewerkenComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder],
+        only: [Rol.Beheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'consumpties', component: ConsumptieComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder, Rollen.Stockbeheerder],
+        only: [Rol.Beheerder, Rol.Stockbeheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'stock', component: StockBeheerComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Beheerder, Rollen.Stockbeheerder],
+        only: [Rol.Beheerder, Rol.Stockbeheerder],
         redirectTo: '/401'
       }
     }},
     {path: 'saldo', component: SaldoComponent, canActivate: [NgxPermissionsGuard], data: {
       permissions: {
-        only: [Rollen.Lid],
+        only: [Rol.Lid],
         redirectTo: '/401',
       }
     }},

@@ -64,8 +64,8 @@ export class ActiviteitHelper {
 }
 
 export class DateHelper {
-  static getDateFromSeconds(seconds: number) {
-    return new Date(seconds);
+  static getDateFromMiliSeconds(miliseconds: number) {
+    return moment(miliseconds).toDate();
   }
 
   static ngbDateEnTimeStructNaarMoment(ngbDateStruct: NgbDateStruct, ngbTimeStruct: NgbTimeStruct) {
@@ -80,11 +80,17 @@ export class DateHelper {
   }
 }
 
-export class Rollen {
-  static Lid : string = "lid";
-  static Kassaverantwoordelijke : string = "kassaverantwoordelijke";
-  static Stockbeheerder: string = "stockbeheerder";
-  static Beheerder : string = "beheerder";
+export class Rol {
+  static Lid = 'lid';
+  static Kassaverantwoordelijke = 'kassaverantwoordelijke';
+  static Stockbeheerder = 'stockbeheerder';
+  static Beheerder = 'beheerder';
+}
+
+export class TransactieSoort {
+  static Credit = 'CREDIT';
+  static Debit = 'DEBIT';
+  static Undo = 'UNDO';
 }
 
 
