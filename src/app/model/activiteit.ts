@@ -1,4 +1,4 @@
-import {ActiviteitHelper} from "../utils/functions";
+import {ActiviteitHelper} from '../utils/functions';
 
 export class Activiteit {
     titel: string;
@@ -8,9 +8,12 @@ export class Activiteit {
     eindtijd: number;
     tegoed: number;
 
+    actief: boolean;
+
     constructor() {
         this.titel = '';
         this.tegoed = 0;
+        this.actief = true;
     }
 
     public isEvenement(): boolean {

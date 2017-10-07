@@ -88,6 +88,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
 
       const key = fbActiviteit.key;
       model.id = key;
+      model.actief = true;
       this.activiteiten.update(key, model);
 
       this.router.navigate(['/activiteiten/bewerken', key]);
@@ -113,6 +114,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
 
       const key = fbEvent.key;
       model.id = key;
+      model.actief = true;
       this.activiteiten.update(key, model);
 
       this.router.navigate(['../']);

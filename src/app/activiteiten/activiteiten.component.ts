@@ -21,6 +21,8 @@ interface ActiviteitType {
 export class ActiviteitenComponent implements OnInit {
 
   activiteiten: FirebaseListObservable<Activiteit[]>;
+  activiteitenVoorView: Activiteit[] = [];
+  inactieveActiviteitenVoorView: Activiteit[] = [];
   alert: IAlert;
   verwijderModal: NgbModalRef;
   teVerwijderenActiviteitId: string;
@@ -44,14 +46,8 @@ export class ActiviteitenComponent implements OnInit {
     this.typeAanTeMakenActiviteit = this.activiteitTypes[0];
     this.activiteiten = this.afdb.list('activiteiten');
     this.activiteiten.subscribe(snapshots => {
-      snapshots.forEach(snapshot => {
-        this.bewerkForms.set(
-          snapshot.id,
-          this.fb.group({
-            titel: [snapshot.titel, Validators.required]
-          })
-        );
-      });
+      this.activiteitenVoorView = snapshots.filter(activiteit => activiteit.actief);
+      this.inactieveActiviteitenVoorView = snapshots.filter(activiteit => !activiteit.actief);
     });
   }
 
@@ -92,17 +88,17 @@ export class ActiviteitenComponent implements OnInit {
   }
 
   private verwijder(id: string) {
-    this.activiteiten.remove(id).then(
+    this.activiteiten.update(id, {actief: false}).then(
       succes => {
         this.alert = {
           type: 'success',
-          message: 'De activiteit werd succesvol verwijderd.'
+          message: 'De activiteit werd succesvol gedesactiveerd.'
         };
       },
       error => {
         this.alert = {
           type: 'danger',
-          message: 'De activiteit kon niet worden verwijderd. (' + error.name + ': ' + error.message + ')'
+          message: 'De activiteit kon niet worden gedesactiveerd. (' + error.name + ': ' + error.message + ')'
         };
       },
     );
