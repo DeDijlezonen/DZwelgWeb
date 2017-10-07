@@ -22,6 +22,10 @@ export class AuthenticatieService {
     return this.afAuth.authState;
   }
 
+  getCurrentUser() {
+    return this.afAuth.auth.currentUser;
+  }
+
   isGebruikerByRolnaam(uid: string, rolnaam: string): Promise<boolean> {
     const that = this;
     return new Promise(function(resolve, reject) {

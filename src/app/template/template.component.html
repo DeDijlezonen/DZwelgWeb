@@ -7,22 +7,28 @@
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/activiteiten" routerLinkActive="active-link" *ngxPermissionsOnly="[beheerderLiteral]">Activiteiten</a>
+        <a class="nav-link" routerLink="/activiteiten" routerLinkActive="active-link"
+           *ngxPermissionsOnly="[beheerderLiteral]">Activiteiten</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/gebruikers" routerLinkActive="active-link" *ngxPermissionsOnly="[beheerderLiteral]">Gebruikers</a>
+        <a class="nav-link" routerLink="/gebruikers" routerLinkActive="active-link"
+           *ngxPermissionsOnly="[beheerderLiteral]">Gebruikers</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/consumpties" routerLinkActive="active-link" *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Consumpties</a>
+        <a class="nav-link" routerLink="/consumpties" routerLinkActive="active-link"
+           *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Consumpties</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/stock" routerLinkActive="active-link" *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Stockbeheer</a>
+        <a class="nav-link" routerLink="/stock" routerLinkActive="active-link"
+           *ngxPermissionsOnly="[beheerderLiteral, stockBeheerderLiteral]">Stockbeheer</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/saldo" routerLinkActive="active-link" *ngxPermissionsOnly="[beheerderLiteral, lidLiteral]">Mijn saldo</a>
+        <a class="nav-link" routerLink="/saldo" routerLinkActive="active-link"
+           *ngxPermissionsOnly="[beheerderLiteral, lidLiteral]">Mijn saldo</a>
       </li>
     </ul>
     <ul class="navbar-nav">
+      <li class="nav-item"><span class="nav-link">{{userIdentification}}</span></li>
       <li class="nav-item" (click)="uitloggen()">
         <a class="nav-link" href="#"><i class="fa fa-power-off"></i>&nbsp;Afmelden</a>
       </li>

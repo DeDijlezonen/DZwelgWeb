@@ -15,7 +15,7 @@ export class TemplateComponent implements OnInit {
   lidLiteral = Rol.Lid;
   beheerderLiteral = Rol.Beheerder;
   stockBeheerderLiteral = Rol.Stockbeheerder;
-
+  userIdentification = '';
 
   constructor(private authenticatieService: AuthenticatieService,
               private router: Router,
@@ -24,14 +24,11 @@ export class TemplateComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.authenticatieService.isLoggedIn().subscribe((user) => {
       if (!user) {
         this.router.navigate(['login']);
-      }
-    });
-
-    this.authenticatieService.isLoggedIn().subscribe((user) => {
-      if (user) {
+      } else {
         this.rolesService.addRoles({
           [Rol.Beheerder]: () => {
             return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rol.Beheerder);
@@ -43,12 +40,18 @@ export class TemplateComponent implements OnInit {
             return this.authenticatieService.isGebruikerByRolnaam(user.uid, Rol.Lid);
           }
         });
+
+        this.setUserIdentification(user);
       }
     });
   }
 
   uitloggen() {
     this.authenticatieService.logout();
+  }
+
+  private setUserIdentification(user) {
+    this.userIdentification = user.email;
   }
 
 }
