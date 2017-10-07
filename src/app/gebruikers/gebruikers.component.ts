@@ -72,40 +72,54 @@ export class GebruikersComponent implements OnInit {
         message: 'Bezig met aanmaken...'
       };
 
-      this.afAuth.auth.createUserWithEmailAndPassword(model.email, 'default')
-        .then(gebruiker => {
-          // firebase uid van aangemaakte gebruiker op object setten
-          model.uid = gebruiker.uid;
-          // gebruiker met fb uid naar database schrijven
-          this.gebruikers.update(gebruiker.uid, {
-            uid: model.uid,
-            voornaam: model.voornaam,
-            achternaam: model.achternaam,
-            saldo: 0,
-          });
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Lid).set(true);
-          }
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Kassaverantwoordelijke).set(true);
-          }
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolStockbeheerder'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Stockbeheerder).set(true);
-          }
-          if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
-            this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Beheerder).set(true);
-          }
-          this.sluitGebruikerAanmakenModal();
-          this.gebruikerAanmakenFormGroup.reset();
+      this.afdb.list('gebruikers').take(1).subscribe(gebruikers => {
+        const gebruikerTemp = gebruikers.find(gebruiker => {
+          return (gebruiker.voornaam + ' ' + gebruiker.achternaam).toLowerCase() === (model.voornaam + ' ' + model.achternaam).toLowerCase();
+        });
+
+        if (gebruikerTemp) {
           this.disableAanmakenForm = false;
-        })
-        .catch(error => {
           this.alertGebruikerAanmaken = {
             type: 'danger',
-            message: error.message,
+            message: 'Deze combinatie van voor- en achternaam bestaat al. Kies een andere.'
           };
-          this.disableAanmakenForm = false;
-        });
+        } else {
+          this.afAuth.auth.createUserWithEmailAndPassword(model.email, 'default')
+            .then(gebruiker => {
+              // firebase uid van aangemaakte gebruiker op object setten
+              model.uid = gebruiker.uid;
+              // gebruiker met fb uid naar database schrijven
+              this.gebruikers.update(gebruiker.uid, {
+                uid: model.uid,
+                voornaam: model.voornaam,
+                achternaam: model.achternaam,
+                saldo: 0,
+              });
+              if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
+                this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Lid).set(true);
+              }
+              if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
+                this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Kassaverantwoordelijke).set(true);
+              }
+              if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolStockbeheerder'].value === true) {
+                this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Stockbeheerder).set(true);
+              }
+              if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
+                this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Beheerder).set(true);
+              }
+              this.sluitGebruikerAanmakenModal();
+              this.gebruikerAanmakenFormGroup.reset();
+              this.disableAanmakenForm = false;
+            })
+            .catch(error => {
+              this.alertGebruikerAanmaken = {
+                type: 'danger',
+                message: error.message,
+              };
+              this.disableAanmakenForm = false;
+            });
+        }
+      });
     }
   }
 
@@ -148,7 +162,7 @@ export class GebruikersComponent implements OnInit {
           'https://us-central1-dzwelg-dev.cloudfunctions.net/deleteUser',   // url van cloud function
           null,                                                           // wordt niet gebruikt
           {
-            params: { idToken: token, uid: uid }     // parameters voor de function (idToken en UID)
+            params: {idToken: token, uid: uid}     // parameters voor de function (idToken en UID)
           })
           .subscribe((data) => {
             console.log('GELUKT');
