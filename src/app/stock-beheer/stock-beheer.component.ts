@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from "angularfire2/database";
-import {StockLijn} from "../model/stocklijn";
-import {IAlert} from "../model/alert";
-import {Consumptie} from "../model/Consumptie";
-import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FormHelper} from "../utils/functions";
-import {DzwelgValidators} from "../utils/validators";
+import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
+import {StockLijn} from '../model/stocklijn';
+import {IAlert} from '../model/alert';
+import {Consumptie} from '../model/Consumptie';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormHelper} from '../utils/functions';
+import {DzwelgValidators} from '../utils/validators';
 import 'rxjs/add/operator/take';
+import {AuthenticatieService} from '../services/authenticatie.service';
+declare var ga;
 
 interface StockViewModel {
   id: string;
@@ -24,7 +26,7 @@ interface StockViewModel {
 export class StockBeheerComponent implements OnInit {
 
   stockFLO: FirebaseListObservable<StockLijn[]>;
-  consumptiesFLO: FirebaseListObservable<Consumptie[]>
+  consumptiesFLO: FirebaseListObservable<Consumptie[]>;
   stocklijnen: StockViewModel[] = [];
   alert: IAlert;
   stockAantalModal: NgbModalRef;
@@ -33,7 +35,10 @@ export class StockBeheerComponent implements OnInit {
   teBewerkenStockLijnId: string;
   teBewerkenStockLijn: StockViewModel;
 
-  constructor(private afdb: AngularFireDatabase, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(private afdb: AngularFireDatabase,
+              private modalService: NgbModal,
+              private fb: FormBuilder,
+              private authenticatieService: AuthenticatieService) {
   }
 
   ngOnInit() {
@@ -85,6 +90,9 @@ export class StockBeheerComponent implements OnInit {
       this.stockFLO.update(this.teBewerkenStockViewModel.id, stocklijn);
       this.stockAantalAanpassenForm.reset();
       this.stockAantalAanpassenForm.controls['aantalInStock'].setValue(0);
+
+      this.verstuurAnalyse(model.aantalInStock, stocklijn.consumptieId);
+
       this.sluitModal();
     } else {
       const foutBoodschap = FormHelper.getFormErrorMessage(this.stockAantalAanpassenForm);
@@ -142,4 +150,10 @@ export class StockBeheerComponent implements OnInit {
     this.teBewerkenStockLijn = null;
   }
 
+  private verstuurAnalyse(aantalToegevoegd: number, consumptieId: string) {
+    const firebaseUser = this.authenticatieService.getCurrentUser();
+    this.afdb.object('consumpties/' + consumptieId).subscribe((consumptie: Consumptie) => {
+      ga('send', 'event', 'Stock', 'add ' + consumptie.naam, firebaseUser.email, aantalToegevoegd);
+    });
+  }
 }
