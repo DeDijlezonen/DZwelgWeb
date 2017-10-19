@@ -2,6 +2,8 @@ import {FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import {AuthenticatieService} from '../services/authenticatie.service';
+declare var ga;
 
 export class FormHelper {
 
@@ -55,6 +57,22 @@ export class FormHelper {
   }
 
 
+}
+
+export class AnalyticsHelper {
+
+  static verstuurAnalyseMetGebruiker(authService: AuthenticatieService, eventCategory: string, eventAction: string, eventValue?: number) {
+    const firebaseUser = authService.getCurrentUser();
+    if (eventValue) {
+      AnalyticsHelper.verstuurAnalyse(eventCategory, eventAction, firebaseUser.email, eventValue);
+    } else {
+      AnalyticsHelper.verstuurAnalyse(eventCategory, eventAction, firebaseUser.email);
+    }
+  }
+
+  static verstuurAnalyse(eventCategory: string, eventAction: string, eventLabel: string, eventValue?: number) {
+    ga('send', 'event', eventCategory, eventAction, eventLabel, eventValue);
+  }
 }
 
 export class ActiviteitHelper {

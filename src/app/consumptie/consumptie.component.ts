@@ -6,7 +6,7 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Consumptie } from './../model/Consumptie';
 import { FirebaseListObservable, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {StockLijn} from "../model/stocklijn";
+import {StockLijn} from '../model/stocklijn';
 
 @Component({
   selector: 'dzwelg-consumptie',

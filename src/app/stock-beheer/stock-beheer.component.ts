@@ -5,11 +5,10 @@ import {IAlert} from '../model/alert';
 import {Consumptie} from '../model/Consumptie';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {FormHelper} from '../utils/functions';
+import {AnalyticsHelper, FormHelper} from '../utils/functions';
 import {DzwelgValidators} from '../utils/validators';
 import 'rxjs/add/operator/take';
 import {AuthenticatieService} from '../services/authenticatie.service';
-declare var ga;
 
 interface StockViewModel {
   id: string;
@@ -91,7 +90,7 @@ export class StockBeheerComponent implements OnInit {
       this.stockAantalAanpassenForm.reset();
       this.stockAantalAanpassenForm.controls['aantalInStock'].setValue(0);
 
-      this.verstuurAnalyse(model.aantalInStock, stocklijn.consumptieId);
+      this.verstuurAnalyseStock(model.aantalInStock, stocklijn.consumptieId, 'add');
 
       this.sluitModal();
     } else {
@@ -141,6 +140,7 @@ export class StockBeheerComponent implements OnInit {
         aantalInStock: this.teBewerkenStockLijn.aantalInStock,
       };
       this.stockFLO.update(this.teBewerkenStockLijn.id, stocklijn);
+      this.verstuurAnalyseStock(stocklijn.aantalInStock, stocklijn.consumptieId, 'edit');
       this.annulleerBewerken();
     }
   }
@@ -150,10 +150,9 @@ export class StockBeheerComponent implements OnInit {
     this.teBewerkenStockLijn = null;
   }
 
-  private verstuurAnalyse(aantalToegevoegd: number, consumptieId: string) {
-    const firebaseUser = this.authenticatieService.getCurrentUser();
+  private verstuurAnalyseStock(aantalToegevoegd: number, consumptieId: string, eventAction: string) {
     this.afdb.object('consumpties/' + consumptieId).subscribe((consumptie: Consumptie) => {
-      ga('send', 'event', 'Stock', 'add ' + consumptie.naam, firebaseUser.email, aantalToegevoegd);
+      AnalyticsHelper.verstuurAnalyseMetGebruiker(this.authenticatieService, 'Stock', eventAction + ' ' + consumptie.naam, aantalToegevoegd);
     });
   }
 }
