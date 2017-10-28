@@ -117,7 +117,7 @@ export class ActiviteitAanmakenComponent implements OnInit {
       model.actief = true;
       this.activiteiten.update(key, model);
 
-      this.router.navigate(['../']);
+      this.router.navigate(['/activiteiten']);
     }
   }
 
