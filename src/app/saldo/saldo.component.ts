@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticatieService} from '../services/authenticatie.service';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {IAlert} from '../model/alert';
 import * as _ from 'lodash';
-import {DateHelper, TransactieSoort} from '../utils/functions';
+import {TransactieSoort} from '../utils/functions';
 import * as moment from 'moment';
 
 @Component({
@@ -54,11 +54,11 @@ export class SaldoComponent implements OnInit {
               transactieString += '(' + TransactieSoort.Debit + ') - € ' + transactie.bedrag + ' (';
 
               const consumptieLijnenKeys = _.keys(transactie.consumptielijnen);
-              consumptieLijnenKeys.forEach(key => {
+              consumptieLijnenKeys.forEach((key, index) => {
                 const consumptielijn = transactie.consumptielijnen[key];
 
                 transactieString += consumptielijn.aantal + ' x ' + consumptielijn.consumptie.naam;
-                if (key < (consumptieLijnenKeys.length - 1)) {
+                if (index < (consumptieLijnenKeys.length - 1)) {
                   transactieString += ', ';
                 }
               });

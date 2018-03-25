@@ -108,12 +108,16 @@ export class EvenementenBewerkenComponent implements OnInit {
   public schrijfIn(id: string) {
     if (this.id) {
       this.afdb.object('/activiteiten/' + this.id + '/ingeschrevenen').update({[id]: false});
+      this.getEvenement().subscribe((evenement) => {
+        this.afdb.object('/activiteiten/' + this.id + '/saldi').update({[id]: evenement.tegoed });
+      });
     }
   }
 
   public schrijfUit(id: string) {
     if (this.id) {
       this.ingeschrevenenFLO.remove(id);
+      this.afdb.list('/activiteiten/' + this.id + '/saldi').remove(id);
     }
   }
 
