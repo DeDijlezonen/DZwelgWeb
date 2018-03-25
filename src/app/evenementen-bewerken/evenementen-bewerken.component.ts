@@ -108,9 +108,10 @@ export class EvenementenBewerkenComponent implements OnInit {
   public schrijfIn(id: string) {
     if (this.id) {
       this.afdb.object('/activiteiten/' + this.id + '/ingeschrevenen').update({[id]: false});
-      this.getEvenement().subscribe((evenement) => {
+      let evt = this.getEvenement().subscribe((evenement) => {
         this.afdb.object('/activiteiten/' + this.id + '/saldi').update({[id]: evenement.tegoed });
       });
+      evt.unsubscribe();
     }
   }
 
