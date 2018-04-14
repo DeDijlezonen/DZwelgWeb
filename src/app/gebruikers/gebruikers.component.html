@@ -17,6 +17,7 @@
             <tr>
               <td>Voornaam</td>
               <td>Achternaam</td>
+              <td>Rollen</td>
               <td>Saldo</td>
               <td>Acties</td>
             </tr>
@@ -25,6 +26,7 @@
             <tr *ngFor="let gebruiker of gebruikers | async">
               <td>{{ gebruiker.voornaam }}</td>
               <td>{{ gebruiker.achternaam }}</td>
+              <td>{{ gebruiker.rollen | formatteerRollen }}</td>
               <td>{{ gebruiker.saldo | currency:'EUR':true }}</td>
               <td>
                 <button class="btn btn-secondary" [disabled]="disableButtons">

@@ -28,6 +28,7 @@ import {NgxPermissionsGuard, NgxPermissionsModule} from 'ngx-permissions';
 import {Rol} from './utils/functions';
 import { PaginaNietToegelatenComponent } from './pagina-niet-toegelaten/pagina-niet-toegelaten.component';
 import { SaldoComponent } from './saldo/saldo.component';
+import { FormatteerRollenPipe } from './pipes/formatteer-rollen/formatteer-rollen.pipe';
 
 const routes: Routes = [
   {
@@ -101,6 +102,7 @@ const routes: Routes = [
     ProductieBewerkenComponent,
     PaginaNietToegelatenComponent,
     SaldoComponent,
+    FormatteerRollenPipe,
   ],
   imports: [
     NgbModule.forRoot(),

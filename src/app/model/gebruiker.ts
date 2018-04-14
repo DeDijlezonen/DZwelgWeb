@@ -13,4 +13,5 @@ export interface Gebruiker {
    */
   email: string;
     saldo: number;
+    rollen: { [rolnaam: string]: boolean };
 }
