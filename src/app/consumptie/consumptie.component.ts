@@ -65,7 +65,7 @@ export class ConsumptieComponent implements OnInit {
   }
 
   consumptieVerwijderen(id: string, stocklijnId: string) {
-    this.consumpties.remove(id).then(
+    this.consumpties.update(id, { actief: false }).then(
       succes => {
         this.alert = {
           type: 'success',
@@ -93,7 +93,8 @@ export class ConsumptieComponent implements OnInit {
     } else {
       const fbCosumptie = this.consumpties.push({
         naam: model.naam,
-        prijs: model.prijs
+        prijs: model.prijs,
+        actief: true,
       });
 
       const key = fbCosumptie.key;
@@ -114,6 +115,7 @@ export class ConsumptieComponent implements OnInit {
       naam: consumptie.naam,
       prijs: consumptie.prijs,
       stocklijnId: consumptie.stocklijnId,
+      actief: consumptie.actief,
     };
   }
 

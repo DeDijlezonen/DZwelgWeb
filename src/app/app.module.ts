@@ -29,6 +29,7 @@ import {Rol} from './utils/functions';
 import { PaginaNietToegelatenComponent } from './pagina-niet-toegelaten/pagina-niet-toegelaten.component';
 import { SaldoComponent } from './saldo/saldo.component';
 import { FormatteerRollenPipe } from './pipes/formatteer-rollen/formatteer-rollen.pipe';
+import { ActiefPipe } from './pipes/actief/actief.pipe';
 
 const routes: Routes = [
   {
@@ -103,6 +104,7 @@ const routes: Routes = [
     PaginaNietToegelatenComponent,
     SaldoComponent,
     FormatteerRollenPipe,
+    ActiefPipe,
   ],
   imports: [
     NgbModule.forRoot(),

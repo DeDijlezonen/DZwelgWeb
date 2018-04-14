@@ -33,7 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let consumptie of consumpties | async">
+            <tr *ngFor="let consumptie of consumpties | async | actief">
               <td>
                 <div *ngIf="consumptie.id === teBewerkenConsumptieId"><input #teBewerkenConsumptieNaamInput class="form-control" type="text" [value]="consumptie.naam" [(ngModel)]="teBewerkenConsumptie.naam" ></div>
                 <div *ngIf="consumptie.id !== teBewerkenConsumptieId">{{ consumptie.naam }}</div>
