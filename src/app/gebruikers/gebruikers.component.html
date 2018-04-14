@@ -29,7 +29,7 @@
               <td>{{ gebruiker.rollen | formatteerRollen }}</td>
               <td>{{ gebruiker.saldo | currency:'EUR':true }}</td>
               <td>
-                <button class="btn btn-secondary" [disabled]="disableButtons">
+                <button class="btn btn-secondary" [disabled]="disableButtons" (click)="openGebruikerBewerkkenModal(contentGebruikerAanmakenModal, gebruiker)" >
                   <span class="fa fa-pencil"></span>
                 </button> &nbsp;
                 <button class="btn btn-danger" (click)="openGebruikerVerwijderenModel(contentVerwijderGebruikerModal, gebruiker.uid)" [disabled]="disableButtons">
@@ -45,7 +45,7 @@
       <!--suppress HtmlUnknownAttribute -->
       <ng-template #contentGebruikerAanmakenModal let-c="close" let-d="dismiss">
         <div class="modal-header">
-          <h4 class="modal-title">Nieuwe gebruiker aanmaken</h4>
+          <h4 class="modal-title">{{ editMode ? 'Gebruiker bewerken' : 'Nieuwe gebruier aanmaken' }}</h4>
           <button type="button" class="close" aria-label="Close" (click)="sluitGebruikerAanmakenModal()">
       <span>&times;</span>
     </button>
@@ -54,17 +54,19 @@
 
           <dzwelg-alert [alert]="alertGebruikerAanmaken"></dzwelg-alert>
 
-          <form class="form" [formGroup]="gebruikerAanmakenFormGroup" (ngSubmit)="gebruikerAanmaken(gebruikerAanmakenFormGroup.value)">
+          <form class="form" [formGroup]="gebruikerAanmakenFormGroup" (ngSubmit)="editMode ? gebruikerBewerken(gebruikerAanmakenFormGroup.value) : gebruikerAanmaken(gebruikerAanmakenFormGroup.value)">
             <label for="voornaam_input">Voornaam</label>
-            <input formControlName="voornaam" class="form-control" id="voornaam_input" [disabled]="disableAanmakenForm">
+            <input formControlName="voornaam" class="form-control" id="voornaam_input" [disabled]="disableAanmakenForm" >
             <label for="achternaam_input">Achternaam</label>
             <input formControlName="achternaam" class="form-control" id="achternaam_input" [disabled]="disableAanmakenForm">
-            <label for="email_input">E-mailadres</label>
-            <input type="email" formControlName="email" class="form-control" id="email_input" [disabled]="disableAanmakenForm">
+            <ng-container *ngIf="!editMode">
+              <label for="email_input">E-mailadres</label>
+              <input type="email" formControlName="email" class="form-control" id="email_input" [disabled]="disableAanmakenForm">
+            </ng-container>
             <label>Rol</label>
             <div class="form-check">
               <label class="form-check-label">
-                <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" checked>
+                <input formControlName="gebruikerrolLid" class="form-check-input" type="checkbox" >
                 Lid <small>(enkel toegang tot eigen saldo)</small>
               </label>
             </div>
@@ -82,14 +84,14 @@
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input formControlName="gebruikerrolBeheerder" class="form-check-input" type="checkbox" >
+                <input formControlName="gebruikerrolBeheerder" class="form-check-input" type="checkbox">
                 Beheerder <small>(toegang tot alle beheerdersfuncties en de kassa app)</small>
               </label>
             </div>
 
             <br/>
             <div class="pull-right">
-              <button class="btn btn-success" [disabled]="disableAanmakenForm">Aanmaken</button>
+              <button class="btn btn-success" [disabled]="disableAanmakenForm">{{ editMode ? 'Bewerken' : 'Aanmaken' }}</button>
               <button class="btn btn-secondary" [disabled]="disableAanmakenForm" (click)="sluitGebruikerAanmakenModal()">Annuleren</button>
             </div>
           </form>

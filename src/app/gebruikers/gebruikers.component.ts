@@ -25,6 +25,12 @@ export class GebruikersComponent implements OnInit {
   alertGebruikerAanmaken: IAlert;
   disableAanmakenForm: boolean;
   disableButtons: boolean;
+  editMode: boolean;
+  // teBewerkenGebruiker: Gebruiker;
+  // rolLid = Rol.Lid;
+  // rolKassaverantwoordelijke = Rol.Kassaverantwoordelijke;
+  // rolBeheerder = Rol.Beheerder;
+  // rolStockverantwoordelijke = Rol.Stockbeheerder;
 
   constructor(private httpClient: Http, private afdb: AngularFireDatabase, private afAuth: AngularFireAuth,
               private modalService: NgbModal, private fb: FormBuilder) {
@@ -48,6 +54,20 @@ export class GebruikersComponent implements OnInit {
   }
 
   openGebruikerAanmakenModal(content) {
+    this.editMode = false;
+    // this.teBewerkenGebruiker = null;
+    this.gebruikerAanmakenModal = this.modalService.open(content);
+  }
+
+  openGebruikerBewerkkenModal(content, teBewerkenGebruiker: Gebruiker) {
+    this.editMode = true;
+    this.gebruikerAanmakenFormGroup.controls['voornaam'].setValue(teBewerkenGebruiker.voornaam);
+    this.gebruikerAanmakenFormGroup.controls['achternaam'].setValue(teBewerkenGebruiker.achternaam);
+    this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].setValue(teBewerkenGebruiker.rollen[Rol.Lid]);
+    this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].setValue(teBewerkenGebruiker.rollen[Rol.Kassaverantwoordelijke]);
+    this.gebruikerAanmakenFormGroup.controls['gebruikerrolStockbeheerder'].setValue(teBewerkenGebruiker.rollen[Rol.Stockbeheerder]);
+    this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].setValue(teBewerkenGebruiker.rollen[Rol.Beheerder]);
+    // this.teBewerkenGebruiker = teBewerkenGebruiker;
     this.gebruikerAanmakenModal = this.modalService.open(content);
   }
 
@@ -106,6 +126,34 @@ export class GebruikersComponent implements OnInit {
           };
           this.disableAanmakenForm = false;
         });
+    }
+  }
+
+  gebruikerBewerken(model: Gebruiker) {
+    this.gebruikerAanmakenFormGroup.markAsTouched();
+
+    if (this.gebruikerAanmakenFormGroup.invalid) {
+      const foutBoodschap = FormHelper.getFormErrorMessage(this.gebruikerAanmakenFormGroup);
+
+      this.alertGebruikerAanmaken = {
+        type: 'danger',
+        message: foutBoodschap,
+      };
+    } else {
+        this.disableAanmakenForm = true;
+        this.alertGebruikerAanmaken = {
+          type: 'info',
+          message: 'Bezig met aanmaken...'
+        };
+
+        this.gebruikers.update(model.uid, {
+          uid: model.uid,
+          voornaam: model.voornaam,
+          achternaam: model.achternaam,
+          saldo: model.saldo,
+        });
+
+        this.rollenSettenEnResettenEnAfsluiten(model);
     }
   }
 
@@ -174,4 +222,23 @@ export class GebruikersComponent implements OnInit {
           });
       });
   }
+
+  private rollenSettenEnResettenEnAfsluiten(gebruiker: Gebruiker) {
+    if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolLid'].value === true) {
+      this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Lid).set(true);
+    }
+    if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolKassaverantwoordelijke'].value === true) {
+      this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Kassaverantwoordelijke).set(true);
+    }
+    if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolStockbeheerder'].value === true) {
+      this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Stockbeheerder).set(true);
+    }
+    if (this.gebruikerAanmakenFormGroup.controls['gebruikerrolBeheerder'].value === true) {
+      this.afdb.object('gebruikers/' + gebruiker.uid + '/rollen/' + Rol.Beheerder).set(true);
+    }
+    this.sluitGebruikerAanmakenModal();
+    this.gebruikerAanmakenFormGroup.reset();
+    this.disableAanmakenForm = false;
+  }
+
 }
