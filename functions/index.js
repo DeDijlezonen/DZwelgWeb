@@ -117,4 +117,6 @@ exports.cleanDirtyTransactions = functions.https.onRequest((request, response) =
       console.log(childSnapshot.val());
     });
   });
+
+  response.status(200).send("klaar!");
 });
