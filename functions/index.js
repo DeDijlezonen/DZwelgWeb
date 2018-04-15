@@ -109,7 +109,7 @@ exports.deleteUserFromDB = functions.auth.user().onDelete(event => {
   console.log("deleted " + email + " from db");
 });
 
-exports.cleanDirtyTransactions = funtions.https.onRequest((request, response) => {
+exports.cleanDirtyTransactions = functions.https.onRequest((request, response) => {
   admin.database().ref("transacties_dirty").once('value', function (snapshot) {
     snapshot.child('eventNaam').remove();
     snapshot.child('totaal').remove();
