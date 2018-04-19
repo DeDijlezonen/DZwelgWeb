@@ -118,7 +118,7 @@ exports.cleanDirtyTransactions = functions.https.onRequest((request, response) =
     snapshot.forEach(function (childSnapshot) {
       updates[childSnapshot.key] = childSnapshot.val();
     });
-    dbref.update(updates);
+    transactieref.update(updates);
   });
 
   dbref.remove();
