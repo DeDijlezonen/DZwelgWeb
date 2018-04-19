@@ -111,14 +111,17 @@ exports.deleteUserFromDB = functions.auth.user().onDelete(event => {
 
 exports.cleanDirtyTransactions = functions.https.onRequest((request, response) => {
   const dbref = admin.database().ref("transacties_dirty");
-  dbref.child('eventNaam').remove();
-  dbref.child('totaal').remove();
 
   dbref.once('value', function (snapshot) {
+    const transactieref = admin.database().ref("transacties");
+    const updates = {};
     snapshot.forEach(function (childSnapshot) {
-      console.log(childSnapshot.val());
+      updates[childSnapshot.key] = childSnapshot.val();
     });
+    dbref.update(updates);
   });
+
+  dbref.remove();
 
   response.status(200).send("klaar!");
 });
